@@ -1,0 +1,59 @@
+name: Build Android App
+on:
+  push:
+    tags:
+      - "**.**.**"
+      - "experiment/**/**/**"
+    paths:
+      - apps/**
+      - packages/**
+      - .github/workflows/build-web.yml
+  workflow_dispatch:
+    
+env:
+  REPO_RELPATH: frontend
+  APP_RELPATH: apps/android
+  APK_RELEASE_DIR_RELPATH: android/app/build/outputs/apk/release
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+    container:
+      image: utkusarioglu/react-native-android-devcontainer:tag-unavailable
+      options: --user=0:0
+      # image: utkusarioglu/react-native-android-devcontainer:1.0.17
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          # repository: utkusarioglu/android
+          path: ${{ env.REPO_RELPATH }}
+
+      - name: Install monorepo dependencies
+        working-directory: ${{ env.REPO_RELPATH }}
+        run: |
+          ls -al
+          cat package.json
+          yarn
+
+      - name: Build android
+        working-directory: ${{ env.REPO_RELPATH }}/${{ env.APP_RELPATH }}
+        run: |
+          yarn build-release
+
+      # - name: Upload to Google Drive
+      #   uses: adityak74/google-drive-upload-git-action@main
+      #   with:
+      #     credentials: ${{ secrets.GOOGLE_DRIVE_TOKEN }}
+      #     filename: android/android/app/build/outputs/apk/release/app-release.apk
+      #     folderId: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+      #     overwrite: "true"
+
+      - name: Builds as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: utkusarioglu-android-build
+          path: ${{ env.REPO_RELPATH }}/${{ env.APP_RELPATH }}/${{ env.APK_RELEASE_DIR_RELPATH }}

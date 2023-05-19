@@ -1,0 +1,27 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "TAMAGUI_TARGET=web next dev",
+    "build": "TAMAGUI_TARGET=web next build",
+    "start": "scripts/start.sh"
+  },
+  "dependencies": {
+    "@tamagui/next-plugin": "^1.27.3",
+    "@tamagui/next-theme": "^1.27.3",
+    "app": "*",
+    "next": "^13.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "0.71.8",
+    "ui": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.12",
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
+    "tsconfig": "*",
+    "typescript": "^4.5.3"
+  }
+}

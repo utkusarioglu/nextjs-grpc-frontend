@@ -1,0 +1,19 @@
+{
+  "extends": "../../node_modules/@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "paths": {
+      "ui/*": ["../../packages/ui/*"],
+      "app/*": ["../../packages/app/*"]
+    }
+  },
+  "references": [
+    {
+      "path": "../../packages/app"
+    },
+    {
+      "path": "../../packages/ui"
+    }
+  ]
+}

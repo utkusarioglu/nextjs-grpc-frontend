@@ -1,0 +1,4 @@
+frontend-clients/.certs
+frontend-clients/.env
+frontend-clients/.env.ci
+frontend-clients/.env.local

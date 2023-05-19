@@ -1,0 +1,91 @@
+# FROM node:19-slim
+# ARG ROOT_PASS=ROOT
+# RUN sh -c 'echo "root:$ROOT_PASS" | chpasswd'
+# RUN sh -c 'echo "node:$ROOT_PASS" | chpasswd'
+# RUN apt update && apt install -y vim curl sudo
+# WORKDIR  /utkusarioglu-com/projects/nextjs-grpc/api
+# COPY api /utkusarioglu-com/projects/nextjs-grpc/api
+# COPY proto /utkusarioglu-com/projects/nextjs-grpc/proto
+# WORKDIR /utkusarioglu-com/projects/nextjs-grpc/api
+# RUN chown -R 10001:10001 /utkusarioglu-com
+# RUN yarn build
+# USER node
+# ENTRYPOINT scripts/entrypoint.sh
+
+
+FROM node:19-slim AS builder
+
+ARG ROOT_PASS
+ARG USERNAME
+ARG GROUP
+ARG PROJECT_ROOT_ABSPATH
+ARG REPO_RELPATH
+ARG APP_RELPATH
+
+ARG REPO_ABSPATH="$PROJECT_ROOT_ABSPATH/$REPO_RELPATH"
+ARG APP_ABSPATH="$REPO_ABSPATH/$APP_RELPATH"
+
+# RUN for arg in ROOT_PASS USERNAME GROUP REPO_REL_PATH PROJECT_ROOT; do \
+#   if [ -z "${!arg}" ]; then \
+#     echo "Error: arg $arg is required for the docker build operation"; \
+#     exit 1; \
+#   fi; \
+# done
+
+WORKDIR $PROJECT_ROOT_ABSPATH
+COPY $REPO_REL_PATH $REPO_REL_PATH
+# COPY proto proto
+RUN chown -R $CONTAINER_USERNAME:$CONTAINER_GROUP $PROJECT_ROOT_ABSPATH
+
+WORKDIR $REPO_ABSPATH
+RUN yarn --immutable
+RUN yarn plugin import workspace-tools
+RUN yarn build --filter=web
+# RUN rm dist/.tsbuildinfo
+
+FROM node:19-slim AS runner
+
+ARG ROOT_PASS
+ARG USERNAME
+ARG GROUP
+ARG PROJECT_ROOT_ABSPATH
+ARG REPO_RELPATH
+ARG APP_RELPATH
+
+ARG REPO_ABSPATH="$PROJECT_ROOT_ABSPATH/$REPO_RELPATH"
+ARG APP_ABSPATH="$REPO_ABSPATH/$APP_RELPATH"
+
+RUN sh -c 'echo "root:$ROOT_PASS" | chpasswd'
+RUN sh -c 'echo "node:$ROOT_PASS" | chpasswd'
+
+RUN apt update
+
+WORKDIR $REPO_ABSPATH
+COPY --from=builder "$REPO_ABSPATH/yarn.lock" yarn.lock
+COPY --from=builder "$REPO_ABSPATH/.yarnrc.yml" .yarnrc.yml
+COPY --from=builder "$REPO_ABSPATH/package.json" package.json
+COPY --from=builder "$REPO_ABSPATH/turbo.json" turbo.json
+COPY --from=builder "$REPO_ABSPATH/.yarn" .yarn
+RUN ls -al $REPO_ABSPATH
+
+WORKDIR $APP_ABSPATH
+COPY --from=builder "$APP_ABSPATH/dist" dist
+COPY --from=builder "$APP_ABSPATH/scripts" scripts
+COPY --from=builder "$APP_ABSPATH/package.json" package.json
+COPY --from=builder "$APP_ABSPATH/next.config.js" next.config.js
+RUN ls -al $APP_ABSPATH
+
+# WORKDIR  $PROJECT_ROOT/proto
+# COPY --from=builder $PROJECT_ROOT/proto/src src
+# RUN rm -rf src/defunct
+
+
+WORKDIR $APP_ABSPATH
+RUN yarn workspaces focus --production
+
+WORKDIR $REPO_ABSPATH
+RUN rm -rf .yarn/cache
+
+WORKDIR $APP_ABSPATH
+USER $USERNAME
+ENTRYPOINT scripts/entrypoint.sh

@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "webServer.fullname" . }}
+  labels:
+    {{- include "webServer.labels" . | nindent 4 }}
+  # {{- if .Values.cloudProvider.isLocal }}
+  # annotations:
+  # {{- end }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "webServer.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "webServer.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "webServer.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            {{- range $k, $v := .Values.env }}
+            - name: {{ $k | quote }}
+              value: {{ $v | quote }}
+            {{- end }}
+          volumeMounts:
+            {{- with .Values.env -}}
+            {{- if eq .RUN_MODE "development" -}}
+            - name: source-code
+              mountPath: {{ .PROJECT_ROOT_ABSPATH }}
+            {{- end }}
+            - name: {{ $.Values.certSecretNames.msGrpcClient }}
+              mountPath: {{ 
+                include "webServer.singleCertPath" (
+                  dict 
+                    "global" $ 
+                    "relpath" .MS_GRPC_CLIENT_CERT_FOR_WEB_SERVER_RELPATH
+                ) | quote 
+              }}
+              readOnly: true
+            - name: {{ $.Values.certSecretNames.webServerServerCert }}
+              mountPath: {{ 
+                include "webServer.singleCertPath" (
+                  dict 
+                    "global" $ 
+                    "relpath" .WEB_SERVER_SERVER_CERT_RELPATH
+                ) | quote 
+              }}
+              readOnly: true
+            {{- end -}}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      volumes:
+        {{- if eq .Values.env.RUN_MODE "development" -}}
+        - name: source-code
+          persistentVolumeClaim:
+            claimName: source-code-web-server-pvc
+        {{- end }}
+        - name: {{ .Values.certSecretNames.msGrpcClient | quote }}
+          secret:
+            secretName: {{ .Values.certSecretNames.msGrpcClient | quote }}
+        - name: {{ .Values.certSecretNames.webServerServerCert | quote }}
+          secret:
+            secretName: {{ .Values.certSecretNames.webServerServerCert | quote }}
+
+          
