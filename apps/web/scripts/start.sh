@@ -1,4 +1,6 @@
 #!/bin/bash
 
-echo "Web client start…"
-TAMAGUI_TARGET=web yarn next start
+echo "Web Server starting…"
+source scripts/ca-certificates.sh
+
+NODE_ENV=production TAMAGUI_TARGET=web yarn next start

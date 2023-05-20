@@ -7,10 +7,13 @@ module.exports = function (_name, { defaultConfig }) {
     distDir: "dist",
     reactStrictMode: true,
     transpilePackages: ["ui", "app", "solito"],
+    experimental: {
+      instrumentationHook: true,
+    },
   };
 
   const tamaguiPlugin = withTamagui({
-    config: "./tamagui.config.ts",
+    config: "./src/tamagui.config.ts",
     components: ["tamagui", "ui"],
     // Experimentally opt into react-native-web-lite which drops support for all react-native
     // built-in List components and removes many deprecated APIs for code-reduction, slimming
