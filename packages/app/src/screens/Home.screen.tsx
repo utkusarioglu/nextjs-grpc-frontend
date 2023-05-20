@@ -1,9 +1,11 @@
 import CustomButton from "ui/src/CustomButton";
 import CustomHeader from "ui/src/CustomHeader";
 import CustomInput from "ui/src/CustomInput";
-import { Spacer, YStack, XStack } from "ui";
+import { useRouter } from "solito/router";
+import { Spacer, YStack, XStack, Button } from "ui";
 
 const HomeScreen = () => {
+  const { push } = useRouter();
   return (
     <YStack>
       <CustomHeader>Hi Hello Howdy</CustomHeader>
@@ -16,6 +18,16 @@ const HomeScreen = () => {
         <Spacer />
         <CustomButton userId={3}>Three</CustomButton>
       </XStack>
+      <Spacer />
+      <Button
+        onPress={() =>
+          push({
+            pathname: "/decade-stats",
+          })
+        }
+      >
+        Decade Stats
+      </Button>
     </YStack>
   );
 };

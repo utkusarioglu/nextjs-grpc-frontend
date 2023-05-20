@@ -21,6 +21,7 @@ const linking = {
     screens: {
       home: "",
       user: "user/:userId",
+      decadeStats: "decade-stats",
     },
   },
 };
