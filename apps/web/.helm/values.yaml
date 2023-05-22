@@ -78,7 +78,7 @@ env:
   PROJECT_ROOT_ABSPATH: /utkusarioglu-com/projects/nextjs-grpc
   REPO_RELPATH: frontend
   APP_RELPATH: apps/web
-  # REPO_PROTOS_RELPATH: proto/src
+  REPO_PROTOS_RELPATH: proto/src
 
   MS_HOST: ms.ms
   MS_PORT: 50051
@@ -98,7 +98,7 @@ env:
   WEB_SERVER_SERVER_CERT_RELPATH: web-server-server-cert
 
   NEXT_PUBLIC_DOMAIN_NAME: <TF_POPULATED>
-  SCHEME: <TF_POPULATED>
+  NEXT_PUBLIC_SCHEME: <TF_POPULATED>
 
 cloudProvider:
   isLocal: false

@@ -7,7 +7,8 @@
 #    registered.
 #
 
-source .env.local
+# TODO check if this resolves the "not found error in prod"
+source .env.local 2> /dev/null
 
 ms_grpc_client_cert_relpath="$CERTIFICATES_ABSPATH/$MS_GRPC_CLIENT_CERT_FOR_WEB_SERVER_RELPATH"
 

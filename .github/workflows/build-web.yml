@@ -1,15 +1,19 @@
 name: Build Web Server
 
 on:
-  push:
-    tags:
-      - "**.**.**"
-      - "experiment/**/**/**"
-    paths:
-      - apps/**
-      - packages/**
-      - .github/workflows/build-web.yml
+  # push:
+  #   tags:
+  #     - "**.**.**"
+  #     - "experiment/**/**/**"
+  #   paths:
+  #     - apps/**
+  #     - packages/**
+  #     - .github/workflows/build-web.yml
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   CONTAINER_NAME: web-server-nextjsgprc-projects-utkusarioglu-com
@@ -41,12 +45,12 @@ jobs:
           fetch-depth: 2
           path: ${{ matrix.images.repoRelPath }} 
 
-      # - name: Checkout proto
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: utkusarioglu/nextjs-grpc-proto
-      #     fetch-depth: 2
-      #     path: proto 
+      - name: Checkout proto
+        uses: actions/checkout@v3
+        with:
+          repository: utkusarioglu/nextjs-grpc-proto
+          fetch-depth: 2
+          path: proto 
 
       - name: Get changed files
         id: changed_files
@@ -58,12 +62,14 @@ jobs:
             ${{ matrix.images.readmeFile }}
             ${{ matrix.images.additionalFilesToWatch }}
             .github/workflows/build-web.yml
-            ./apps/**
-            ./packages/**
+            ./apps/**/*
+            ./packages/**/*
 
       - name: Declare run state
         id: run_state
         run: |
+          echo "All modified files list:"
+          echo "${{ steps.changed_files.outputs.all_modified_files }}"
           if [ ${{ github.ref_type }} == tag ] && ( \
             [ ${{ steps.changed_files.outputs.any_modified }} == true ] || \
             [ ${{ github.event_name }} == workflow_dispatch ] \
@@ -105,7 +111,7 @@ jobs:
 
       - name: Login to DockerHub
         if: steps.run_state.outputs.run_docker_build == 'true'
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}

@@ -2,5 +2,5 @@ apiVersion: v2
 name: web-server
 description: Web server container for the nextjs-grpc workshop
 type: application
-version: 0.0.1
-appVersion: experiment-feat-build-web-25
+version: 0.0.1-6
+appVersion: experiment-feat-github-integration-23

@@ -12,7 +12,7 @@ import { RootNavigation } from "./RootNavigation";
 
 const linking = {
   prefixes: [
-    "http://localhost:3000",
+    "https://nextjs-grpc.utkusarioglu.com",
     //   // ...add your URLs here
     //   Linking.createURL('/'),
   ],
