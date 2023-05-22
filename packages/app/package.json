@@ -6,5 +6,13 @@
   "dependencies": {
     "solito": "^3.2.6",
     "ui": "*"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.21.5",
+    "@jest/globals": "^29.5.0",
+    "jest": "^29.5.0"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

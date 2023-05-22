@@ -64,7 +64,7 @@ export class InflationService {
         const rows: any[] = [];
         const call = this.service.decadeStats({ codes });
         // TODO you need a way for types to be created from protos
-        // @ts-expect-error
+        // @ts-ignore
         call.on("data", (row) => {
           rows.push(row);
         });
@@ -72,7 +72,7 @@ export class InflationService {
           resolve(rows);
         });
         // TODO typing
-        // @ts-expect-error
+        // @ts-ignore
         call.on("error", (error) => {
           console.log({ error });
           reject("GRPC_ERROR");

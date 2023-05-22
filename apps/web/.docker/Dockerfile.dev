@@ -34,7 +34,7 @@ ARG APP_ABSPATH="$REPO_ABSPATH/$APP_RELPATH"
 
 WORKDIR $PROJECT_ROOT_ABSPATH
 COPY $REPO_REL_PATH $REPO_REL_PATH
-# COPY proto proto
+COPY proto proto
 RUN chown -R $CONTAINER_USERNAME:$CONTAINER_GROUP $PROJECT_ROOT_ABSPATH
 
 WORKDIR $REPO_ABSPATH
@@ -75,10 +75,9 @@ COPY --from=builder "$APP_ABSPATH/package.json" package.json
 COPY --from=builder "$APP_ABSPATH/next.config.js" next.config.js
 RUN ls -al $APP_ABSPATH
 
-# WORKDIR  $PROJECT_ROOT/proto
-# COPY --from=builder $PROJECT_ROOT/proto/src src
-# RUN rm -rf src/defunct
-
+WORKDIR $PROJECT_ROOT_ABSPATH/proto
+COPY --from=builder $PROJECT_ROOT_ABSPATH/proto/src src
+RUN rm -rf src/defunct
 
 WORKDIR $APP_ABSPATH
 RUN yarn workspaces focus --production

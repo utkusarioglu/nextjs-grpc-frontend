@@ -8,7 +8,7 @@ const HomeScreen = () => {
   const { push } = useRouter();
   return (
     <YStack>
-      <CustomHeader>Hi Hello Howdy</CustomHeader>
+      <CustomHeader>Hi Hello Howdy!</CustomHeader>
       <CustomInput />
       <Spacer />
       <XStack>
