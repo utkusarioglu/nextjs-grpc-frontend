@@ -9,6 +9,7 @@ import {
 } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootNavigation } from "./RootNavigation";
+import { StoreProvider } from "store/src/index";
 
 const linking = {
   prefixes: [
@@ -32,22 +33,24 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <UiProvider
-          config={tamaguiConfig}
-          // @ts-ignore
-          disableInjectCSS
-          defaultTheme={colorScheme}
-          disableRootThemeClass>
-          <NavigationContainer
-            linking={linking}
-            theme={
-              colorScheme === "dark"
-                ? ReactNavigationDarkTheme
-                : ReactNavigationDefaultTheme
-            }>
-            <RootNavigation />
-          </NavigationContainer>
-        </UiProvider>
+        <StoreProvider>
+          <UiProvider
+            config={tamaguiConfig}
+            // @ts-ignore
+            disableInjectCSS
+            defaultTheme={colorScheme}
+            disableRootThemeClass>
+            <NavigationContainer
+              linking={linking}
+              theme={
+                colorScheme === "dark"
+                  ? ReactNavigationDarkTheme
+                  : ReactNavigationDefaultTheme
+              }>
+              <RootNavigation />
+            </NavigationContainer>
+          </UiProvider>
+        </StoreProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

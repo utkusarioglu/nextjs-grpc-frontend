@@ -8,12 +8,18 @@
     "jsx": "react-jsx",
     "declaration": true,
     "emitDeclarationOnly": true,
+    "paths": {
+      "store/*": ["../../packages/store/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["dist", "build", "node_modules"],
   "references": [
     {
       "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/store"
     }
   ]
 }

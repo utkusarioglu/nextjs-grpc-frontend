@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 // import Head from "next/head";
 import React, { useMemo } from "react";
 import UiProvider from "ui/src/Provider";
+import { StoreProvider } from "store/src/index";
 
 import tamaguiConfig from "../tamagui.config";
 
@@ -16,7 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // because we do our custom getCSS() above, we disableInjectCSS here
   return (
-    <>
+    <StoreProvider>
       {/* @ts-ignore */}
       <NextThemeProvider onChangeTheme={setTheme}>
         <UiProvider
@@ -29,6 +30,6 @@ export default function App({ Component, pageProps }: AppProps) {
           {contents}
         </UiProvider>
       </NextThemeProvider>
-    </>
+    </StoreProvider>
   );
 }

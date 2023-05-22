@@ -5,6 +5,7 @@
   "types": "./src/index.tsx",
   "dependencies": {
     "solito": "^3.2.6",
+    "store": "*",
     "ui": "*"
   },
   "devDependencies": {
