@@ -1,3 +1,3 @@
-echo 'post-create-command.sh is empty'
+#!/bin/bash
 
 yarn
