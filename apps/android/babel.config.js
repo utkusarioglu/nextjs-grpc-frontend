@@ -14,6 +14,14 @@ module.exports = {
       },
     ],
     [
+      "module:react-native-dotenv",
+      {
+        envName: "APP_ENV",
+        moduleName: "@env",
+        path: ".env.local",
+      },
+    ],
+    [
       "transform-inline-environment-variables",
       {
         include: "TAMAGUI_TARGET",

@@ -10,7 +10,8 @@ services:
       android-host: host-gateway
       ms.ms: host-gateway
     ports:
-      - 80:3000
+      - 3000:3000
+      - 4000:4000
     volumes:
       - type: bind
         source: ..
