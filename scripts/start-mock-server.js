@@ -1,75 +1,88 @@
-#! /usr/local/bin/node
+#!/usr/local/bin/node
 
-const http = require("node:http");
-const { pipeline, Readable } = require("node:stream");
+const https = require("node:https");
+const fs = require("node:fs");
 
-const errorHandler = (err) => err && console.error(err);
+// const CERT_PATH =
+//   "/utkusarioglu-com/projects/nextjs-grpc/frontend/apps/web/.certs/web-server-server-cert";
+const CERT_PATH =
+  "/utkusarioglu-com/projects/nextjs-grpc/frontend/.certs.local/mock-server";
 
-const dataSource = new Readable({
-  write(_, __, next) {
-    next();
-  },
-});
+const PORT = 443;
 
-function produceData(dataStream, data) {
-  const dataChunk = JSON.stringify(data);
-  dataStream.push(dataChunk);
-  dataStream.push(null);
+const options = {
+  // ca: fs.readFileSync(`${CERT_PATH}/ca.crt`),
+  ca: fs.readFileSync(`${CERT_PATH}/chain.crt`),
+  cert: fs.readFileSync(`${CERT_PATH}/chain.crt`),
+  key: fs.readFileSync(`${CERT_PATH}/tls.key`),
+};
+
+function produceData(codes) {
+  const data =
+    codes[0] === ""
+      ? []
+      : codes
+          .map((code) =>
+            Array(2)
+              .fill(null)
+              .map((_, i) => ({
+                countryCode: `${code.toUpperCase()}-${i}`,
+                countryName: code.toLowerCase(),
+                decade: i,
+                count: i,
+                average: i,
+                max: i,
+                min: i,
+                median: i,
+                range: i,
+                stdDev: i,
+                variance: i,
+              }))
+          )
+          .reduce((p, c) => {
+            p = [...p, ...c];
+            return p;
+          }, []);
+  return JSON.stringify({ decadeStats: data });
 }
 
-function main() {
-  const server = http.createServer((req, res) => {
+https
+  .createServer(options, (req, res) => {
     const url = new URL(`http://localhost:4000${req.url}`);
     res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Content-Type", "application/json");
     switch (url.pathname) {
       case "/api/v1/decade-stats":
         console.log("hit");
         // pipeline(dataSource, res, errorHandler);
         // produceData(dataSource, { url: req.url });
-        const codes = url.searchParams.get("codes").split(",");
+        const codesParam = url.searchParams.get("codes");
+        if (!codesParam) {
+          res.statusCode = 400;
+          res.write(JSON.stringify({ error: "no codes param given" }));
+          res.end();
+          break;
+        }
+
+        const codes = codesParam.split(",");
         console.log({ codes });
-        const data =
-          codes[0] === ""
-            ? []
-            : codes
-                .map((code) =>
-                  Array(2)
-                    .fill(null)
-                    .map((_, i) => ({
-                      countryCode: `${code.toUpperCase()}-${i}`,
-                      countryName: code.toLowerCase(),
-                      decade: i,
-                      count: i,
-                      average: i,
-                      max: i,
-                      min: i,
-                      median: i,
-                      range: i,
-                      stdDev: i,
-                      variance: i,
-                    }))
-                )
-                .reduce((p, c) => {
-                  p = [...p, ...c];
-                  return p;
-                }, []);
-        res.write(JSON.stringify({ decadeStats: data }));
+        res.write(produceData(codes));
         res.end();
         break;
 
       default:
-        console.log({ url: req.url });
-        produceData(dataSource, {
-          error: "Not implemented",
-          url,
-        });
+        console.log("default hit");
+        res.write(produceData(["a"]));
+        // res.write(
+        //   JSON.stringify({
+        //     error: "Not implemented",
+        //     url,
+        //   })
+        // );
+        res.end();
         break;
     }
+  })
+  .listen(PORT, () => {
+    console.log(`Mock server listening on port ${PORT}`);
   });
-  const PORT = 4000;
-  server.listen(PORT, () => {
-    console.log(`Mock Server started listening on ${PORT}`);
-  });
-}
-
-main();

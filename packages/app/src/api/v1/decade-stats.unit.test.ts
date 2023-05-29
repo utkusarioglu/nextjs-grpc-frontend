@@ -1,4 +1,4 @@
-import { readCertPath } from "../utils/readCertPath";
+import { readCertPath } from "../../utils/readCertPath";
 
 process.env = {
   ...process.env,

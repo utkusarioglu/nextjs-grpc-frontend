@@ -1,4 +1,4 @@
-import { YStack, Spacer, Input, Text } from "ui";
+import { YStack, Spacer, Input, Paragraph } from "ui";
 import {
   setCountries,
   useSelector,
@@ -12,7 +12,7 @@ const DecadeStatsScreen = () => {
   const dispatch = useDispatch();
   return (
     <YStack>
-      <Text>Api url: {process.env.NEXT_PUBLIC_NEXT_API_URL}</Text>
+      <Paragraph>Api v1: {process.env.NEXT_PUBLIC_API_V1_URL}</Paragraph>
       <Input
         onChangeText={(e) => {
           return dispatch(setCountries(e));

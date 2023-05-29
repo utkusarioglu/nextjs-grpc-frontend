@@ -3,4 +3,4 @@ name: web-server
 description: Web server container for the nextjs-grpc workshop
 type: application
 version: 0.0.1-6
-appVersion: experiment-feat-github-integration-23
+appVersion: experiment-feat-url-convergence-22

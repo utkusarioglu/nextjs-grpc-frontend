@@ -1,4 +1,5 @@
 name: Build Android App
+
 on:
   push:
     tags:
@@ -25,7 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: production
-      NEXT_PUBLIC_NEXT_API_URL: 'https://192.168.1.151:4000'
+      NEXT_PUBLIC_WEB_APP_URL: ${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
+      NEXT_PUBLIC_API_V1_URL: ${{ secrets.NEXT_PUBLIC_API_V1_URL }}
     container:
       image: utkusarioglu/react-native-android-devcontainer:tag-unavailable
       options: --user=0:0
@@ -51,21 +53,18 @@ jobs:
 
       - name: Create variables
         id: variables
+        working-directory: ${{ env.REPO_RELPATH }}
         run: |
           date_string="$(date +'%Y-%m-%dT-%H-%M-%S')"
+          commit_hash="$(git rev-parse --short HEAD)"
           echo "date_string=$date_string" >> $GITHUB_OUTPUT
+          echo "commit_hash=$commit_hash" >> $GITHUB_OUTPUT
 
       - name: Upload to Google Drive
         uses: adityak74/google-drive-upload-git-action@main
         with:
           credentials: ${{ secrets.GOOGLE_DRIVE_TOKEN }}
           folderId: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
-          name: "app-release-${{ steps.variables.outputs.date_string }}.apk"
+          name: "nextjs-grpc-${{ steps.variables.outputs.commit_hash }}.apk"
           filename: ${{ env.REPO_RELPATH }}/${{ env.APP_RELPATH }}/${{ env.APK_RELEASE_DIR_RELPATH }}/${{ env.APK_RELEASE_FILENAME }}
           overwrite: "false"
-
-      - name: Builds as artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: utkusarioglu-android-build
-          path: ${{ env.REPO_RELPATH }}/${{ env.APP_RELPATH }}/${{ env.APK_RELEASE_DIR_RELPATH }}

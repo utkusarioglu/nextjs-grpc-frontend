@@ -1,14 +1,14 @@
 name: Build Web Server
 
 on:
-  # push:
-  #   tags:
-  #     - "**.**.**"
-  #     - "experiment/**/**/**"
-  #   paths:
-  #     - apps/**
-  #     - packages/**
-  #     - .github/workflows/build-web.yml
+  push:
+    tags:
+      - "**.**.**"
+      - "experiment/**/**/**"
+    paths:
+      - apps/**
+      - packages/**
+      - .github/workflows/build-web.yml
   workflow_dispatch:
 
 concurrency:
