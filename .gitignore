@@ -45,3 +45,5 @@ yarn-error.log*
 
 .ignore
 apps/web/.certs
+.certs
+.certs.*

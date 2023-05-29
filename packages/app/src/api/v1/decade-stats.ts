@@ -1,5 +1,5 @@
-import { InflationService } from "../services/inflation";
-import { getTlsProps } from "../utils/readCertPath";
+import { InflationService } from "../../services/inflation";
+import { getTlsProps } from "../../utils/readCertPath";
 
 export const tlsProps = getTlsProps();
 

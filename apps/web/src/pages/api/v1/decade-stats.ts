@@ -1,4 +1,4 @@
-import { inflationApi } from "app/src/api/decade-stats";
+import { inflationApi } from "app/src/api/v1/decade-stats";
 import { type NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {

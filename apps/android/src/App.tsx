@@ -11,12 +11,10 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootNavigation } from "./RootNavigation";
 import { StoreProvider } from "store/src/index";
 
+console.log({ env: process.env, webApp: process.env.NEXT_PUBLIC_WEB_APP_URL });
+
 const linking = {
-  prefixes: [
-    "https://nextjs-grpc.utkusarioglu.com",
-    //   // ...add your URLs here
-    //   Linking.createURL('/'),
-  ],
+  prefixes: [process.env.NEXT_PUBLIC_WEB_APP_URL!],
   config: {
     initialRouteName: "home" as "home",
     screens: {

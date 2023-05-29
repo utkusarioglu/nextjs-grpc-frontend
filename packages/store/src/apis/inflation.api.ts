@@ -1,31 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { DecadeStatsApiResponse } from "./inflation.api.types";
 
-interface DecadeStats {
-  countryName: string;
-  countryCode: string;
-  decade: number;
-  count: number;
-  average: number;
-  max: number;
-  min: number;
-  median: number;
-  range: number;
-  stdDev: number;
-  variance: number;
-}
-
-interface DecadeStatsApiResponse {
-  decadeStats: DecadeStats[];
-}
-
-// const DOMAIN = "https://nextjs-grpc.utkusarioglu.com";
-const url = process.env.NEXT_PUBLIC_NEXT_API_URL;
-
-console.log({ url });
+console.log({ baseUrl: process.env.NEXT_PUBLIC_API_V1_URL });
 
 export const inflationApi = createApi({
   reducerPath: "inflationApi",
-  baseQuery: fetchBaseQuery({ baseUrl: `${url}/api/v1/` }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_V1_URL }),
   endpoints: (builder) => ({
     getDecadeStats: builder.query<DecadeStatsApiResponse, string[]>({
       query: (codes) => ({
@@ -36,5 +16,4 @@ export const inflationApi = createApi({
   }),
 });
 
-// export const getData = mockApi.useGetDataQuery;
 export const useInflationDecadeStats = inflationApi.useGetDecadeStatsQuery;
