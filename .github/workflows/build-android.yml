@@ -54,6 +54,7 @@ jobs:
       - name: Create variables
         id: variables
         working-directory: ${{ env.REPO_RELPATH }}
+        shell: bash
         run: |
           date_string="$(date +'%Y-%m-%dT-%H-%M-%S')"
           commit_hash="$(git rev-parse --short HEAD)"
