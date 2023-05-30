@@ -91,25 +91,30 @@ jobs:
       - name: Create variables
         id: variables
         run: |
-          image_name=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.CONTAINER_NAME }}
-          repo_tag=${{ github.ref_name }}
-          if [ ! -z "${{ matrix.images.imageTagPrefix }}" ]; then
-            image_tag_prefix="${repo_tag//\//-}."
-          fi
-          image_tag="$image_tag_prefix${repo_tag//\//-}"
+          image_name="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.CONTAINER_NAME }}"
+          repo_tag="${{ github.ref_name }}"
+          # if [ ! -z "${{ matrix.images.imageTagPrefix }}" ]; then
+          #   image_tag_prefix="${repo_tag//\//-}."
+          # fi
+          # image_tag="$image_tag_prefix${repo_tag//\//-}"
+          image_tag="$repo_tag"
           dev_image_tag="dev-${image_tag}"
           image_ref="${image_name}:${image_tag}"
           short_image_ref="${{ env.CONTAINER_NAME }}:${image_tag}"
           dev_image_ref="$image_name:$dev_image_tag"
           short_dev_image_ref="${{ env.CONTAINER_NAME }}:$dev_image_tag"
-
-          echo "image_name=$image_name" >> $GITHUB_OUTPUT
-          echo "image_tag=$image_tag" >> $GITHUB_OUTPUT
-          echo "dev_image_tag=$dev_image_tag" >> $GITHUB_OUTPUT
-          echo "image_ref=$image_ref" >> $GITHUB_OUTPUT
-          echo "short_image_ref=$short_image_ref" >> $GITHUB_OUTPUT
-          echo "dev_image_ref=$dev_image_ref" >> $GITHUB_OUTPUT
-          echo "short_dev_image_ref=$short_dev_image_ref" >> $GITHUB_OUTPUT
+          
+          for i in \
+            image_name \
+            image_tag \
+            dev_image_tag \
+            image_ref \
+            dev_image_ref \
+            short_image_ref \
+            short_dev_image_ref; 
+          do 
+            echo "$i=${!i}" >> $GITHUB_OUTPUT; 
+          done
 
       - name: Set up Docker Buildx
         if: steps.run_state.outputs.run_docker_build == 'true'
