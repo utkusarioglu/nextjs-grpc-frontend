@@ -90,15 +90,17 @@ jobs:
 
       - name: Create variables
         id: variables
+        shell: bash
         run: |
-          image_name=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.CONTAINER_NAME }}
-          repo_tag=${{ github.ref_name }}
-          image_tag=${repo_tag//\//-}
-          dev_image_tag=${image_tag}
+          image_name="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.CONTAINER_NAME }}"
+          repo_tag="${{ github.ref_name }}"
+          image_tag="${repo_tag//\//-}"
+          dev_image_tag="${image_tag}"
           image_ref="${image_name}:${image_tag}"
           dev_image_ref="${image_name}:${dev_image_tag}"
           short_image_ref="${{ env.CONTAINER_NAME }}:${image_tag}"
           short_dev_image_ref="${{ env.CONTAINER_NAME }}:${dev_image_tag}"
+
           for i in \
             image_name \
             image_tag \
