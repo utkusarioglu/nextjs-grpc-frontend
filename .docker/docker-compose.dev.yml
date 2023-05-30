@@ -2,8 +2,7 @@ version: "3.9"
 
 services:
   nextjs-grpc-frontend:
-    # image: utkusarioglu/react-native-android-devcontainer:1.0.17
-    image: utkusarioglu/react-native-android-devcontainer:tag-unavailable
+    image: utkusarioglu/react-native-android-devcontainer:1.0.18
     environment:
       ANDROID_TARGET_DEVICE: android-host:58526
     extra_hosts:

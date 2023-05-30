@@ -37,6 +37,13 @@ jobs:
             dockerfile: .docker/Dockerfile.dev
             additionalFilesToWatch: ""
             readmeFile: .docker/DOCKER_README.md
+    env:
+      NODE_ENV: production
+      NEXT_PUBLIC_WEB_APP_URL: ${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
+      NEXT_PUBLIC_API_V1_URL: ${{ secrets.NEXT_PUBLIC_API_V1_URL }}
+    container:
+      image: utkusarioglu/react-native-android-devcontainer:1.0.18
+      options: --user=0:0
 
     steps:
       - name: Checkout ${{ matrix.images.repoRelPath }}
