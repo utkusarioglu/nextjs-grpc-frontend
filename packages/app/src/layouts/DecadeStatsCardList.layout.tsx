@@ -13,8 +13,9 @@ export const DecadeStatsCardListLayout: FC<
   const countryList = useSelector(selectCountryList);
   const countriesArray = countryList
     .split(",")
-    .map((i) => i.trim())
-    .filter((i) => !!i);
+    // TODO remove any
+    .map((i: any) => i.trim())
+    .filter((i: any) => !!i);
   const { data, error, isLoading } = useInflationDecadeStats(countriesArray);
 
   if (error) {
