@@ -31,7 +31,8 @@ jobs:
     strategy:
       matrix:
         images:
-          - imageTagPrefix: ""
+          - enabled: false
+            imageTagPrefix: ""
             repoRelPath: frontend
             appRelPath: apps/web
             dockerfile: .docker/Dockerfile.dev
@@ -41,9 +42,6 @@ jobs:
       NODE_ENV: production
       NEXT_PUBLIC_WEB_APP_URL: ${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
       NEXT_PUBLIC_API_V1_URL: ${{ secrets.NEXT_PUBLIC_API_V1_URL }}
-    container:
-      image: utkusarioglu/react-native-android-devcontainer:1.0.18
-      options: --user=0:0
 
     steps:
       - name: Checkout ${{ matrix.images.repoRelPath }}
@@ -77,10 +75,13 @@ jobs:
         run: |
           echo "All modified files list:"
           echo "${{ steps.changed_files.outputs.all_modified_files }}"
-          if [ ${{ github.ref_type }} == tag ] && ( \
-            [ ${{ steps.changed_files.outputs.any_modified }} == true ] || \
-            [ ${{ github.event_name }} == workflow_dispatch ] \
-          ); then
+          if [ ${{ github.ref_type }} == tag ] && \
+             [ ${{ matrix.images.enabled }} == 'true' ] && \
+            ( \
+              [ ${{ steps.changed_files.outputs.any_modified }} == true ] || \
+              [ ${{ github.event_name }} == workflow_dispatch ] \
+            );
+          then
             echo "run_docker_build=true" >> $GITHUB_OUTPUT
             echo "::debug::Docker build will carry out as expected."
           else
@@ -114,19 +115,16 @@ jobs:
           done
 
       - name: Set up Docker Buildx
-        if: steps.run_state.outputs.run_docker_build == 'true'
         id: buildx
         uses: docker/setup-buildx-action@v1
 
       - name: Login to DockerHub
-        if: steps.run_state.outputs.run_docker_build == 'true'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build ${{ steps.variables.outputs.short_image_ref }}
-        if: steps.run_state.outputs.run_docker_build == 'true'
         uses: docker/build-push-action@v2
         id: docker_build
         with:
@@ -147,7 +145,6 @@ jobs:
             APP_RELPATH=${{ matrix.images.appRelPath }}
 
       - name: Set Docker Hub description
-        if: steps.run_state.outputs.run_docker_build == 'true'
         uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -163,12 +160,3 @@ jobs:
           then
             mv ${{ env.CACHE_TO_DEST }} ${{ env.CACHE_FROM_SRC }}
           fi
-
-      - name: Telegram notifications
-        if: always()
-        uses: utkusarioglu/telegram-notifications@main
-        with:
-          telegram_id: ${{ secrets.TELEGRAM_ID }}
-          telegram_token: ${{ secrets.TELEGRAM_TOKEN }}
-          job_status: ${{ job.status }}
-          github_context: ${{ toJson(github) }}
