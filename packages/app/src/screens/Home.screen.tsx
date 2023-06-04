@@ -8,7 +8,7 @@ const HomeScreen = () => {
   const { push } = useRouter();
 
   return (
-    <YStack>
+    <YStack padding="$4">
       <CustomHeader>Hi Hello Howdy!</CustomHeader>
       <CustomInput />
       <Spacer />
@@ -28,6 +28,16 @@ const HomeScreen = () => {
         }
       >
         Decade Stats
+      </Button>
+      <Spacer />
+      <Button
+        onPress={() =>
+          push({
+            pathname: "/logout",
+          })
+        }
+      >
+        Logout
       </Button>
     </YStack>
   );

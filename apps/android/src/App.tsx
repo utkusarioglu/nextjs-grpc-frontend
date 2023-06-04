@@ -1,29 +1,11 @@
 import UiProvider from "ui/src/Provider";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import tamaguiConfig from "../tamagui.config";
-import { useColorScheme } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  DarkTheme as ReactNavigationDarkTheme,
-  DefaultTheme as ReactNavigationDefaultTheme,
-} from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootNavigation } from "./RootNavigation";
 import { StoreProvider } from "store/src/index";
-
-console.log({ env: process.env, webApp: process.env.NEXT_PUBLIC_WEB_APP_URL });
-
-const linking = {
-  prefixes: [process.env.NEXT_PUBLIC_WEB_APP_URL!],
-  config: {
-    initialRouteName: "home" as "home",
-    screens: {
-      home: "",
-      user: "user/:userId",
-      decadeStats: "decade-stats",
-    },
-  },
-};
+import { useColorScheme } from "react-native";
+import EncryptedStorage from "react-native-encrypted-storage";
 
 const App = () => {
   const colorScheme = useColorScheme();
@@ -31,22 +13,19 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <StoreProvider>
+        <StoreProvider
+          storageAssignments={{
+            authSlice: EncryptedStorage,
+            decadeStatsSlice: EncryptedStorage,
+          }}
+          loadingViewComponent={null}>
           <UiProvider
             config={tamaguiConfig}
             // @ts-ignore
             disableInjectCSS
             defaultTheme={colorScheme}
             disableRootThemeClass>
-            <NavigationContainer
-              linking={linking}
-              theme={
-                colorScheme === "dark"
-                  ? ReactNavigationDarkTheme
-                  : ReactNavigationDefaultTheme
-              }>
-              <RootNavigation />
-            </NavigationContainer>
+            <RootNavigation />
           </UiProvider>
         </StoreProvider>
       </SafeAreaProvider>
