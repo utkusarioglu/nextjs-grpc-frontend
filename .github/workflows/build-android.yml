@@ -58,19 +58,34 @@ jobs:
         run: |
           date_string="$(date +'%Y-%m-%dT-%H-%M-%S')"
           commit_hash="$(git rev-parse --short HEAD)"
+          hashed_apk_filename="nextjs-grpc-$commit_hash.apk"
+          latest_apk_filename="nextjs-grpc-latest.apk"
+          apk_build_path="${{ env.REPO_RELPATH }}/${{ env.APP_RELPATH }}/${{ env.APK_RELEASE_DIR_RELPATH }}/${{ env.APK_RELEASE_FILENAME }}"
 
           for i in \
             date_string \
-            commit_hash; 
+            commit_hash \
+            hashed_apk_filename \
+            latest_apk_filename \
+            apk_build_path;
           do 
             echo "$i=${!i}" >> $GITHUB_OUTPUT; 
           done
 
-      - name: Upload to Google Drive
+      - name: Upload "${{ steps.variables.outputs.commit_hash }}" to Google Drive
         uses: adityak74/google-drive-upload-git-action@main
         with:
           credentials: "${{ secrets.GOOGLE_DRIVE_TOKEN }}"
           folderId: "${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}"
-          name: "nextjs-grpc-${{ steps.variables.outputs.commit_hash }}.apk"
-          filename: "${{ env.REPO_RELPATH }}/${{ env.APP_RELPATH }}/${{ env.APK_RELEASE_DIR_RELPATH }}/${{ env.APK_RELEASE_FILENAME }}"
+          name: ${{ steps.variables.outputs.hashed_apk_filename }}
+          filename: ${{ steps.variables.outputs.apk_build_path }}
           overwrite: "false"
+
+      - name: Upload "latest" to Google Drive
+        uses: adityak74/google-drive-upload-git-action@main
+        with:
+          credentials: "${{ secrets.GOOGLE_DRIVE_TOKEN }}"
+          folderId: "${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}"
+          name: ${{ steps.variables.outputs.latest_apk_filename }}
+          filename: ${{ steps.variables.outputs.apk_build_path }}
+          overwrite: "true"

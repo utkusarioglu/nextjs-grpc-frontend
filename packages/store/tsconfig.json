@@ -4,7 +4,9 @@
     "composite": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+
+    "isolatedModules": true,
   },
   "include": ["src"],
   "exclude": ["dist", "build", "node_modules"],

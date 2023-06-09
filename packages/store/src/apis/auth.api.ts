@@ -39,7 +39,12 @@ export const authApi = createApi({
       }),
     }),
     logout: builder.mutation({
-      query: () => "auth/logout",
+      // TODO decide whether you want to transfer authId as a cookie or in the body,
+      // right now react native is not able to logout
+      query: () => ({
+        method: "POST",
+        url: "auth/logout",
+      }),
     }),
   }),
 });

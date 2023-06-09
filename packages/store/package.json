@@ -1,5 +1,9 @@
 {
   "name": "store",
+  "version": "0.0.0",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "license": "MIT",
   "packageManager": "yarn@3.5.1",
   "devDependencies": {
     "typescript": "^5.0.4"
