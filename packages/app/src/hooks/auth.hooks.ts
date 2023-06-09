@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   useLogoutMutation,
   useDispatch,
@@ -8,9 +9,22 @@ import {
   useLoginWithUserPassMutation,
 } from "store/src";
 
+export type LoginStatus = "error" | "warning" | "success" | "idle";
+
+const loginSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(5, "Too Short!")
+    .max(20, "Too Long!")
+    .required("Required"),
+  password: Yup.string()
+    .min(5, "Too Short!")
+    .max(20, "Too Long!")
+    .required("Required"),
+});
+
 export function useLogin() {
   const dispatch = useDispatch();
-  const [loginWithUserPass, { isLoading, data }] =
+  const [loginWithUserPass, { isLoading, data, isSuccess, isError }] =
     useLoginWithUserPassMutation();
   const formik = useFormik({
     initialValues: {
@@ -18,6 +32,7 @@ export function useLogin() {
       password: "",
       rememberMe: false,
     },
+    validationSchema: loginSchema,
     onSubmit: async ({ username, password }, { setSubmitting }) => {
       setSubmitting(true);
       await loginWithUserPass({ username, password }).unwrap();
@@ -35,7 +50,20 @@ export function useLogin() {
     }
   }, [isLoading, data?.authId]);
 
-  return { formik };
+  const isLoginFailed = data?.authId === "" && data?.username === "";
+
+  let status: LoginStatus = "idle";
+  if (isSuccess && !isLoginFailed) {
+    status = "success";
+  }
+  if (isSuccess && isLoginFailed) {
+    status = "warning";
+  }
+  if (isError) {
+    status = "error";
+  }
+
+  return { formik, isSuccess, isError, isLoginFailed, status };
 }
 
 export function useLogout() {

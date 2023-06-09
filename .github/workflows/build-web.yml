@@ -143,6 +143,8 @@ jobs:
             PROJECT_ROOT_ABSPATH=${{ env.CONTAINER_PROJECT_ROOT }}
             REPO_RELPATH=${{ matrix.images.repoRelPath }}
             APP_RELPATH=${{ matrix.images.appRelPath }}
+            NEXT_PUBLIC_WEB_APP_URL=${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
+            NEXT_PUBLIC_API_V1_URL=${{ secrets.NEXT_PUBLIC_API_V1_URL }}
 
       - name: Set Docker Hub description
         uses: peter-evans/dockerhub-description@v3
@@ -160,3 +162,98 @@ jobs:
           then
             mv ${{ env.CACHE_TO_DEST }} ${{ env.CACHE_FROM_SRC }}
           fi
+
+  test-web-build:
+    name: test-web-build
+    runs-on: ubuntu-latest
+    needs: 
+      - build-and-push
+    strategy:
+      matrix:
+        images:
+          - enabled: true
+            # imageTagPrefix: ""
+            repoRelPath: frontend
+            appRelPath: apps/web
+            # dockerfile: .docker/Dockerfile.dev
+            # additionalFilesToWatch: ""
+            # readmeFile: .docker/DOCKER_README.md
+    steps:
+      - name: Checkout ${{ matrix.images.repoRelPath }}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          path: ${{ matrix.images.repoRelPath }} 
+        
+      - name: Create variables
+        id: variables
+        shell: bash
+        run: |
+          image_name="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.CONTAINER_NAME }}"
+          repo_tag="${{ github.ref_name }}"
+          image_tag="${repo_tag//\//-}"
+          dev_image_tag="${image_tag}"
+          image_ref="${image_name}:${image_tag}"
+          dev_image_ref="${image_name}:${dev_image_tag}"
+          short_image_ref="${{ env.CONTAINER_NAME }}:${image_tag}"
+          short_dev_image_ref="${{ env.CONTAINER_NAME }}:${dev_image_tag}"
+
+          for i in \
+            image_name \
+            image_tag \
+            dev_image_tag \
+            image_ref \
+            dev_image_ref \
+            short_image_ref \
+            short_dev_image_ref; 
+          do 
+            echo "$i=${!i}" >> $GITHUB_OUTPUT; 
+          done
+
+      - name: Migrate vars and secrets files 
+        working-directory: ${{ env.REPO_RELPATH }}
+        shell: bash
+        run: |
+          TEMP_B64_SECRETS_ABSPATH=/tmp/secrets.b64
+          TEMP_ZIP_SECRETS_ABSPATH=/tmp/secrets.zip
+          echo '${{ secrets.SECRET_FILES }}' > $TEMP_B64_SECRETS_ABSPATH
+          cat $TEMP_B64_SECRETS_ABSPATH | base64 --decode \
+            > $TEMP_ZIP_SECRETS_ABSPATH
+          unzip -o $TEMP_ZIP_SECRETS_ABSPATH
+          rm $TEMP_B64_SECRETS_ABSPATH $TEMP_ZIP_SECRETS_ABSPATH
+
+          ls -R .certs.local
+        
+      - name: Run Container
+        working-directory: ${{ matrix.images.repoRelPath }}
+        shell: bash
+        run: |
+          CONTAINER_NAME=web-server
+          docker run \
+            -d \
+            --rm \
+            -p 3000:3000 \
+            --name $CONTAINER_NAME \
+            -v $(pwd)/.certs.local:/.certificates \
+            -e 'CERTIFICATES_ABSPATH=/.certificates' \
+            -e 'WEB_SERVER_SERVER_CERT_RELPATH=mock-server' \
+            -e 'MS_GRPC_CLIENT_CERT_FOR_WEB_SERVER_RELPATH=mock-server' \
+            -e 'RUN_MODE=production' \
+            -e 'PROJECT_ROOT_ABSPATH=/utkusarioglu-com/projects/nextjs-grpc' \
+            -e 'REPO_RELPATH=frontend' \
+            -e 'APP_RELPATH=apps/web' \
+            -e 'REPO_PROTOS_RELPATH=proto/src' \
+            -e 'MS_HOST=ms.ms' \
+            -e 'MS_PORT=50051' \
+            -e 'OTEL_TRACE_HOST=otel-trace-collector.observability' \
+            -e 'OTEL_TRACE_PORT=4317' \
+            -e 'GRPC_VERBOSITY=INFO' \
+            -e 'GRPC_TRACE=all' \
+            -e 'GRPC_CLIENT_TLS_ENABLED=true' \
+            -e 'NEXT_PUBLIC_DOMAIN_NAME=nextjs-grpc.utkusarioglu.com' \
+            -e 'NEXT_PUBLIC_SCHEME=https' \
+            ${{ steps.variables.outputs.image_ref }}
+            sleep 10
+            curl localhost:3000 > /dev/null
+            docker logs $CONTAINER_NAME
+            docker stop $CONTAINER_NAME

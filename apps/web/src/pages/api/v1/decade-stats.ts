@@ -13,7 +13,6 @@ const handler: NextApiHandler = async (req, res) => {
       }
       const codesSanitized = codes.map((code) => code.toUpperCase());
       const response = await inflationApi(codesSanitized);
-      console.log({ codes, codesSanitized, response });
       res.status(200).json(response);
       break;
 

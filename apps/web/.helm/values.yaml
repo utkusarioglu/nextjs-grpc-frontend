@@ -100,6 +100,9 @@ env:
   NEXT_PUBLIC_DOMAIN_NAME: <TF_POPULATED>
   NEXT_PUBLIC_SCHEME: <TF_POPULATED>
 
+  NEXT_PUBLIC_WEB_APP_URL: https://nextjs-grpc.utkusarioglu.com
+  NEXT_PUBLIC_API_V1_URL: https://nextjs-grpc.utkusarioglu.com/api/v1
+
 cloudProvider:
   isLocal: false
   isAws: false

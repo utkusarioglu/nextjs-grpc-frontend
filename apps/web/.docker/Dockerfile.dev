@@ -21,16 +21,11 @@ ARG GROUP
 ARG PROJECT_ROOT_ABSPATH
 ARG REPO_RELPATH
 ARG APP_RELPATH
+ARG NEXT_PUBLIC_WEB_APP_URL
+ARG NEXT_PUBLIC_API_V1_URL
 
 ARG REPO_ABSPATH="$PROJECT_ROOT_ABSPATH/$REPO_RELPATH"
 ARG APP_ABSPATH="$REPO_ABSPATH/$APP_RELPATH"
-
-# RUN for arg in ROOT_PASS USERNAME GROUP REPO_REL_PATH PROJECT_ROOT; do \
-#   if [ -z "${!arg}" ]; then \
-#     echo "Error: arg $arg is required for the docker build operation"; \
-#     exit 1; \
-#   fi; \
-# done
 
 WORKDIR $PROJECT_ROOT_ABSPATH
 COPY $REPO_REL_PATH $REPO_REL_PATH
@@ -41,7 +36,6 @@ WORKDIR $REPO_ABSPATH
 RUN yarn --immutable
 RUN yarn plugin import workspace-tools
 RUN yarn build --filter=web
-# RUN rm dist/.tsbuildinfo
 
 FROM node:19-slim AS runner
 
@@ -54,9 +48,9 @@ ARG APP_RELPATH
 
 ARG REPO_ABSPATH="$PROJECT_ROOT_ABSPATH/$REPO_RELPATH"
 ARG APP_ABSPATH="$REPO_ABSPATH/$APP_RELPATH"
+ARG PACKAGES_ABSPATH=$REPO_ABSPATH/packages
 
 RUN sh -c 'echo "root:$ROOT_PASS" | chpasswd'
-RUN sh -c 'echo "node:$ROOT_PASS" | chpasswd'
 
 RUN apt update
 
@@ -75,12 +69,24 @@ COPY --from=builder "$APP_ABSPATH/package.json" package.json
 COPY --from=builder "$APP_ABSPATH/next.config.js" next.config.js
 RUN ls -al $APP_ABSPATH
 
+WORKDIR $PACKAGES_ABSPATH/app
+COPY --from=builder "$PACKAGES_ABSPATH/app/package.json" package.json
+RUN ls -al 
+
+WORKDIR $PACKAGES_ABSPATH/store
+COPY --from=builder "$PACKAGES_ABSPATH/store/package.json" package.json
+RUN ls -al 
+
+WORKDIR $PACKAGES_ABSPATH/ui
+COPY --from=builder "$PACKAGES_ABSPATH/ui/package.json" package.json
+RUN ls -al 
+
 WORKDIR $PROJECT_ROOT_ABSPATH/proto
 COPY --from=builder $PROJECT_ROOT_ABSPATH/proto/src src
 RUN rm -rf src/defunct
 
 WORKDIR $APP_ABSPATH
-RUN yarn workspaces focus --production
+RUN yarn workspaces focus --production -A
 
 WORKDIR $REPO_ABSPATH
 RUN rm -rf .yarn/cache

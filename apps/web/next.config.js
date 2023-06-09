@@ -1,4 +1,3 @@
-// import { withTamagui } from "@tamagui/next-plugin";
 const { withTamagui } = require("@tamagui/next-plugin");
 
 module.exports = function (_name, { defaultConfig }) {
@@ -6,7 +5,8 @@ module.exports = function (_name, { defaultConfig }) {
     ...defaultConfig,
     distDir: "dist",
     reactStrictMode: true,
-    transpilePackages: ["ui", "app", "solito"],
+    transpilePackages: ["ui", "store", "app"],
+    swcMinify: true,
     experimental: {
       instrumentationHook: true,
     },
