@@ -35,9 +35,12 @@
     "ui": "*"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.62",
+    "@swc/core": "^1.3.62",
     "@types/node": "^17.0.12",
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",
+    "local-ssl-proxy": "^2.0.5",
     "tsconfig": "*",
     "typescript": "^4.5.3"
   }

@@ -2,12 +2,15 @@
   "extends": "tsconfig/react-library.json",
   "compilerOptions": {
     "composite": true,
-    "isolatedModules": false,
+    // "isolatedModules": false,
     // "module": "ESNext",
     // "target": "ESNext",
     "jsx": "react-jsx",
     "declaration": true,
     "emitDeclarationOnly": true,
+    
+    "isolatedModules": true,
+
     "paths": {
       "store/*": ["../../packages/store/*"]
     }

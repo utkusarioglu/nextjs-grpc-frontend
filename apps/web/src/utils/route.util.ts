@@ -1,17 +1,13 @@
 import { NextRequest } from "next/server";
 import { GUEST_PATHS, SYSTEM_PATHS } from "../constants";
+import { ReduxPersistCookie } from "../utils/cookie.utils";
+import { type PersistedAuthObject } from "../types/auth.types";
+import { authService } from "src/services";
+import { AUTH_SLICE_COOKIE_NAME } from "../constants";
 
-// const SAFE_PATHS_FOR_GUESTS = ["/", "/logout"];
-interface Auth {
-  authId: string;
-  username: string;
-  _persist: string;
-}
-
-async function validateSession(auth: Auth): Promise<boolean> {
-  const { authId } = auth;
-  return Promise.resolve(authId === "guest");
-}
+const EMPTY_PROPS = {
+  props: {},
+};
 
 export async function routeProtector(req: NextRequest) {
   const onGuestPath = GUEST_PATHS.includes(req.url);
@@ -19,14 +15,19 @@ export async function routeProtector(req: NextRequest) {
   const onSystemPath = SYSTEM_PATHS.some((path) => req.url.startsWith(path));
 
   try {
-    const sessionSliceString = req.cookies["persist:profileSlice"];
-    if (!sessionSliceString) {
-      return {
-        props: {},
-      };
+    const authObject = ReduxPersistCookie.parse<PersistedAuthObject>(
+      req.cookies[AUTH_SLICE_COOKIE_NAME]
+    );
+
+    if (!authObject) {
+      return EMPTY_PROPS;
     }
-    const session = JSON.parse(sessionSliceString.replace(/\\"/g, ""));
-    const hasValidSession = await validateSession(session);
+    const { authId } = authObject;
+    if (!authId) {
+      return EMPTY_PROPS;
+    }
+
+    const hasValidSession = await authService.validateWithAuthId(authId);
 
     if (onGuestPath && hasValidSession) {
       return {
@@ -54,12 +55,8 @@ export async function routeProtector(req: NextRequest) {
         },
       };
     }
-    return {
-      props: {},
-    };
+    return EMPTY_PROPS;
   }
 
-  return {
-    props: {},
-  };
+  return EMPTY_PROPS;
 }
