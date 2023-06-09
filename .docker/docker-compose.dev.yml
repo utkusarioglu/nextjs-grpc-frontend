@@ -9,7 +9,7 @@ services:
       android-host: host-gateway
       ms.ms: host-gateway
     ports:
-      - 3000:3000
+      # - 3000:3000
       - 443:443
     volumes:
       - type: bind

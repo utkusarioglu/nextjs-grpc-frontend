@@ -5,11 +5,15 @@ import { AppRegistry } from "react-native";
 
 import tamaguiConfig from "../tamagui.config";
 
+/**
+ * @dev
+ * #1 `AppRegistry` lacks types for `getApplication`.
+ */
 export default class Document extends NextDocument {
   static async getInitialProps({ renderPage }) {
     AppRegistry.registerComponent("Main", () => Main);
     const page = await renderPage();
-    // @ts-ignore
+    // @ts-ignore #1
     const { getStyleElement } = AppRegistry.getApplication("Main");
     const styles = [
       getStyleElement(),

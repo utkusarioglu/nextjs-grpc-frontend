@@ -13,9 +13,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-cookies/cookies": "^6.2.1",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "app": "*",
+    "buffer": "^6.0.3",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-dotenv": "^3.4.8",

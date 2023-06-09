@@ -37,7 +37,7 @@ export const storeFactory: StoreFactory = ({
 }) => {
   const persistedAuthSliceReducer = persistReducer(
     {
-      key: "profileSlice",
+      key: "authSlice",
       storage: authSliceStorage,
     },
     authSlice.reducer

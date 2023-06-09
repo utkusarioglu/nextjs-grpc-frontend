@@ -5,7 +5,7 @@ import LoginScreen from "app/src/screens/Login.screen";
 import LogoutScreen from "app/src/screens/Logout.screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { selectLoggedIn, useLoginMutation, useSelector } from "store/src";
+import { selectLoggedIn, useSelector } from "store/src";
 import { useColorScheme } from "react-native";
 import {
   DarkTheme as ReactNavigationDarkTheme,

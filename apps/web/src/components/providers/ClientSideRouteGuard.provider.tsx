@@ -21,7 +21,6 @@ const ClientSideRouteGuardProvider: FC<ClientSideRouteGuardProviderProps> = ({
     if (window) {
       const pathname = window.location.pathname;
       const isGuest = !authId && !username;
-      // const hasPotentialSession = authId && !username;
       const isLoggedIn = !!authId && !!username;
       const onGuestPath = GUEST_PATHS.includes(pathname);
 
@@ -29,7 +28,6 @@ const ClientSideRouteGuardProvider: FC<ClientSideRouteGuardProviderProps> = ({
         if (isLoggedIn && onGuestPath) {
           router.push("/");
         } else if (isGuest && !onGuestPath) {
-          console.log("Redirecting to login");
           router.push("/login");
         }
       }

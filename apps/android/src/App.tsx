@@ -6,6 +6,7 @@ import { RootNavigation } from "./RootNavigation";
 import { StoreProvider } from "store/src/index";
 import { useColorScheme } from "react-native";
 import EncryptedStorage from "react-native-encrypted-storage";
+import { cookieStorage } from "./utils/cookie-storage.util";
 
 const App = () => {
   const colorScheme = useColorScheme();
@@ -15,7 +16,7 @@ const App = () => {
       <SafeAreaProvider>
         <StoreProvider
           storageAssignments={{
-            authSlice: EncryptedStorage,
+            authSlice: cookieStorage,
             decadeStatsSlice: EncryptedStorage,
           }}
           loadingViewComponent={null}>
