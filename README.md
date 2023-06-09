@@ -1,12 +1,3 @@
-# Turbo Repo Workshop
+# Nextjs Grpc Frontend Monorepo
 
-```mermaid
-graph TD
-  A[Enter Chart Definition] --> B(Preview)
-  B --> C{decide}
-  C --> D[Keep]
-  C --> E[Edit Definition]
-  E --> B
-  D --> F[Save Image and Code]
-  F --> B
-```
+Android and Web App for the Nextjs Grpc project.

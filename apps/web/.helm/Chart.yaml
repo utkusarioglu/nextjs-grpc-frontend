@@ -3,4 +3,4 @@ name: web-server
 description: Web server container for the nextjs-grpc workshop
 type: application
 version: 0.0.1-10
-appVersion: experiment-feat-next-api-endpoints-4
+appVersion: 00.00.08
