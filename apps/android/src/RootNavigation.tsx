@@ -3,6 +3,8 @@ import UserScreen from "app/src/screens/User.screen";
 import DecadeStatsScreen from "app/src/screens/DecadeStats.screen";
 import LoginScreen from "app/src/screens/Login.screen";
 import LogoutScreen from "app/src/screens/Logout.screen";
+import WelcomeScreen from "app/src/screens/Welcome.screen";
+import EvmScreen from "app/src/screens/Evm.screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { selectLoggedIn, useSelector } from "store/src";
@@ -21,6 +23,8 @@ const linking = {
       decadeStats: "decade-stats",
       login: "login",
       logout: "logout",
+      welcome: "welcome",
+      evm: "evm",
     },
   },
 };
@@ -33,6 +37,8 @@ const Stack = createNativeStackNavigator<{
   decadeStats: undefined;
   login: undefined;
   logout: undefined;
+  welcome: undefined;
+  evm: undefined;
 }>();
 
 export function RootNavigation() {
@@ -47,7 +53,11 @@ export function RootNavigation() {
           ? ReactNavigationDarkTheme
           : ReactNavigationDefaultTheme
       }>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          animation: "fade",
+        }}>
         {loggedIn ? (
           <>
             <Stack.Screen
@@ -82,10 +92,24 @@ export function RootNavigation() {
         ) : (
           <>
             <Stack.Screen
+              name="welcome"
+              component={WelcomeScreen}
+              options={{
+                title: "Welcome",
+              }}
+            />
+            <Stack.Screen
               name="login"
               component={LoginScreen}
               options={{
                 title: "Login",
+              }}
+            />
+            <Stack.Screen
+              name="evm"
+              component={EvmScreen}
+              options={{
+                title: "Login with EVM identity",
               }}
             />
           </>

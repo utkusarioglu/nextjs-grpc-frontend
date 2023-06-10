@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { GUEST_PATHS, SYSTEM_PATHS } from "../constants";
+import { GUEST_PATHS, SYSTEM_PATHS, GUEST_ENTRY_PATH } from "../constants";
 import { ReduxPersistCookie } from "../utils/cookie.utils";
 import { type PersistedAuthObject } from "../types/auth.types";
 import { authService } from "src/services";
@@ -10,8 +10,8 @@ const EMPTY_PROPS = {
 };
 
 export async function routeProtector(req: NextRequest) {
-  const onGuestPath = GUEST_PATHS.includes(req.url);
-  const onLoginPage = req.url === "/login";
+  const onAGuestPath = GUEST_PATHS.includes(req.url);
+  const onGuestEntryPath = req.url === GUEST_ENTRY_PATH;
   const onSystemPath = SYSTEM_PATHS.some((path) => req.url.startsWith(path));
 
   try {
@@ -29,29 +29,29 @@ export async function routeProtector(req: NextRequest) {
 
     const hasValidSession = await authService.validateWithAuthId(authId);
 
-    if (onGuestPath && hasValidSession) {
+    if (onAGuestPath && hasValidSession) {
       return {
         redirect: {
           permanent: false,
           destination: "/",
         },
       };
-    } else if (!onGuestPath && !onSystemPath && !hasValidSession) {
+    } else if (!onAGuestPath && !onSystemPath && !hasValidSession) {
       return {
         redirect: {
           permanent: false,
-          destination: "/login",
+          destination: GUEST_ENTRY_PATH,
         },
       };
     }
   } catch (e) {
     // TODO remove this
     console.log("something failed", e);
-    if (!onLoginPage) {
+    if (!onGuestEntryPath) {
       return {
         redirect: {
           permanent: false,
-          destination: "/login",
+          destination: GUEST_ENTRY_PATH,
         },
       };
     }

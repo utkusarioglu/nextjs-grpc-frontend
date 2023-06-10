@@ -11,7 +11,7 @@ const DecadeStatsScreen = () => {
   const countryList = useSelector(selectCountryList);
   const dispatch = useDispatch();
   return (
-    <YStack>
+    <YStack fullscreen>
       <Paragraph>Api v1: {process.env.NEXT_PUBLIC_API_V1_URL}</Paragraph>
       <Input
         onChangeText={(e) => {

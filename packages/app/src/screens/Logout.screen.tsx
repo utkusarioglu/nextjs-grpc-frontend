@@ -1,18 +1,19 @@
-import { Paragraph, YStack } from "ui";
+import { Paragraph, YStack, H1 } from "ui";
 import { useLogout } from "../hooks/auth.hooks";
 
 const LogoutScreen = () => {
   const { isLoading } = useLogout();
 
-  if (isLoading) {
-    <YStack padding="$4">
-      <Paragraph>Logging out...</Paragraph>
-    </YStack>;
-  }
+  const MessageComponent = isLoading ? (
+    <Paragraph>Logging out…</Paragraph>
+  ) : (
+    <Paragraph>Redirecting…</Paragraph>
+  );
 
   return (
-    <YStack padding="$4">
-      <Paragraph>Redirecting...</Paragraph>
+    <YStack padding="$4" fullscreen alignItems="center" justifyContent="center">
+      <H1>Logout</H1>
+      {MessageComponent}
     </YStack>
   );
 };

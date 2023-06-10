@@ -8,7 +8,7 @@ const HomeScreen = () => {
   const { push } = useRouter();
 
   return (
-    <YStack padding="$4">
+    <YStack padding="$4" fullscreen>
       <CustomHeader>Hi Hello Howdy!</CustomHeader>
       <CustomInput />
       <Spacer />
