@@ -21,6 +21,14 @@ export default class Document extends NextDocument {
         key="tamagui"
         dangerouslySetInnerHTML={{ __html: tamaguiConfig.getCSS() }}
       />,
+      <style
+        key="web"
+        dangerouslySetInnerHTML={{
+          __html: `
+            html, body, #__next { height: 100%; }
+          `,
+        }}
+      />,
     ];
     return { ...page, styles: Children.toArray(styles) };
   }

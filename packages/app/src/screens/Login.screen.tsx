@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "ui";
 import { useLogin, type LoginStatus } from "../hooks/auth.hooks";
+import { useRouter } from "solito/router";
 
 type InputFieldProps = {
   // TODO remove `any type
@@ -19,9 +20,6 @@ type InputFieldProps = {
   fieldName: string;
   label: string;
   autoCorrect: boolean;
-  // secureTextEntry: boolean;
-  // inputMode: Parameters<typeof Input>[0]["inputMode"];
-  // textContentType: Parameters<typeof Input>[0]["textContentType"];
 } & Parameters<typeof Input>[0];
 
 const InputField: FC<InputFieldProps> = ({
@@ -29,9 +27,6 @@ const InputField: FC<InputFieldProps> = ({
   fieldName,
   label,
   ...inputProps
-  // autoCorrect,
-  // inputMode,
-  // textContentType,
 }) => {
   const touched = formik.touched[fieldName];
   const errors = formik.errors[fieldName];
@@ -66,9 +61,6 @@ const InputField: FC<InputFieldProps> = ({
         value={formik.values[fieldName]}
         onChangeText={formik.handleChange(fieldName)}
         {...inputProps}
-        // autoCorrect={autoCorrect}
-        // inputMode={inputMode}
-        // textContentType={textContentType}
       />
     </YStack>
   );
@@ -154,14 +146,17 @@ const FormSubmit: FC<FormSubmitProps> = ({ formik, status }) => {
 
 const LoginScreen = () => {
   const { formik, status } = useLogin();
+  const { back } = useRouter();
 
   return (
-    <YStack>
+    <YStack fullscreen>
       <Form
+        flexGrow={1}
         paddingTop="$4"
         paddingBottom="$4"
         onSubmit={formik.handleSubmit}
         space="$2"
+        justifyContent="center"
       >
         <InputField
           formik={formik}
@@ -181,52 +176,6 @@ const LoginScreen = () => {
           secureTextEntry={true}
           textContentType="password"
         />
-        {/* <Label htmlFor="username">Username</Label>
-        <Input
-          id="username"
-          disabled={formik.isSubmitting}
-          // editable={!formik.isSubmitting}
-          editable={!formik.isSubmitting}
-          autoCorrect={false}
-          onChangeText={formik.handleChange("username")}
-          onBlur={formik.handleBlur("username")}
-          value={formik.values.username}
-          inputMode="text"
-          textContentType="username"
-          autoFocus
-          style={{
-            borderColor:
-              !!formik.touched.username && !!formik.errors.username
-                ? "#F00"
-                : undefined,
-          }}
-        />
-        {!!formik.touched.username && !!formik.errors.username ? (
-          <InputMessage type="error">{formik.errors.username}</InputMessage>
-        ) : null} */}
-
-        {/* <Label htmlFor="username">Password</Label>
-        <Input
-          id="password"
-          autoCorrect={false}
-          disabled={formik.isSubmitting}
-          editable={!formik.isSubmitting}
-          onChangeText={formik.handleChange("password")}
-          onBlur={formik.handleBlur("password")}
-          value={formik.values.password}
-          secureTextEntry={true}
-          inputMode="text"
-          textContentType="password"
-          style={{
-            borderColor:
-              !!formik.touched.password && !!formik.errors.password
-                ? "#F00"
-                : undefined,
-          }}
-        />
-        {!!formik.touched.password && !!formik.errors.password ? (
-          <InputMessage type="error">{formik.errors.password}</InputMessage>
-        ) : null} */}
         <XStack
           justifyContent="space-between"
           paddingLeft="$4"
@@ -243,19 +192,15 @@ const LoginScreen = () => {
             }
             checked={formik.values.rememberMe}
           >
-            <Switch.Thumb animation="quick" />
+            <Switch.Thumb animation="fast" />
           </Switch>
         </XStack>
 
-        <FormSubmit
-          formik={formik}
-          // status={isError ? "error" : "idle"}
-          // isSuccess={isSuccess}
-          // isError={isError}
-          // isLoginFailed={isLoginFailed}
-          status={status}
-        />
+        <FormSubmit formik={formik} status={status} />
       </Form>
+      <YStack padding="$4">
+        <Button onPress={() => back()}>Try another method</Button>
+      </YStack>
     </YStack>
   );
 };

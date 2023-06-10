@@ -1,7 +1,7 @@
 import { useEffect, type FC, type ReactNode } from "react";
 import { selectProfile, useSelector } from "store/src";
 import { useRouter } from "solito/router";
-import { GUEST_PATHS } from "../../constants";
+import { GUEST_PATHS, GUEST_ENTRY_PATH } from "../../constants";
 
 interface ClientSideRouteGuardProviderProps {
   children: ReactNode;
@@ -28,7 +28,7 @@ const ClientSideRouteGuardProvider: FC<ClientSideRouteGuardProviderProps> = ({
         if (isLoggedIn && onGuestPath) {
           router.push("/");
         } else if (isGuest && !onGuestPath) {
-          router.push("/login");
+          router.push(GUEST_ENTRY_PATH);
         }
       }
     } else {

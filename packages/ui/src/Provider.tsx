@@ -1,11 +1,9 @@
 import type { FC, ReactNode } from "react";
-import { TamaguiProvider } from "tamagui";
-
-import tamaguiConfig from "./tamagui.config";
+import { TamaguiProvider, createTamagui } from "tamagui";
 
 type UiProviderProps = typeof TamaguiProvider & {
   children: ReactNode;
-  config: typeof tamaguiConfig;
+  config: ReturnType<typeof createTamagui>;
 };
 
 const UiProvider: FC<UiProviderProps> = ({ children, config, ...rest }) => {
