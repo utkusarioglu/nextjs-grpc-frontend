@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import { YStack, Text, DecadeStatsCardView } from "ui";
+import { YStack, Text, DecadeStatsCardView, ScrollView } from "ui";
 import {
   useInflationDecadeStats,
   useSelector,
@@ -31,10 +31,12 @@ export const DecadeStatsCardListLayout: FC<
   }
 
   return (
-    <YStack>
-      {data.decadeStats.map((item) => (
-        <DecadeStatsCardView key={item.countryCode} item={item} />
-      ))}
-    </YStack>
+    <ScrollView>
+      <YStack>
+        {data.decadeStats.map((item) => (
+          <DecadeStatsCardView key={item.countryCode} item={item} />
+        ))}
+      </YStack>
+    </ScrollView>
   );
 };
