@@ -1,4 +1,4 @@
-import { Card, H2, Text, H1 } from "tamagui";
+import { Card, H2, Text, H1, ListItem } from "tamagui";
 import { type FC } from "react";
 
 interface DecadeStatsCardViewProps {
