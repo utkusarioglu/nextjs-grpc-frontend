@@ -1,8 +1,8 @@
 import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
-import { AppProps } from "next/app";
-import React, { useMemo, type FC } from "react";
+import { useMemo, type FC } from "react";
 import UiProvider from "ui/src/Provider";
 import tamaguiConfig from "../../tamagui.config";
+import type { AppPropsWithLayout } from "../../pages/_app";
 
 /**
  * @dev
@@ -11,11 +11,15 @@ import tamaguiConfig from "../../tamagui.config";
  * #3 The component has some typing issues
  * #4 The component has some typing issues
  */
-export const WebThemeProvider: FC<AppProps> = ({ pageProps, Component }) => {
+export const WebThemeProvider: FC<AppPropsWithLayout> = ({
+  pageProps,
+  Component,
+}) => {
   const [theme, setTheme] = useRootTheme();
   const contents = useMemo(() => {
+    const getLayout = Component.getLayout ?? ((page) => page);
     // #1
-    return <Component {...pageProps} />;
+    return getLayout(<Component {...pageProps} />);
   }, [pageProps, Component]);
 
   return (

@@ -8,7 +8,7 @@
     "lint": "eslint \"**/*.ts*\""
   },
   "devDependencies": {
-    "@tamagui/config": "^1.27.3",
+    "@tamagui/config": "^1.32.3",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "eslint": "^7.32.0",
@@ -17,9 +17,10 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "@tamagui/shorthands": "^1.27.3",
-    "@tamagui/themes": "^1.27.3",
-    "tamagui": "^1.27.3"
+    "@tamagui/lucide-icons": "^1.33.4",
+    "@tamagui/shorthands": "^1.32.3",
+    "@tamagui/themes": "^1.32.3",
+    "tamagui": "^1.32.3"
   },
   "peerDependencies": {
     "react": "*",

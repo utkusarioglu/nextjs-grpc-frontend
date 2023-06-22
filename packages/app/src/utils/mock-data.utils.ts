@@ -6,7 +6,7 @@ export class MockData {
         ? []
         : codes
             .map((code) =>
-              Array(2)
+              Array(4)
                 .fill(null)
                 .map((_, i) => ({
                   countryCode: `${code.toUpperCase()}-${i}`,

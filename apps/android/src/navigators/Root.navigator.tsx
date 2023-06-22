@@ -1,10 +1,8 @@
-import HomeScreen from "app/src/screens/Home.screen";
-import UserScreen from "app/src/screens/User.screen";
-import DecadeStatsScreen from "app/src/screens/DecadeStats.screen";
+import HomeNavigator from "./Home.navigator";
 import LoginScreen from "app/src/screens/Login.screen";
 import LogoutScreen from "app/src/screens/Logout.screen";
 import WelcomeScreen from "app/src/screens/Welcome.screen";
-// import WrappedEvmScreen from "./components/wrapped-screens/WrappedEvm.screen";
+import SettingsScreen from "app/src/screens/Settings.screen";
 import EvmScreen from "app/src/screens/Evm.screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -26,23 +24,23 @@ const linking = {
       logout: "logout",
       welcome: "welcome",
       evm: "evm",
+      settings: "settings",
     },
   },
 };
 
-const Stack = createNativeStackNavigator<{
+type RootNavigatorProps = {
   home: undefined;
-  user: {
-    userId: string;
-  };
-  decadeStats: undefined;
   login: undefined;
   logout: undefined;
   welcome: undefined;
   evm: undefined;
-}>();
+  settings: undefined;
+};
 
-export function RootNavigation() {
+const Stack = createNativeStackNavigator<RootNavigatorProps>();
+
+export function RootNavigator() {
   const colorScheme = useColorScheme();
   const loggedIn = useSelector(selectLoggedIn);
 
@@ -63,25 +61,25 @@ export function RootNavigation() {
           <>
             <Stack.Screen
               name="home"
-              component={HomeScreen}
+              component={HomeNavigator}
               options={{
                 title: "Home",
               }}
             />
             <Stack.Screen
-              name="user"
-              component={UserScreen}
+              name="settings"
+              component={SettingsScreen}
               options={{
-                title: "User",
+                title: "Settings",
               }}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="decadeStats"
               component={DecadeStatsScreen}
               options={{
                 title: "Decade Stats",
               }}
-            />
+            /> */}
             <Stack.Screen
               name="logout"
               component={LogoutScreen}
