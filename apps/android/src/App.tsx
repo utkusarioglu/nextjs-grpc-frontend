@@ -1,11 +1,10 @@
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import UiProvider from "ui/src/Provider";
-// @ts-expect-error: Lacking type definition
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import tamaguiConfig from "../tamagui.config";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { RootNavigation } from "./RootNavigation";
+import { RootNavigator } from "./navigators/Root.navigator";
 import { StoreProvider } from "store";
 import { useColorScheme } from "react-native";
 import { useMemo } from "react";
@@ -45,7 +44,7 @@ const App = () => {
             disableInjectCSS
             defaultTheme={colorScheme}
             disableRootThemeClass>
-            <RootNavigation />
+            <RootNavigator />
           </UiProvider>
         </StoreProvider>
         <Web3Modal

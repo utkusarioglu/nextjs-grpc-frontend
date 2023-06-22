@@ -8,7 +8,6 @@ import {
   Switch,
   Spinner,
   XStack,
-  // Spacer,
   FormMessage,
 } from "ui";
 import { useLogin, type LoginStatus } from "../hooks/auth.hooks";
@@ -56,7 +55,8 @@ const InputField: FC<InputFieldProps> = ({
       <Input
         id={fieldName}
         disabled={formik.isSubmitting}
-        editable={!formik.isSubmitting}
+        // @ts-ignore
+        readOnly={formik.isSubmitting}
         onBlur={formik.handleBlur(fieldName)}
         value={formik.values[fieldName]}
         onChangeText={formik.handleChange(fieldName)}

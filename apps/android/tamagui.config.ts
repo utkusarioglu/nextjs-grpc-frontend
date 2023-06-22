@@ -1,8 +1,10 @@
-import { createAnimations } from "@tamagui/animations-css";
+import { createAnimations } from "@tamagui/animations-react-native";
 import { createTamagui, baseConfig } from "ui/src/tamagui.config";
 
+// @ts-ignore
 const appConfig = createTamagui({
   ...baseConfig,
+  // @ts-ignore
   animations: createAnimations({
     fast: {
       type: "spring",
@@ -24,11 +26,13 @@ const appConfig = createTamagui({
   }),
 });
 
+// @ts-ignore
 export type AppConfig = typeof appConfig;
 
 declare module "@tamagui/core" {
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
+  // @ts-ignore
   interface TamaguiCustomConfig extends AppConfig {}
 }
 
