@@ -7,7 +7,15 @@
     "jsx": "react-jsx",
 
     "isolatedModules": true,
+    "paths": {
+      "web3": ["../../packages/web3"]
+    }
   },
   "include": ["src"],
   "exclude": ["dist", "build", "node_modules"],
+  "references": [
+    {
+      "path": "../../packages/web3"
+    }
+  ]
 }

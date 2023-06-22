@@ -6,7 +6,8 @@
     "paths": {
       "ui/*": ["../../packages/ui/*"],
       "app/*": ["../../packages/app/*"],
-      "store/*": ["../../packages/store/*"]
+      "store/*": ["../../packages/store/*"],
+      "web3/*": ["../../packages/web3/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next.config.js"],
@@ -20,6 +21,9 @@
     },
     {
       "path": "../../packages/store"
+    },
+    {
+      "path": "../../packages/web3"
     },
   ]
 }

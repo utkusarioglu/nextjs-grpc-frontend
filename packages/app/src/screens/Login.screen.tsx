@@ -110,6 +110,11 @@ function setStatusMessage(status: LoginStatus): string {
   }
 }
 
+/**
+ * @dev
+ * #1 This prop doesn't exist for tamagui or rn-web but it's required
+ * by formik
+ */
 const FormSubmit: FC<FormSubmitProps> = ({ formik, status }) => {
   const colors = setFormFieldColors(status);
   const statusMessage = setStatusMessage(status);
@@ -126,9 +131,7 @@ const FormSubmit: FC<FormSubmitProps> = ({ formik, status }) => {
       <Form.Trigger asChild disabled={formik.isSubmitting}>
         <Button
           disabled={formik.isSubmitting}
-          // @ts-expect-error
-          // This prop doesn't exist for tamagui or rn-web
-          // but it's required by formik
+          // @ts-expect-error: #1
           type="submit"
           icon={formik.isSubmitting ? () => <Spinner /> : undefined}
         >

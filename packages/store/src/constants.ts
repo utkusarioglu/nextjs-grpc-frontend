@@ -1,0 +1,1 @@
+export const HYDRATE = "__NEXT_REDUX_WRAPPER_HYDRATE__";

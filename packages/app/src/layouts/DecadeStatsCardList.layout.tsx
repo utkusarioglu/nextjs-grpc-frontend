@@ -1,10 +1,6 @@
 import { type FC } from "react";
 import { YStack, Text, DecadeStatsCardView, ScrollView } from "ui";
-import {
-  useInflationDecadeStats,
-  useSelector,
-  selectCountryList,
-} from "store/src/index";
+import { useInflationDecadeStats, useSelector, selectCountryList } from "store";
 
 interface DecadeStatsCardListLayoutProps {}
 export const DecadeStatsCardListLayout: FC<

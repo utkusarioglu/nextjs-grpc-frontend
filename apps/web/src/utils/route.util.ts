@@ -1,42 +1,44 @@
-import { NextRequest } from "next/server";
-import { GUEST_PATHS, SYSTEM_PATHS, GUEST_ENTRY_PATH } from "../constants";
-import { ReduxPersistCookie } from "../utils/cookie.utils";
-import { type PersistedAuthObject } from "../types/auth.types";
+import { GUEST_PATHS, GUEST_ENTRY_PATH } from "../constants";
 import { authService } from "src/services";
-import { AUTH_SLICE_COOKIE_NAME } from "../constants";
+import type { Store } from "src/store";
+import type { ParsedUrlQuery } from "querystring";
+import type { GetServerSidePropsContext, PreviewData } from "next";
+import { setAuth } from "store";
 
 const EMPTY_PROPS = {
   props: {},
 };
 
-export async function routeProtector(req: NextRequest) {
-  const onAGuestPath = GUEST_PATHS.includes(req.url);
-  const onGuestEntryPath = req.url === GUEST_ENTRY_PATH;
-  const onSystemPath = SYSTEM_PATHS.some((path) => req.url.startsWith(path));
+interface RouteProtectorProps {
+  store: Store;
+  props: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>;
+}
 
+export async function routeProtector({ store, props }: RouteProtectorProps) {
+  const state = store.getState();
+  const resolvedUrl = props.resolvedUrl;
+
+  const isLoggedIn = state.auth._computed.isLoggedIn;
+  const authId = state.auth.authId;
+  const onAGuestPath = GUEST_PATHS.includes(resolvedUrl);
+  const onGuestEntryPath = resolvedUrl === GUEST_ENTRY_PATH;
   try {
-    const authObject = ReduxPersistCookie.parse<PersistedAuthObject>(
-      req.cookies[AUTH_SLICE_COOKIE_NAME]
-    );
-
-    if (!authObject) {
-      return EMPTY_PROPS;
-    }
-    const { authId } = authObject;
-    if (!authId) {
-      return EMPTY_PROPS;
-    }
-
     const hasValidSession = await authService.validateWithAuthId(authId);
 
-    if (onAGuestPath && hasValidSession) {
+    if (hasValidSession && resolvedUrl === "/logout") {
+      store.dispatch(setAuth({ username: "", authId: "" }));
+    }
+
+    if (onAGuestPath && isLoggedIn && hasValidSession) {
       return {
         redirect: {
           permanent: false,
           destination: "/",
         },
       };
-    } else if (!onAGuestPath && !onSystemPath && !hasValidSession) {
+    }
+
+    if (!onAGuestPath && !isLoggedIn) {
       return {
         redirect: {
           permanent: false,
@@ -44,6 +46,8 @@ export async function routeProtector(req: NextRequest) {
         },
       };
     }
+
+    return EMPTY_PROPS;
   } catch (e) {
     // TODO remove this
     console.log("something failed", e);
@@ -57,6 +61,4 @@ export async function routeProtector(req: NextRequest) {
     }
     return EMPTY_PROPS;
   }
-
-  return EMPTY_PROPS;
 }

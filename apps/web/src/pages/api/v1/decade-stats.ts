@@ -4,6 +4,7 @@ import { type NextApiHandler } from "next";
 const handler: NextApiHandler = async (req, res) => {
   switch (req.method) {
     case "GET":
+      console.log("RUNNING IN DECADE STATS API");
       const searchParamsStr = req.url.split("?")[1] || "";
       const searchParams = new URLSearchParams(searchParamsStr);
       const codes = searchParams.get("codes")?.split(",");

@@ -12,7 +12,8 @@
     "isolatedModules": true,
 
     "paths": {
-      "store/*": ["../../packages/store/*"]
+      "store": ["../../packages/store"],
+      "web3": ["../../packages/web3"]
     }
   },
   "include": ["src"],
@@ -23,6 +24,9 @@
     },
     {
       "path": "../../packages/store"
+    },
+    {
+      "path": "../../packages/web3"
     }
   ]
 }

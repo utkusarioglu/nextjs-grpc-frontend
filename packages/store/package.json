@@ -1,8 +1,8 @@
 {
   "name": "store",
   "version": "0.0.0",
-  "main": "./src/index.tsx",
-  "types": "./src/index.tsx",
+  "main": "./src/exports.ts",
+  "types": "./src/exports.ts",
   "license": "MIT",
   "packageManager": "yarn@3.5.1",
   "devDependencies": {
@@ -11,7 +11,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "react-redux": "^8.0.5",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "web3": "*"
   },
   "peerDependencies": {
     "react": "*"

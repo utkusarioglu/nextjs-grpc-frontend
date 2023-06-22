@@ -7,7 +7,7 @@ import {
   setAuth,
   authInitialState,
   useLoginWithUserPassMutation,
-} from "store/src";
+} from "store";
 
 export type LoginStatus = "error" | "warning" | "success" | "idle";
 
@@ -45,6 +45,7 @@ export function useLogin() {
   useEffect(() => {
     if (!isLoading) {
       if (data && data.authId) {
+        console.log("login setting: ", data);
         dispatch(setAuth(data));
       }
     }
@@ -76,7 +77,7 @@ export function useLogout() {
 
   useEffect(() => {
     if (!!data && !data.authId) {
-      console.log("dispatch firing", { data });
+      console.log("logout firing", { data });
       dispatch(setAuth(authInitialState));
     }
   }, [data?.authId]);
