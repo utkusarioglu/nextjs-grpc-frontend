@@ -4,7 +4,7 @@ import {
   useSelector,
   selectCountryList,
   useDispatch,
-} from "store/src/index";
+} from "store";
 import { DecadeStatsCardListLayout } from "../layouts/DecadeStatsCardList.layout";
 
 const DecadeStatsScreen = () => {

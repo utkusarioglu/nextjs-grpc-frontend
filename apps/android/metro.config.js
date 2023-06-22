@@ -4,9 +4,10 @@ const appRoot = __dirname;
 const workspaceRoot = path.resolve(__dirname, "../..");
 const packagesRoot = path.resolve(workspaceRoot, "packages");
 
-console.log({ appRoot, workspaceRoot, packagesRoot });
-
 module.exports = {
+  // resolver: {
+  //   extraNodeModules: require("node-libs-react-native"),
+  // },
   watchFolders: [
     appRoot,
     path.resolve(workspaceRoot, "node_modules"),

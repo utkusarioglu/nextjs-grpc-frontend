@@ -4,10 +4,11 @@ import DecadeStatsScreen from "app/src/screens/DecadeStats.screen";
 import LoginScreen from "app/src/screens/Login.screen";
 import LogoutScreen from "app/src/screens/Logout.screen";
 import WelcomeScreen from "app/src/screens/Welcome.screen";
+// import WrappedEvmScreen from "./components/wrapped-screens/WrappedEvm.screen";
 import EvmScreen from "app/src/screens/Evm.screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { selectLoggedIn, useSelector } from "store/src";
+import { selectLoggedIn, useSelector } from "store";
 import { useColorScheme } from "react-native";
 import {
   DarkTheme as ReactNavigationDarkTheme,

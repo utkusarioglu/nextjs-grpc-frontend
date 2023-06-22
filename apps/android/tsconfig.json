@@ -6,7 +6,8 @@
     "paths": {
       "ui/*": ["../../packages/ui/*"],
       "app/*": ["../../packages/app/*"],
-      "store/*": ["../../packages/store/*"]
+      "store/*": ["../../packages/store/*"],
+      "web3": ["../../packages/web3"]
     }
   },
   "references": [
@@ -18,6 +19,9 @@
     },
     {
       "path": "../../packages/store"
+    },
+    {
+      "path": "../../packages/web3"
     }
   ]
 }

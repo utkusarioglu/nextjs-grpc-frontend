@@ -11,6 +11,7 @@ const handler: NextApiHandler = async (req, res) => {
           password,
         });
         res.status(200).json(authObject);
+        // res.redirect("/")
       } catch (e) {
         console.log("userpass post", e);
         res.status(500).end();

@@ -8,6 +8,7 @@
     "solito": "^3.2.6",
     "store": "*",
     "ui": "*",
+    "web3": "*",
     "yup": "^1.2.0"
   },
   "devDependencies": {
