@@ -5,6 +5,7 @@
   "types": "./src/index.tsx",
   "dependencies": {
     "formik": "^2.4.0",
+    "i18n": "*",
     "solito": "^3.2.6",
     "store": "*",
     "ui": "*",

@@ -5,6 +5,8 @@ import { type ReactElement, type ReactNode } from "react";
 import { StoreProvider } from "store";
 import { wrapper } from "src/store";
 import ClientSideRouteGuardProvider from "../components/providers/ClientSideRouteGuard.provider";
+import { config } from "i18n";
+// import { appWithTranslation } from "next-i18next";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -19,7 +21,7 @@ export type AppPropsWithLayout = AppProps & {
  * #1 Type inconsistency between `store` package and web. This needs further
  * work to resolve.
  */
-export default function App(appProps: AppPropsWithLayout) {
+function App(appProps: AppPropsWithLayout) {
   const { store, props } = wrapper.useWrappedStore(appProps);
 
   return (
@@ -31,3 +33,7 @@ export default function App(appProps: AppPropsWithLayout) {
     </StoreProvider>
   );
 }
+
+// const AppWithTranslation = appWithTranslation(App, config);
+
+export default App;

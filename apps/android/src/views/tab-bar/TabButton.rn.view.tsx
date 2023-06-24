@@ -27,7 +27,6 @@ export const TabButtonRnView: FC<TabButtonRnViewProps> = ({
 }) => {
   return (
     <TouchableOpacity
-      key={label}
       accessibilityRole="button"
       accessibilityState={isActive ? { selected: true } : {}}
       accessibilityLabel={options.tabBarAccessibilityLabel}
