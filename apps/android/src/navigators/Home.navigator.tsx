@@ -2,7 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "app/src/screens/Home.screen";
 import UserScreen from "app/src/screens/User.screen";
 import DecadeStatsScreen from "app/src/screens/DecadeStats.screen";
-import { Paragraph, Icons, H3 } from "ui";
+import { Icons } from "ui";
+import TabBarRn from "../views/tab-bar/TabBar.rn.view";
 
 type HomeNavigatorProps = {
   feed: undefined;
@@ -16,22 +17,14 @@ const Tab = createBottomTabNavigator<HomeNavigatorProps>();
 
 const HomeNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator tabBar={props => <TabBarRn {...props} />}>
       <Tab.Screen
         name="feed"
         component={HomeScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "Feed",
-          // tabBarIcon: () => <Icons.Activity size="$4" />,
-          tabBarIcon: () => <H3>F</H3>,
-        }}
-      />
-      <Tab.Screen
-        name="user"
-        component={UserScreen}
-        options={{
-          tabBarLabel: "User",
-          tabBarIcon: () => <H3>U</H3>,
+          tabBarIcon: () => <Icons.Home />,
         }}
       />
       <Tab.Screen
@@ -39,7 +32,15 @@ const HomeNavigator = () => {
         component={DecadeStatsScreen}
         options={{
           tabBarLabel: "Decade Stats",
-          tabBarIcon: () => <H3>D</H3>,
+          tabBarIcon: () => <Icons.AlertOctagon />,
+        }}
+      />
+      <Tab.Screen
+        name="user"
+        component={UserScreen}
+        options={{
+          tabBarLabel: "User",
+          tabBarIcon: () => <Icons.User />,
         }}
       />
     </Tab.Navigator>

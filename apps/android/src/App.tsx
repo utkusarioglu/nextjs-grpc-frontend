@@ -15,6 +15,7 @@ import {
   WALLET_CONNECT_PROJECT_ID,
   WALLET_CONNECT_ANDROID_METADATA,
 } from "web3";
+import { SolitoImageProvider } from "solito/image";
 
 /**
  * @dev
@@ -44,7 +45,15 @@ const App = () => {
             disableInjectCSS
             defaultTheme={colorScheme}
             disableRootThemeClass>
-            <RootNavigator />
+            <SolitoImageProvider
+              // @ts-ignore
+              nextJsURL={process.env.NEXT_PUBLIC_WEB_APP_URL!}
+              // loader={({ quality, width, src }) => {
+              //   return `https://cloudinary.com/${src}?w=${width}&q=${quality}`;
+              //             }}
+            >
+              <RootNavigator />
+            </SolitoImageProvider>
           </UiProvider>
         </StoreProvider>
         <Web3Modal

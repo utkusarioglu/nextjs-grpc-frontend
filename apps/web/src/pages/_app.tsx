@@ -14,10 +14,16 @@ export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+/**
+ * @dev
+ * #1 Type inconsistency between `store` package and web. This needs further
+ * work to resolve.
+ */
 export default function App(appProps: AppPropsWithLayout) {
   const { store, props } = wrapper.useWrappedStore(appProps);
 
   return (
+    // @ts-expect-error #1
     <StoreProvider store={store} loadingViewComponent={null}>
       <ClientSideRouteGuardProvider>
         <WebThemeProvider {...props} />

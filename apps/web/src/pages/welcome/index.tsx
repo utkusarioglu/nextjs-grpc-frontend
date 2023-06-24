@@ -4,7 +4,6 @@ import { wrapper } from "src/store";
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => {
   return async (props) => {
-    console.log("RUNNING IN WELCOME");
     return routeProtector({ store, props });
   };
 });

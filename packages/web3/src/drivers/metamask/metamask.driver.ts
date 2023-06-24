@@ -35,7 +35,6 @@ export class MetamaskDriver implements Web3Driver {
     const metamaskProvider = new ethers.providers.Web3Provider(ethereum);
     evmService.setProvider(this.key, metamaskProvider);
 
-    console.log("will set event listeners", !!global.window);
     ethereum.on("accountsChanged", (accounts: string[]) => {
       console.log("Accounts changed!", { accounts });
       this.dispatch({

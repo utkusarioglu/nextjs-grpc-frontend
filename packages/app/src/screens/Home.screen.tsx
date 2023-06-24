@@ -2,41 +2,103 @@ import CustomButton from "ui/src/CustomButton";
 import CustomHeader from "ui/src/CustomHeader";
 import CustomInput from "ui/src/CustomInput";
 import { useRouter } from "solito/router";
-import { Spacer, YStack, XStack, Button, Icons, Paragraph } from "ui";
+import {
+  Spacer,
+  Stack,
+  YStack,
+  XStack,
+  Button,
+  Icons,
+  Paragraph,
+  ScrollView,
+  Group,
+} from "ui";
+import { SolitoImage } from "solito/image";
 
 const HomeScreen = () => {
   const { push } = useRouter();
 
   return (
-    <YStack padding="$4">
-      <XStack
-        justifyContent="space-between"
-        marginBottom="$6"
-        alignItems="center"
-      >
-        <CustomHeader>Howdy!</CustomHeader>
-        <Button
-          onPress={() =>
-            push({
-              pathname: "/settings",
-            })
-          }
+    <ScrollView>
+      <YStack>
+        <Spacer />
+        <XStack
+          justifyContent="space-between"
+          marginBottom="$6"
+          alignItems="center"
+          paddingLeft="$4"
+          paddingRight="$4"
         >
-          <Paragraph>S</Paragraph>
-          {/* <Icons.Settings /> */}
-        </Button>
-      </XStack>
-      <CustomInput />
-      <Spacer />
-      <XStack>
-        <CustomButton userId={1}>One</CustomButton>
+          <CustomHeader>Howdy!</CustomHeader>
+          <Group orientation="horizontal">
+            <Group.Item>
+              <Button
+                onPress={() =>
+                  push({
+                    pathname: "/settings",
+                  })
+                }
+              >
+                <Icons.User />
+              </Button>
+            </Group.Item>
+            <Group.Item>
+              <Button
+                onPress={() =>
+                  push({
+                    pathname: "/settings",
+                  })
+                }
+              >
+                <Icons.Settings />
+              </Button>
+            </Group.Item>
+          </Group>
+        </XStack>
+        <Stack paddingLeft="$4" paddingRight="$4">
+          <CustomInput />
+        </Stack>
         <Spacer />
-        <CustomButton userId={2}>Two</CustomButton>
+        {/* @ts-ignore */}
+        <YStack>
+          {Array(6)
+            .fill(null)
+            .map((_, i) => (
+              <Stack key={i}>
+                <Stack height={300} key={i} borderRadius="$4" overflow="hidden">
+                  {/* @ts-expect-error */}
+                  <SolitoImage
+                    src={`/mock/image-${i}.jpg`}
+                    fill
+                    resizeMode="cover"
+                    alt="A cool image, imported locally."
+                  />
+                </Stack>
+                <Spacer />
+              </Stack>
+            ))}
+        </YStack>
+        <XStack
+          paddingLeft="$4"
+          paddingRight="$4"
+          justifyContent="space-evenly"
+        >
+          <CustomButton userId={1} flex={1}>
+            One
+          </CustomButton>
+          <Spacer />
+          <CustomButton userId={2} flex={1}>
+            Two
+          </CustomButton>
+          <Spacer />
+          <CustomButton userId={3} flex={1}>
+            Three
+          </CustomButton>
+        </XStack>
         <Spacer />
-        <CustomButton userId={3}>Three</CustomButton>
-      </XStack>
-      <Spacer />
-    </YStack>
+        <Spacer size="$12" />
+      </YStack>
+    </ScrollView>
   );
 };
 

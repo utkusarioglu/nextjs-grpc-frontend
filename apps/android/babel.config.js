@@ -5,6 +5,15 @@ module.exports = {
   plugins: [
     "@babel/plugin-proposal-export-namespace-from",
     [
+      "module-resolver",
+      {
+        root: ["./"],
+        alias: {
+          "solito/image": "solito/image/react-native-fast-image",
+        },
+      },
+    ],
+    [
       "@tamagui/babel-plugin",
       {
         components: ["tamagui"],

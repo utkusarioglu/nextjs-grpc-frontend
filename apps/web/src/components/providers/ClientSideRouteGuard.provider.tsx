@@ -19,10 +19,8 @@ const ClientSideRouteGuardProvider: FC<ClientSideRouteGuardProviderProps> = ({
       const onGuestPath = GUEST_PATHS.includes(pathname);
 
       if (isLoggedIn && onGuestPath) {
-        console.log("pushing home", !!global.window, pathname);
         router.push("/");
       } else if (!isLoggedIn && !onGuestPath) {
-        console.log("pushing guest", !!global.window);
         router.push(GUEST_ENTRY_PATH);
       }
     }

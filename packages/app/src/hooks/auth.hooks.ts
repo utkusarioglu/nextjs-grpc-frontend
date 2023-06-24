@@ -45,7 +45,6 @@ export function useLogin() {
   useEffect(() => {
     if (!isLoading) {
       if (data && data.authId) {
-        console.log("login setting: ", data);
         dispatch(setAuth(data));
       }
     }
@@ -77,7 +76,6 @@ export function useLogout() {
 
   useEffect(() => {
     if (!!data && !data.authId) {
-      console.log("logout firing", { data });
       dispatch(setAuth(authInitialState));
     }
   }, [data?.authId]);

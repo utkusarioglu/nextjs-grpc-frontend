@@ -1,10 +1,12 @@
 import { useRouter } from "solito/router";
-import { YStack, Button } from "ui";
+import { YStack, Button, Spacer } from "ui";
 
 const SettingsScreen = () => {
-  const { push } = useRouter();
+  const { push, back } = useRouter();
   return (
     <YStack padding="$4">
+      <Button onPress={() => back()}>Back</Button>
+      <Spacer />
       <Button
         onPress={() =>
           push({

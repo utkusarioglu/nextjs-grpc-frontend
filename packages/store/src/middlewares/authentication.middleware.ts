@@ -83,6 +83,8 @@ export const authentication: Middleware = (store) => (next) => (action) => {
     computedValues.isLoggedIn =
       computedValues.isUserPassAuthorized && computedValues.isWeb3Authorized;
 
+    computedValues.checksComplete = true;
+
     if (
       JSON.stringify(computedValues) !==
       JSON.stringify(initialState["_computed"])

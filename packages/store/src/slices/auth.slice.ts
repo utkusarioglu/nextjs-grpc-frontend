@@ -11,11 +11,14 @@ import { HYDRATE } from "../constants";
  * #1 is set to true if the user has userpass authorization
  * #2 is set to true if the user is authorized through evm identity
  * #3 is set to true if all other authorization binaries are true
+ * #4 starts with false and is set to true once the middleware does its checks
+ * for the first time.
  */
 export interface SliceState {
   authId: string;
   username: string;
   _computed: {
+    checksComplete: boolean; // #4
     isUserPassAuthorized: boolean; // #1
     isWeb3Authorized: boolean; // #2
     isLoggedIn: boolean; // #3
@@ -26,6 +29,7 @@ export const initialState: SliceState = {
   authId: "",
   username: "",
   _computed: {
+    checksComplete: false,
     isUserPassAuthorized: false,
     isWeb3Authorized: false,
     isLoggedIn: false,
@@ -84,6 +88,9 @@ export default authSlice;
 
 export const selectLoggedIn = (state: PrivateRootState) =>
   state[name]._computed.isLoggedIn;
+
+export const selectChecksComplete = (state: PrivateRootState) =>
+  state[name]._computed.checksComplete;
 
 export const selectProfile = (state: PrivateRootState) => state[name];
 
