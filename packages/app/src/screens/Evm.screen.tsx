@@ -6,7 +6,7 @@ import { useSelector, selectDrivers } from "store";
 import BalanceLayout from "../layouts/Balance.layout";
 
 interface EvmScreenProps {
-  EvmConnectionOptionsComponent: FC<Web3ConnectionOptionsProps>;
+  // EvmConnectionOptionsComponent: FC<Web3ConnectionOptionsProps>;
 }
 
 const NAMES = {
@@ -14,7 +14,7 @@ const NAMES = {
   walletConnect: "WalletConnect",
 };
 
-const EvmScreen: FC<EvmScreenProps> = ({ EvmConnectionOptionsComponent }) => {
+const EvmScreen: FC<EvmScreenProps> = () => {
   const { back } = useRouter();
 
   // const metamask = useSelector(selectDriver("metamask"));

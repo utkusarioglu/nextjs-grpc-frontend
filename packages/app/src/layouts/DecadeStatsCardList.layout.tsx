@@ -27,12 +27,10 @@ export const DecadeStatsCardListLayout: FC<
   }
 
   return (
-    <ScrollView>
-      <YStack>
-        {data.decadeStats.map((item) => (
-          <DecadeStatsCardView key={item.countryCode} item={item} />
-        ))}
-      </YStack>
-    </ScrollView>
+    <YStack>
+      {data.decadeStats.map((item) => (
+        <DecadeStatsCardView key={item.countryCode} item={item} />
+      ))}
+    </YStack>
   );
 };

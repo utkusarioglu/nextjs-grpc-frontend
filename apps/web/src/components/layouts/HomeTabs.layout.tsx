@@ -1,13 +1,14 @@
-import { type ReactElement, type FC } from "react";
+import { type ReactElement, type FC, useState } from "react";
 import {
-  XStack,
-  Button,
   Tabs,
-  Paragraph,
   YStack,
-  Icons,
   styled,
+  Stack,
   AnimatePresence,
+  ANIMATED_Y_STACK_VARIANTS,
+  type Indicators,
+  TabBarWeb,
+  type OnInteraction,
 } from "ui";
 import { useRouter } from "solito/router";
 import { useRouter as useNextRouter } from "next/router";
@@ -16,82 +17,95 @@ interface HomeTabsLayoutProps {
   page: ReactElement;
 }
 
-const TAB_ITEMS = [
-  { path: "/", title: "Feed", Icon: Icons.Home },
-  {
-    path: "/decade-stats",
-    title: "Decade Stats",
-    Icon: Icons.AlertOctagon,
-  },
-  { path: "/user/1", title: "User 1", Icon: Icons.User },
-];
-
 const AnimatedYStack = styled(YStack, {
-  variants: {
-    isLeft: { true: { x: -25, opacity: 0 } },
-    isRight: { true: { x: 25, opacity: 0 } },
-    defaultFade: { true: { opacity: 0 } },
-  } as const,
+  variants: ANIMATED_Y_STACK_VARIANTS,
 });
+
+const INDICATORS_INITIAL: Indicators = {
+  previous: {
+    index: 0,
+  },
+  active: {
+    index: 0,
+  },
+  hovered: null,
+  enterVariant: "fade",
+  exitVariant: "fade",
+};
 
 /**
  * @dev
  * #1 TODO `position: fixed` won't work on native. It's only used here to
  * speed up the development process and should be replaced with a universal
  * solution asap.
+ * #2 TODO overflowX had to be given here to prevent scrollbars from showing
+ * while enter and exit animations were taking place. There is probably a
+ * better solution to this.
+ * #3 TODO This logic falls apart during initial render. Because initial state
+ * is empty. This logic needs to account for the first render properly
  */
 const HomeTabsLayout: FC<HomeTabsLayoutProps> = ({ page }) => {
   const { push } = useRouter();
   const { pathname } = useNextRouter();
+  const [indicators, setIndicators] = useState<Indicators>(INDICATORS_INITIAL);
 
-  const enterVariant = "isLeft";
-  const exitVariant = "isRight";
+  const handleOnInteraction: OnInteraction =
+    (path, index) => (type, layout) => {
+      if (type === "select") {
+        setIndicators((state) => ({
+          ...state,
+          previous: state.active,
+          active: {
+            index,
+          },
+          enterVariant: index > state.active.index ? "rightFade" : "leftFade", // #3
+          exitVariant: index > state.active.index ? "leftFade" : "rightFade", // #3
+        }));
+        push({ pathname: path });
+      } else {
+        setIndicators((state) => ({
+          ...state,
+          hovered: !!layout
+            ? {
+                index,
+              }
+            : null,
+        }));
+      }
+    };
+
   return (
     <Tabs
       defaultValue={pathname}
       fullscreen
       flexDirection="column"
-      overflow="hidden"
+      // @ts-expect-error: #2
+      overflowX="hidden"
     >
       <AnimatePresence
-        exitBeforeEnter
-        enterVariant={enterVariant}
-        exitVariant={exitVariant}
+        enterVariant={indicators.enterVariant}
+        exitVariant={indicators.exitVariant}
       >
         <AnimatedYStack
           key={pathname}
-          animation="fast"
+          animation="slow"
           x={0}
           opacity={1}
-          flex={1}
+          fullscreen
         >
-          <Tabs.Content value={pathname} forceMount>
+          <Tabs.Content value={pathname} forceMount fullscreen>
             {page}
           </Tabs.Content>
         </AnimatedYStack>
       </AnimatePresence>
-      <Tabs.List
-        // @ts-expect-error
-        position="fixed"
-        bottom={0}
-        left={0}
-        right={0}
-        space="$2"
-        justifyContent="space-evenly"
-      >
-        {TAB_ITEMS.map(({ path, title, Icon }) => (
-          <Tabs.Tab
-            key={path}
-            value={path}
-            onInteraction={() => push({ pathname: path })}
-          >
-            <YStack padding="$2" alignItems="center">
-              <Icon />
-              <Paragraph>{title}</Paragraph>
-            </YStack>
-          </Tabs.Tab>
-        ))}
-      </Tabs.List>
+
+      <Stack position="absolute" bottom="$2" left="$4" right="$4">
+        <TabBarWeb
+          pathname={pathname}
+          onInteraction={handleOnInteraction}
+          indicators={indicators}
+        />
+      </Stack>
     </Tabs>
   );
 };

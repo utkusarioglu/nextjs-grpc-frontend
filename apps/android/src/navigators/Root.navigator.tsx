@@ -3,10 +3,11 @@ import LoginScreen from "app/src/screens/Login.screen";
 import LogoutScreen from "app/src/screens/Logout.screen";
 import WelcomeScreen from "app/src/screens/Welcome.screen";
 import SettingsScreen from "app/src/screens/Settings.screen";
+import LoadingScreen from "app/src/screens/Loading.screen";
 import EvmScreen from "app/src/screens/Evm.screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { selectLoggedIn, useSelector } from "store";
+import { selectChecksComplete, selectLoggedIn, useSelector } from "store";
 import { useColorScheme } from "react-native";
 import {
   DarkTheme as ReactNavigationDarkTheme,
@@ -25,12 +26,14 @@ const linking = {
       welcome: "welcome",
       evm: "evm",
       settings: "settings",
+      loading: "loading",
     },
   },
 };
 
 type RootNavigatorProps = {
   home: undefined;
+  loading: undefined;
   login: undefined;
   logout: undefined;
   welcome: undefined;
@@ -43,6 +46,7 @@ const Stack = createNativeStackNavigator<RootNavigatorProps>();
 export function RootNavigator() {
   const colorScheme = useColorScheme();
   const loggedIn = useSelector(selectLoggedIn);
+  const checksComplete = useSelector(selectChecksComplete);
 
   return (
     <NavigationContainer
@@ -73,13 +77,6 @@ export function RootNavigator() {
                 title: "Settings",
               }}
             />
-            {/* <Stack.Screen
-              name="decadeStats"
-              component={DecadeStatsScreen}
-              options={{
-                title: "Decade Stats",
-              }}
-            /> */}
             <Stack.Screen
               name="logout"
               component={LogoutScreen}
@@ -90,6 +87,15 @@ export function RootNavigator() {
           </>
         ) : (
           <>
+            {!checksComplete ? (
+              <Stack.Screen
+                name="loading"
+                component={LoadingScreen}
+                options={{
+                  title: "Loading",
+                }}
+              />
+            ) : null}
             <Stack.Screen
               name="welcome"
               component={WelcomeScreen}

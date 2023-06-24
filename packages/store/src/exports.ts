@@ -8,6 +8,7 @@ export {
   setAuthId,
   initialState as authInitialState,
   selectIsRehydrated as selectProfileIsRehydrated,
+  selectChecksComplete,
 } from "./slices/auth.slice";
 export { useInflationDecadeStats } from "./apis/inflation.api";
 export {

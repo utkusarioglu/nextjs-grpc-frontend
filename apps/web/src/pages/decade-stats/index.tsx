@@ -6,7 +6,6 @@ import HomeTabsLayout from "src/components/layouts/HomeTabs.layout";
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => {
   return async (props) => {
-    console.log("RUNNING IN DECADE STATS");
     return routeProtector({ store, props });
   };
 });

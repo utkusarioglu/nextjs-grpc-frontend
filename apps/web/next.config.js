@@ -7,6 +7,7 @@ module.exports = function (_name, { defaultConfig }) {
     reactStrictMode: true,
     transpilePackages: ["ui", "store", "app"],
     swcMinify: true,
+    images: {},
     experimental: {
       instrumentationHook: true,
     },

@@ -37,7 +37,6 @@ export class Web3Service {
     }
     return new Promise<void>(async (resolve) => {
       for (const [key, driver] of this.drivers) {
-        console.log(`Initializing driver: ${key}`);
         await driver.initialize();
       }
       resolve();

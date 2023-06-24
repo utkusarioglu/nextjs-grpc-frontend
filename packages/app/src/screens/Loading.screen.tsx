@@ -1,8 +1,8 @@
 import { H1, Paragraph, YStack, Button } from "ui";
-import { useRouter } from "solito/router";
+// import { useRouter } from "solito/router";
 
-const WelcomeScreen = () => {
-  const { push } = useRouter();
+const LoadingScreen = () => {
+  // const { push } = useRouter();
 
   return (
     <YStack padding="$4" fullscreen>
@@ -12,24 +12,16 @@ const WelcomeScreen = () => {
           This is a technical project with no predetermined use case
         </Paragraph>
       </YStack>
-
-      <YStack
-        space
-        position="absolute"
-        bottom={0}
-        left={0}
-        right={0}
-        padding="$4"
-      >
+      {/* <YStack space>
         <Button onPress={() => push({ pathname: "/login" })}>
           Login with Userpass
         </Button>
         <Button onPress={() => push({ pathname: "/evm" })}>
           Login EVM identity
         </Button>
-      </YStack>
+      </YStack> */}
     </YStack>
   );
 };
 
-export default WelcomeScreen;
+export default LoadingScreen;

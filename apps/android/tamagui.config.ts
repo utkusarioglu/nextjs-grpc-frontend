@@ -1,9 +1,17 @@
 import { createAnimations } from "@tamagui/animations-react-native";
 import { createTamagui, baseConfig } from "ui/src/tamagui.config";
 
-// @ts-ignore
+/**
+ * @dev
+ * #1 string - string literal inconsistency
+ */
 const appConfig = createTamagui({
   ...baseConfig,
+  // fonts: Object.entries(baseConfig.fonts).reduce((acc, [key, value]) => {
+  //   // @ts-ignore: #1
+  //   acc[key] = createFont(value);
+  //   return acc;
+  // }, {} as Record<keyof typeof baseConfig.fonts, ReturnType<typeof createFont>>),
   // @ts-ignore
   animations: createAnimations({
     fast: {
