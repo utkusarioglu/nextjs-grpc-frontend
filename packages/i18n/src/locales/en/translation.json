@@ -1,0 +1,13 @@
+{
+  "feed": {
+    "header": "Howdy!"
+  },
+  "settings": {
+    "language_options": "Language Options",
+    "account_management": "Account",
+    "logout": "Logout"
+  },
+  "general": {
+    "back": "Back"
+  }
+}

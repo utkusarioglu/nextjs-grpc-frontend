@@ -1,0 +1,13 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src", "src/locales/**/*.json"],
+  "exclude": ["dist", "build", "node_modules"],
+}

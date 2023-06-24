@@ -68,6 +68,7 @@ function TabBarRn({ state, descriptors, navigation }: BottomTabBarProps) {
 
           return (
             <TabButtonRnView
+              key={label}
               label={label}
               isActive={isActive}
               options={options}

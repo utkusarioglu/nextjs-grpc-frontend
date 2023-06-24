@@ -14,9 +14,11 @@ import {
   Group,
 } from "ui";
 import { SolitoImage } from "solito/image";
+import { useTranslation } from "i18n";
 
 const HomeScreen = () => {
   const { push } = useRouter();
+  const { t } = useTranslation();
 
   return (
     <ScrollView>
@@ -29,7 +31,7 @@ const HomeScreen = () => {
           paddingLeft="$4"
           paddingRight="$4"
         >
-          <CustomHeader>Howdy!</CustomHeader>
+          <CustomHeader>{t("feed.header")}</CustomHeader>
           <Group orientation="horizontal">
             <Group.Item>
               <Button
