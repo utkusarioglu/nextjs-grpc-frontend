@@ -1,0 +1,19 @@
+FeedScreen:
+  Greeting: Hoşgel!
+
+SettingsScreen:
+  LanguageOptions: 
+    Title: Dil Ayarları
+  AccountManagement: 
+    Title: Hesap Yönetimi
+  Logout: Çıkış yap
+
+LogoutScreen:
+  Logout: Çıkış
+  LoggingOut: Çıkış Yapıyor…
+  Redirecting: Yönlendiriyor…
+
+TabBar:
+  Feed: Paylaşımlar
+  DecadeStats: Onyıl İstatistikleri
+  User: Kullanıcı

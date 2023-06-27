@@ -1,37 +1,28 @@
 import { useRouter } from "solito/router";
 import { YStack, Button, Spacer, H3, YGroup, Separator } from "ui";
-import { useTranslation } from "i18n";
-
-const LANGUAGES = [
-  {
-    label: "English",
-    code: "en",
-  },
-  {
-    label: "Turkish",
-    code: "tr",
-  },
-];
+import { useTranslation, LANGUAGES } from "i18n";
 
 const SettingsScreen = () => {
   const { push, back } = useRouter();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(["rest"]);
 
   return (
     <YStack padding="$4">
-      <Button onPress={() => back()}>{t("general.back")}</Button>
+      <Button onPress={() => back()}>{t("global:Prompts.Back")}</Button>
       <Spacer />
-      <H3>{t("settings.language_options")}</H3>
+
+      <H3>{t`rest:SettingsScreen.LanguageOptions.Title`}</H3>
       <Spacer size="$4" />
       <YGroup separator={<Separator />}>
         {LANGUAGES.map(({ label, code }) => (
-          <YGroup.Item>
+          <YGroup.Item key={label}>
             <Button onPress={() => i18n.changeLanguage(code)}>{label}</Button>
           </YGroup.Item>
         ))}
       </YGroup>
       <Spacer size="$6" />
-      <H3>{t("settings.account_management")}</H3>
+
+      <H3>{t`rest:SettingsScreen.AccountManagement.Title`}</H3>
       <Spacer size="$4" />
       <Button
         onPress={() =>
@@ -40,7 +31,7 @@ const SettingsScreen = () => {
           })
         }
       >
-        {t("settings.logout")}
+        {t`rest:SettingsScreen.Logout`}
       </Button>
     </YStack>
   );

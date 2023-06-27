@@ -1,13 +1,11 @@
-import { GUEST_PATHS, GUEST_ENTRY_PATH } from "../constants";
+import { GUEST_PATHS, GUEST_ENTRY_PATH, LOGOUT_PATH } from "../constants";
 import { authService } from "src/services";
 import type { Store } from "src/store";
 import type { ParsedUrlQuery } from "querystring";
 import type { GetServerSidePropsContext, PreviewData } from "next";
 import { setAuth } from "store";
 
-const EMPTY_PROPS = {
-  props: {},
-};
+const EMPTY_PROPS = {};
 
 interface RouteProtectorProps {
   store: Store;
@@ -15,21 +13,22 @@ interface RouteProtectorProps {
 }
 
 export async function routeProtector({ store, props }: RouteProtectorProps) {
-  const state = store.getState();
   const resolvedUrl = props.resolvedUrl;
+  const state = store.getState();
+  const authId = state.app.auth.authId;
+  const isOnAGuestPath = GUEST_PATHS.includes(resolvedUrl);
 
-  const isLoggedIn = state.auth._computed.isLoggedIn;
-  const authId = state.auth.authId;
-  const onAGuestPath = GUEST_PATHS.includes(resolvedUrl);
   const onGuestEntryPath = resolvedUrl === GUEST_ENTRY_PATH;
+  const isOnLogoutPath = resolvedUrl === LOGOUT_PATH;
+
   try {
     const hasValidSession = await authService.validateWithAuthId(authId);
 
-    if (hasValidSession && resolvedUrl === "/logout") {
+    if (hasValidSession && isOnLogoutPath) {
       store.dispatch(setAuth({ username: "", authId: "" }));
     }
 
-    if (onAGuestPath && isLoggedIn && hasValidSession) {
+    if (hasValidSession && isOnAGuestPath) {
       return {
         redirect: {
           permanent: false,
@@ -38,7 +37,9 @@ export async function routeProtector({ store, props }: RouteProtectorProps) {
       };
     }
 
-    if (!onAGuestPath && !isLoggedIn) {
+    if (!hasValidSession && !isOnAGuestPath) {
+      store.dispatch(setAuth({ authId: "", username: "" }));
+      console.log("WILL REDIRECT");
       return {
         redirect: {
           permanent: false,

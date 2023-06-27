@@ -2,14 +2,16 @@ export { StoreProvider } from "./components/Provider";
 export { useSelector, useDispatch } from "react-redux";
 export { selectCountryList, setCountries } from "./slices/decade-stats.slice";
 export {
-  selectLoggedIn,
+  selectIsLoggedIn,
   setAuth,
   selectProfile,
   setAuthId,
   initialState as authInitialState,
-  selectIsRehydrated as selectProfileIsRehydrated,
-  selectChecksComplete,
-} from "./slices/auth.slice";
+  selectIsRehydrated as selectAppIsRehydrated,
+  selectIsAuthChecksComplete,
+  setIsI18nInitialized,
+  selectIsAppInitialized,
+} from "./slices/app.slice";
 export { useInflationDecadeStats } from "./apis/inflation.api";
 export {
   useLoginWithUserPassMutation,
@@ -28,6 +30,7 @@ export {
   DEFAULT_MIDDLEWARE_OPTIONS,
   CONCAT_MIDDLEWARE,
 } from "./store-elements";
+export { setAndroidDefaults, setWebClientDefaults } from "./extra-actions";
 export type { StorageFactoryProps, WithPersistor } from "./types/store.types";
 export { configureStore } from "@reduxjs/toolkit";
 export { setupListeners } from "@reduxjs/toolkit/query/react";

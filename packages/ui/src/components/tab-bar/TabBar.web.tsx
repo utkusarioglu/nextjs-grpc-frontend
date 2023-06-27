@@ -8,6 +8,7 @@ interface TabBarWebProps {
   pathname: string;
   onInteraction: OnInteraction;
   indicators: Indicators;
+  t: (tKey: string) => string;
 }
 
 /**
@@ -20,6 +21,7 @@ export const TabBarWeb: FC<TabBarWebProps> = ({
   pathname,
   onInteraction,
   indicators,
+  t,
 }) => {
   return (
     <Nav
@@ -31,18 +33,21 @@ export const TabBarWeb: FC<TabBarWebProps> = ({
       style={{ backdropFilter: "blur(10px)" }} // #2
     >
       <Tabs.List justifyContent="space-evenly" unstyled>
-        {TAB_ITEMS.map(({ path, label, Icon }, index) => (
-          <TabButton
-            key={path}
-            pathname={pathname}
-            path={path}
-            index={index}
-            indicators={indicators}
-            onInteraction={onInteraction}
-            Icon={Icon}
-            label={label}
-          />
-        ))}
+        {TAB_ITEMS.map(({ path, tKey, Icon }, index) => {
+          const label = t(tKey);
+          return (
+            <TabButton
+              key={path}
+              pathname={pathname}
+              path={path}
+              index={index}
+              indicators={indicators}
+              onInteraction={onInteraction}
+              Icon={Icon}
+              label={label}
+            />
+          );
+        })}
       </Tabs.List>
     </Nav>
   );

@@ -1,18 +1,20 @@
 import HomeNavigator from "./Home.navigator";
-import LoginScreen from "app/src/screens/Login.screen";
 import LogoutScreen from "app/src/screens/Logout.screen";
-import WelcomeScreen from "app/src/screens/Welcome.screen";
 import SettingsScreen from "app/src/screens/Settings.screen";
-import LoadingScreen from "app/src/screens/Loading.screen";
-import EvmScreen from "app/src/screens/Evm.screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { selectChecksComplete, selectLoggedIn, useSelector } from "store";
+import {
+  selectIsAppInitialized,
+  selectIsAuthChecksComplete,
+  selectIsLoggedIn,
+  useSelector,
+} from "store";
 import { useColorScheme } from "react-native";
 import {
   DarkTheme as ReactNavigationDarkTheme,
   DefaultTheme as ReactNavigationDefaultTheme,
 } from "@react-navigation/native";
+import { GuestNavigator } from "./Guest.navigator";
 
 const linking = {
   prefixes: [process.env.NEXT_PUBLIC_WEB_APP_URL!],
@@ -27,6 +29,7 @@ const linking = {
       evm: "evm",
       settings: "settings",
       loading: "loading",
+      guest: "guest",
     },
   },
 };
@@ -39,21 +42,35 @@ type RootNavigatorProps = {
   welcome: undefined;
   evm: undefined;
   settings: undefined;
+  guest: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootNavigatorProps>();
 
 export function RootNavigator() {
   const colorScheme = useColorScheme();
-  const loggedIn = useSelector(selectLoggedIn);
-  const checksComplete = useSelector(selectChecksComplete);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isAuthChecksComplete = useSelector(selectIsAuthChecksComplete);
+  const isAppInitialized = useSelector(selectIsAppInitialized);
+
+  const isAuthorized = isLoggedIn && isAuthChecksComplete;
 
   return (
     <NavigationContainer
       linking={linking}
       theme={
         colorScheme === "dark"
-          ? ReactNavigationDarkTheme
+          ? {
+              dark: true,
+              colors: {
+                primary: "rgb(10, 132, 255)",
+                background: "rgb(20, 20, 20)",
+                card: "rgb(18, 18, 18)",
+                text: "rgb(229, 229, 231)",
+                border: "rgb(39, 39, 41)",
+                notification: "rgb(255, 69, 58)",
+              },
+            }
           : ReactNavigationDefaultTheme
       }>
       <Stack.Navigator
@@ -61,7 +78,7 @@ export function RootNavigator() {
           headerShown: false,
           animation: "fade",
         }}>
-        {loggedIn ? (
+        {isAuthorized && isAppInitialized ? (
           <>
             <Stack.Screen
               name="home"
@@ -86,38 +103,51 @@ export function RootNavigator() {
             />
           </>
         ) : (
-          <>
-            {!checksComplete ? (
-              <Stack.Screen
-                name="loading"
-                component={LoadingScreen}
-                options={{
-                  title: "Loading",
-                }}
-              />
-            ) : null}
-            <Stack.Screen
-              name="welcome"
-              component={WelcomeScreen}
-              options={{
-                title: "Welcome",
-              }}
-            />
-            <Stack.Screen
-              name="login"
-              component={LoginScreen}
-              options={{
-                title: "Login",
-              }}
-            />
-            <Stack.Screen
-              name="evm"
-              component={EvmScreen}
-              options={{
-                title: "Login with EVM identity",
-              }}
-            />
-          </>
+          <Stack.Screen
+            name="guest"
+            component={GuestNavigator}
+            options={
+              {
+                // title: "Guest",
+                // animation: "fade",
+              }
+            }
+          />
+          // <GuestNavigator />
+          // <>
+          //   {!isAllReady ? (
+          //     <Stack.Screen
+          //       name="loading"
+          //       component={LoadingScreen}
+          //       options={{
+          //         title: "Loading",
+          //         animation: "fade",
+          //       }}
+          //     />
+          //   ) : null}
+          //   <Stack.Screen
+          //     name="welcome"
+          //     component={WelcomeScreen}
+          //     options={{
+          //       title: "Welcome",
+          //       animation: "fade",
+          //     }}
+          //   />
+          //   <Stack.Screen
+          //     name="login"
+          //     component={LoginScreen}
+          //     options={{
+          //       title: "Login",
+          //     }}
+          //   />
+          //   <Stack.Screen
+          //     name="evm"
+          //     component={EvmScreen}
+          //     options={{
+          //       title: "Login with EVM identity",
+          //     }}
+          //   />
+          // </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

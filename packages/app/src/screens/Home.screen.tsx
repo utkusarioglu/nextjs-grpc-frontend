@@ -18,7 +18,7 @@ import { useTranslation } from "i18n";
 
 const HomeScreen = () => {
   const { push } = useRouter();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["rest"]);
 
   return (
     <ScrollView>
@@ -31,7 +31,7 @@ const HomeScreen = () => {
           paddingLeft="$4"
           paddingRight="$4"
         >
-          <CustomHeader>{t("feed.header")}</CustomHeader>
+          <CustomHeader>{t`rest:FeedScreen.Greeting`}</CustomHeader>
           <Group orientation="horizontal">
             <Group.Item>
               <Button

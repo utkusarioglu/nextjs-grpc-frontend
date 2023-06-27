@@ -16,10 +16,6 @@ const NAMES = {
 
 const EvmScreen: FC<EvmScreenProps> = () => {
   const { back } = useRouter();
-
-  // const metamask = useSelector(selectDriver("metamask"));
-  // const walletConnect = useSelector(selectDriver("walletConnect"));
-
   const driverStates = useSelector(selectDrivers);
 
   return (

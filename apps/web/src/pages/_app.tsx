@@ -5,8 +5,9 @@ import { type ReactElement, type ReactNode } from "react";
 import { StoreProvider } from "store";
 import { wrapper } from "src/store";
 import ClientSideRouteGuardProvider from "../components/providers/ClientSideRouteGuard.provider";
-import { config } from "i18n";
-// import { appWithTranslation } from "next-i18next";
+import { createWebConfig } from "i18n";
+import { appWithI18Next } from "ni18n";
+import LanguageDetector from "i18next-browser-languagedetector";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -34,6 +35,9 @@ function App(appProps: AppPropsWithLayout) {
   );
 }
 
-// const AppWithTranslation = appWithTranslation(App, config);
-
-export default App;
+export default appWithI18Next(
+  App,
+  createWebConfig({
+    use: [LanguageDetector],
+  })
+);

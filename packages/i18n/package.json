@@ -12,8 +12,6 @@
   },
   "dependencies": {
     "i18next": "^23.2.3",
-    "i18next-browser-languagedetector": "^7.0.2",
-    "i18next-fs-backend": "^2.1.5",
     "react-i18next": "^13.0.1"
   }
 }

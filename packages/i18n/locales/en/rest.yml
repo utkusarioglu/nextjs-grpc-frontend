@@ -1,0 +1,19 @@
+FeedScreen:
+  Greeting: Howdy!
+
+SettingsScreen:
+  LanguageOptions: 
+    Title: Language Options
+  AccountManagement: 
+    Title: Account
+  Logout: Logout
+
+LogoutScreen:
+  Logout: Logout
+  LoggingOut: Logging Out…
+  Redirecting: Redirecting…
+
+TabBar:
+  Feed: Feed
+  DecadeStats: Decade Stats
+  User: User

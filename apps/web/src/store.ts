@@ -21,7 +21,7 @@ import {
 } from "store";
 
 const storageAssignments = {
-  auth: localStorage, // TODO change this to cookie later if need be
+  app: localStorage, // TODO change this to cookie later if need be
   decadeStats: localStorage,
   web3: localStorage,
 };
@@ -31,7 +31,7 @@ const middleware = (getDefaultMiddleware: any) =>
   getDefaultMiddleware(DEFAULT_MIDDLEWARE_OPTIONS)
     .prepend(
       nextReduxCookieMiddleware({
-        subtrees: ["web3", "auth"],
+        subtrees: ["web3", "app"],
       })
     )
     .concat(...CONCAT_MIDDLEWARE);

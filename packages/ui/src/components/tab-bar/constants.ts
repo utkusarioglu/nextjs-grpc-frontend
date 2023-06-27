@@ -23,17 +23,17 @@ export const ANIMATED_Y_STACK_VARIANTS = {
 export const TAB_ITEMS = [
   {
     path: "/",
-    label: "Feed",
+    tKey: "rest:TabBar.Feed",
     Icon: Home,
   },
   {
     path: "/decade-stats",
-    label: "Decade Stats",
+    tKey: "rest:TabBar.DecadeStats",
     Icon: AlertOctagon,
   },
   {
     path: "/user/1",
-    label: "User 1",
+    tKey: "rest:TabBar.User",
     Icon: User,
   },
 ];

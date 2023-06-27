@@ -7,7 +7,7 @@ module.exports = {
     [
       "module-resolver",
       {
-        root: ["./"],
+        root: ["."],
         alias: {
           "solito/image": "solito/image/react-native-fast-image",
         },
@@ -34,7 +34,12 @@ module.exports = {
     [
       "transform-inline-environment-variables",
       {
-        include: "TAMAGUI_TARGET",
+        include: [
+          "TAMAGUI_TARGET",
+          "NEXT_PUBLIC_WEB_APP_URL",
+          "NEXT_PUBLIC_API_V1_URL",
+          "I18N_DEBUG_ENABLED",
+        ],
       },
     ],
   ],

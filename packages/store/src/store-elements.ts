@@ -1,3 +1,4 @@
+import { persistReducer } from "redux-persist";
 import {
   FLUSH,
   REHYDRATE,
@@ -8,14 +9,14 @@ import {
 } from "redux-persist";
 import decadeStatsSlice from "./slices/decade-stats.slice";
 import web3Slice from "./slices/web3.slice";
-import authSlice from "./slices/auth.slice";
+import appSlice from "./slices/app.slice";
 import { authApi } from "./apis/auth.api";
 import { inflationApi } from "./apis/inflation.api";
-import { authentication } from "./middlewares/authentication.middleware";
+import { authenticationMiddleware } from "./middlewares/authentication.middleware";
 import { StorageAssignments } from "./types/store.types";
 
 export const sliceReducers = {
-  [authSlice.name]: authSlice.reducer,
+  [appSlice.name]: appSlice.reducer,
   [decadeStatsSlice.name]: decadeStatsSlice.reducer,
   [web3Slice.name]: web3Slice.reducer,
 };
@@ -42,27 +43,25 @@ export const DEFAULT_MIDDLEWARE_OPTIONS = {
 export const CONCAT_MIDDLEWARE = [
   authApi.middleware,
   inflationApi.middleware,
-  authentication,
+  authenticationMiddleware,
 ];
-
-import { persistReducer } from "redux-persist";
 
 export function persistReducers(storageAssignments: StorageAssignments) {
   return {
-    [authSlice.name]: persistReducer(
+    [appSlice.name]: persistReducer(
       {
-        key: authSlice.name,
-        storage: storageAssignments[authSlice.name],
-        blacklist: ["_computed"],
+        key: appSlice.name,
+        storage: storageAssignments[appSlice.name],
+        blacklist: ["_computed", "_cookie", "isI18nInitialized"],
       },
-      authSlice.reducer
+      appSlice.reducer
     ),
 
     [web3Slice.name]: persistReducer(
       {
         key: web3Slice.name,
         storage: storageAssignments[web3Slice.name],
-        blacklist: ["drivers"],
+        blacklist: ["_cookie", "drivers"],
       },
       web3Slice.reducer
     ),
@@ -71,6 +70,7 @@ export function persistReducers(storageAssignments: StorageAssignments) {
       {
         key: decadeStatsSlice.name,
         storage: storageAssignments[decadeStatsSlice.name],
+        blacklist: ["_cookie"],
       },
       decadeStatsSlice.reducer
     ),

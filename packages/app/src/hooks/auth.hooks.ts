@@ -76,7 +76,7 @@ export function useLogout() {
 
   useEffect(() => {
     if (!!data && !data.authId) {
-      dispatch(setAuth(authInitialState));
+      dispatch(setAuth(authInitialState["auth"]));
     }
   }, [data?.authId]);
 
