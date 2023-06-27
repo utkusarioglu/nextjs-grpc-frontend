@@ -12,6 +12,8 @@ import {
 } from "ui";
 import { useLogin, type LoginStatus } from "../hooks/auth.hooks";
 import { useRouter } from "solito/router";
+import { ErrorBoundary } from "react-error-boundary";
+import { ScreenFallback } from "../fallbacks/Screen.fallback";
 
 type InputFieldProps = {
   // TODO remove `any type
@@ -31,6 +33,7 @@ const InputField: FC<InputFieldProps> = ({
   const errors = formik.errors[fieldName];
   const status = !!touched && !!errors ? "error" : "idle";
   const colors = setFormFieldColors(status);
+
   return (
     <YStack
       backgroundColor={colors.bg}
@@ -152,59 +155,61 @@ const LoginScreen = () => {
   const { back } = useRouter();
 
   return (
-    <YStack fullscreen>
-      <Form
-        flexGrow={1}
-        paddingTop="$4"
-        paddingBottom="$4"
-        onSubmit={formik.handleSubmit}
-        space="$2"
-        justifyContent="center"
-      >
-        <InputField
-          formik={formik}
-          fieldName="username"
-          label="Username"
-          autoCorrect={false}
-          inputMode="text"
-          secureTextEntry={false}
-          textContentType="username"
-        />
-        <InputField
-          formik={formik}
-          fieldName="password"
-          label="Password"
-          autoCorrect={false}
-          inputMode="text"
-          secureTextEntry={true}
-          textContentType="password"
-        />
-        <XStack
-          justifyContent="space-between"
-          paddingLeft="$4"
-          paddingRight="$4"
-          paddingBottom="$2"
-          paddingTop="$2"
+    <ErrorBoundary FallbackComponent={ScreenFallback}>
+      <YStack fullscreen>
+        <Form
+          flexGrow={1}
+          paddingTop="$4"
+          paddingBottom="$4"
+          onSubmit={formik.handleSubmit}
+          space="$2"
+          justifyContent="center"
         >
-          <Label htmlFor="remember-me">Remember me</Label>
-          <Switch
-            id="remember-me"
-            disabled={formik.isSubmitting}
-            onCheckedChange={(rememberMe) =>
-              formik.setFieldValue("rememberMe", rememberMe)
-            }
-            checked={formik.values.rememberMe}
+          <InputField
+            formik={formik}
+            fieldName="username"
+            label="Username"
+            autoCorrect={false}
+            inputMode="text"
+            secureTextEntry={false}
+            textContentType="username"
+          />
+          <InputField
+            formik={formik}
+            fieldName="password"
+            label="Password"
+            autoCorrect={false}
+            inputMode="text"
+            secureTextEntry={true}
+            textContentType="password"
+          />
+          <XStack
+            justifyContent="space-between"
+            paddingLeft="$4"
+            paddingRight="$4"
+            paddingBottom="$2"
+            paddingTop="$2"
           >
-            <Switch.Thumb animation="fast" />
-          </Switch>
-        </XStack>
+            <Label htmlFor="remember-me">Remember me</Label>
+            <Switch
+              id="remember-me"
+              disabled={formik.isSubmitting}
+              onCheckedChange={(rememberMe) =>
+                formik.setFieldValue("rememberMe", rememberMe)
+              }
+              checked={formik.values.rememberMe}
+            >
+              <Switch.Thumb animation="fast" />
+            </Switch>
+          </XStack>
 
-        <FormSubmit formik={formik} status={status} />
-      </Form>
-      <YStack padding="$4">
-        <Button onPress={() => back()}>Try another method</Button>
+          <FormSubmit formik={formik} status={status} />
+        </Form>
+        <YStack padding="$4">
+          <Button onPress={() => back()}>Try another method</Button>
+        </YStack>
       </YStack>
-    </YStack>
+    </ErrorBoundary>
   );
 };
 

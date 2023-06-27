@@ -26,7 +26,7 @@ function App(appProps: AppPropsWithLayout) {
   const { store, props } = wrapper.useWrappedStore(appProps);
 
   return (
-    // @ts-expect-error #1
+    /* @ts-expect-error #1 */
     <StoreProvider store={store} loadingViewComponent={null}>
       <ClientSideRouteGuardProvider>
         <WebThemeProvider {...props} />

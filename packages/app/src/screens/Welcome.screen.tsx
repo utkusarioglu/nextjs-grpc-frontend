@@ -10,6 +10,8 @@ import {
   useSelector,
   selectIsAuthChecksComplete,
 } from "store";
+import { ErrorBoundary } from "react-error-boundary";
+import { ScreenFallback } from "../fallbacks/Screen.fallback";
 
 const WelcomeScreen = () => {
   const [isComponentsEnabled, setIsComponentsEnabled] = useState(false);
@@ -29,39 +31,41 @@ const WelcomeScreen = () => {
   }, [isInitializedGuest]);
 
   return (
-    <HeroLoadingLayout
-      {...(isComponentsEnabled && {
-        topComponent: (
-          <Stack
-            animation="slow"
-            enterStyle={{ opacity: 0 }}
-            opacity={1}
-            alignItems="flex-end"
-            position="absolute"
-            top="$4"
-            right="$4"
-            left="$4"
-          >
-            <CompactLanguageChangerView />
-          </Stack>
-        ),
-        mottoComponent: <WelcomeScreenMottoView />,
-        bottomComponent: (
-          <Stack
-            animation="slow"
-            position="absolute"
-            enterStyle={{ opacity: 0 }}
-            opacity={1}
-            bottom={0}
-            left={0}
-            right={0}
-            padding="$4"
-          >
-            <LoginOptionsView />
-          </Stack>
-        ),
-      })}
-    />
+    <ErrorBoundary FallbackComponent={ScreenFallback}>
+      <HeroLoadingLayout
+        {...(isComponentsEnabled && {
+          topComponent: (
+            <Stack
+              animation="slow"
+              enterStyle={{ opacity: 0 }}
+              opacity={1}
+              alignItems="flex-end"
+              position="absolute"
+              top="$4"
+              right="$4"
+              left="$4"
+            >
+              <CompactLanguageChangerView />
+            </Stack>
+          ),
+          mottoComponent: <WelcomeScreenMottoView />,
+          bottomComponent: (
+            <Stack
+              animation="slow"
+              position="absolute"
+              enterStyle={{ opacity: 0 }}
+              opacity={1}
+              bottom={0}
+              left={0}
+              right={0}
+              padding="$4"
+            >
+              <LoginOptionsView />
+            </Stack>
+          ),
+        })}
+      />
+    </ErrorBoundary>
   );
 };
 

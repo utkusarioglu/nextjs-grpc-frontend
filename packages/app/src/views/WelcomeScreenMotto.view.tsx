@@ -8,6 +8,7 @@ export const WelcomeScreenMottoView = () => {
     <Paragraph
       animation="slow"
       enterStyle={{ opacity: 0 }}
+      opacity={1}
       textAlign="center"
     >{t`guest:WelcomeScreen.Motto`}</Paragraph>
   );

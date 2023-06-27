@@ -4,6 +4,8 @@ import { useRouter } from "solito/router";
 import { type Web3ConnectionOptionsProps, web3Service } from "web3";
 import { useSelector, selectDrivers } from "store";
 import BalanceLayout from "../layouts/Balance.layout";
+import { ErrorBoundary } from "react-error-boundary";
+import { ScreenFallback } from "../fallbacks/Screen.fallback";
 
 interface EvmScreenProps {
   // EvmConnectionOptionsComponent: FC<Web3ConnectionOptionsProps>;
@@ -19,24 +21,26 @@ const EvmScreen: FC<EvmScreenProps> = () => {
   const driverStates = useSelector(selectDrivers);
 
   return (
-    <YStack fullscreen>
-      <YStack
-        flexGrow={1}
-        padding="$4"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <H1>Evm</H1>
-        <Paragraph>Login with evm identity</Paragraph>
-        <Spacer />
-        <EvmConnectionOptions driverStates={driverStates} />
-        <Spacer />
+    <ErrorBoundary FallbackComponent={ScreenFallback}>
+      <YStack fullscreen>
+        <YStack
+          flexGrow={1}
+          padding="$4"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <H1>Evm</H1>
+          <Paragraph>Login with evm identity</Paragraph>
+          <Spacer />
+          <EvmConnectionOptions driverStates={driverStates} />
+          <Spacer />
+        </YStack>
+        <BalanceLayout />
+        <YStack padding="$4">
+          <Button onPress={() => back()}>Try another method</Button>
+        </YStack>
       </YStack>
-      <BalanceLayout />
-      <YStack padding="$4">
-        <Button onPress={() => back()}>Try another method</Button>
-      </YStack>
-    </YStack>
+    </ErrorBoundary>
   );
 };
 

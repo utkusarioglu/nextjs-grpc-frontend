@@ -15,6 +15,7 @@ interface RouteProtectorProps {
 export async function routeProtector({ store, props }: RouteProtectorProps) {
   const resolvedUrl = props.resolvedUrl;
   const state = store.getState();
+  const isLoggedIn = state.app._computed.isLoggedIn;
   const authId = state.app.auth.authId;
   const isOnAGuestPath = GUEST_PATHS.includes(resolvedUrl);
 
@@ -23,12 +24,13 @@ export async function routeProtector({ store, props }: RouteProtectorProps) {
 
   try {
     const hasValidSession = await authService.validateWithAuthId(authId);
+    const isAuthorized = isLoggedIn && hasValidSession;
 
-    if (hasValidSession && isOnLogoutPath) {
+    if (isAuthorized && isOnLogoutPath) {
       store.dispatch(setAuth({ username: "", authId: "" }));
     }
 
-    if (hasValidSession && isOnAGuestPath) {
+    if (isAuthorized && isOnAGuestPath) {
       return {
         redirect: {
           permanent: false,
@@ -37,7 +39,7 @@ export async function routeProtector({ store, props }: RouteProtectorProps) {
       };
     }
 
-    if (!hasValidSession && !isOnAGuestPath) {
+    if (!isAuthorized && !isOnAGuestPath) {
       store.dispatch(setAuth({ authId: "", username: "" }));
       console.log("WILL REDIRECT");
       return {
