@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { PrivateRootState } from "../types/store.types";
-import { HYDRATE } from "../constants";
+import {
+  HYDRATE,
+  SET_ANDROID_DEFAULTS,
+  SET_WEB_CLIENT_DEFAULTS,
+} from "../constants";
 import type {
   Web3DriverStateUpdate,
   Web3DriverMetamaskState,
@@ -10,6 +14,10 @@ import type {
 } from "web3";
 
 export interface SliceState {
+  _cookie: {
+    rehydrated: boolean;
+  };
+  _defaultsSet: boolean;
   drivers: {
     metamask: Web3DriverMetamaskState;
     walletConnect: Web3DriverWalletConnectState;
@@ -17,6 +25,10 @@ export interface SliceState {
 }
 
 const initialState: SliceState = {
+  _cookie: {
+    rehydrated: false,
+  },
+  _defaultsSet: false,
   drivers: {
     metamask: {
       type: "metamask",
@@ -64,19 +76,35 @@ export const slice = createSlice({
       };
     },
   },
-  ...(process.env.TAMAGUI_TARGET === "web" && {
-    extraReducers: {
-      [HYDRATE]: (state: any, action: any) => {
-        // console.log(`HYDRATE ${NAME}`, !!global.window, {
-        //   ...action.payload[NAME],
-        // });
-        return {
-          ...state,
-          ...action.payload[NAME],
-        };
-      },
+  extraReducers: {
+    [HYDRATE]: (state: any, action: any) => {
+      if (!action.payload[NAME]) {
+        return state;
+      }
+      return {
+        ...state,
+        ...action.payload[NAME],
+        _cookie: {
+          rehydrated: true,
+        },
+      };
     },
-  }),
+    [SET_ANDROID_DEFAULTS]: (state) => {
+      return {
+        ...state,
+        _cookie: {
+          rehydrated: true,
+        },
+        _defaultsSet: true,
+      };
+    },
+    [SET_WEB_CLIENT_DEFAULTS]: (state) => {
+      return {
+        ...state,
+        _defaultsSet: true,
+      };
+    },
+  },
 });
 
 const { actions, name } = slice;

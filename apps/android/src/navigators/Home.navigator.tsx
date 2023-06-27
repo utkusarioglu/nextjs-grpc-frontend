@@ -4,6 +4,7 @@ import UserScreen from "app/src/screens/User.screen";
 import DecadeStatsScreen from "app/src/screens/DecadeStats.screen";
 import { Icons } from "ui";
 import TabBarRn from "../views/tab-bar/TabBar.rn.view";
+import { useTranslation } from "i18n";
 
 type HomeNavigatorProps = {
   feed: undefined;
@@ -16,14 +17,17 @@ type HomeNavigatorProps = {
 const Tab = createBottomTabNavigator<HomeNavigatorProps>();
 
 const HomeNavigator = () => {
+  const { t } = useTranslation(["rest"]);
+
   return (
     <Tab.Navigator tabBar={props => <TabBarRn {...props} />}>
       <Tab.Screen
         name="feed"
         component={HomeScreen}
         options={{
+          title: t`rest:TabBar.Feed`,
           headerShown: false,
-          tabBarLabel: "Feed",
+          tabBarLabel: t`rest:TabBar.Feed`,
           tabBarIcon: () => <Icons.Home />,
         }}
       />
@@ -31,7 +35,8 @@ const HomeNavigator = () => {
         name="decadeStats"
         component={DecadeStatsScreen}
         options={{
-          tabBarLabel: "Decade Stats",
+          title: t`rest:TabBar.DecadeStats`,
+          tabBarLabel: t`rest:TabBar.DecadeStats`,
           tabBarIcon: () => <Icons.AlertOctagon />,
         }}
       />
@@ -39,7 +44,8 @@ const HomeNavigator = () => {
         name="user"
         component={UserScreen}
         options={{
-          tabBarLabel: "User",
+          title: t`rest:TabBar.User`,
+          tabBarLabel: t`rest:TabBar.User`,
           tabBarIcon: () => <Icons.User />,
         }}
       />

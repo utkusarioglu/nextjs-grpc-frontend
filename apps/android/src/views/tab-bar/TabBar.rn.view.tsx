@@ -8,13 +8,6 @@ import {
 import { TabButtonRnView } from "./TabButton.rn.view";
 import { ICONS } from "./constants";
 
-function computeLabel(
-  options: BottomTabNavigationOptions,
-  route: { name: string },
-): string {
-  return options.title !== undefined ? options.title : route.name;
-}
-
 /**
  * @dev
  * #1 Most parameters used in RN and web components for the tab bar are
@@ -39,7 +32,6 @@ function TabBarRn({ state, descriptors, navigation }: BottomTabBarProps) {
 
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
-          const label = computeLabel(options, route);
           const isActive = state.index === index;
           const Icon = ICONS[route.name as keyof typeof ICONS];
 
@@ -68,8 +60,8 @@ function TabBarRn({ state, descriptors, navigation }: BottomTabBarProps) {
 
           return (
             <TabButtonRnView
-              key={label}
-              label={label}
+              key={route.key}
+              label={options.title || "-"}
               isActive={isActive}
               options={options}
               onPress={onPress}

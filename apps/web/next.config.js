@@ -1,15 +1,45 @@
 const { withTamagui } = require("@tamagui/next-plugin");
+const yaml = require("js-yaml");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = function (_name, { defaultConfig }) {
   const nextConfig = {
     ...defaultConfig,
     distDir: "dist",
     reactStrictMode: true,
-    transpilePackages: ["ui", "store", "app"],
+    transpilePackages: ["ui", "store", "app", "i18n"],
     swcMinify: true,
     images: {},
     experimental: {
       instrumentationHook: true,
+    },
+    webpack: (config, options) => {
+      const PUBLIC_PATH = `${process.env.PROJECT_ROOT_ABSPATH}/frontend/apps/web/public/locales`;
+      const TRANSLATIONS_PATH = `${process.env.PROJECT_ROOT_ABSPATH}/frontend/packages/i18n/locales`;
+      config.plugins.push(
+        new CopyWebpackPlugin({
+          patterns: [
+            {
+              from: `${TRANSLATIONS_PATH}/**/*.yml`,
+              to({ context, absoluteFilename }) {
+                const lang = absoluteFilename
+                  .split("/")
+                  .slice(-2, -1)
+                  .join("/");
+                return `${PUBLIC_PATH}/${lang}/[name].json`;
+              },
+              transform(content) {
+                const json = JSON.stringify(
+                  yaml.load(content.toString("utf8"))
+                );
+                return Buffer.from(json, "utf8");
+              },
+            },
+          ],
+        })
+      );
+
+      return config;
     },
   };
 

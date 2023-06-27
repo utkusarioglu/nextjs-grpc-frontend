@@ -102,6 +102,8 @@ env:
 
   NEXT_PUBLIC_WEB_APP_URL: https://nextjs-grpc.utkusarioglu.com
   NEXT_PUBLIC_API_V1_URL: https://nextjs-grpc.utkusarioglu.com/api/v1
+    
+  I18N_DEBUG_ENABLED: false
 
 cloudProvider:
   isLocal: false

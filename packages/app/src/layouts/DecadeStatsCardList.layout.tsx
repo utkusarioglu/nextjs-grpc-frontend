@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import { YStack, Text, DecadeStatsCardView, ScrollView } from "ui";
+import { YStack, Text, DecadeStatsCardView, Spacer } from "ui";
 import { useInflationDecadeStats, useSelector, selectCountryList } from "store";
 
 interface DecadeStatsCardListLayoutProps {}
@@ -19,7 +19,7 @@ export const DecadeStatsCardListLayout: FC<
   }
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Text textAlign="center">Loading...</Text>;
   }
 
   if (!data || !data.decadeStats.length) {
@@ -31,6 +31,7 @@ export const DecadeStatsCardListLayout: FC<
       {data.decadeStats.map((item) => (
         <DecadeStatsCardView key={item.countryCode} item={item} />
       ))}
+      <Spacer size="$12" />
     </YStack>
   );
 };

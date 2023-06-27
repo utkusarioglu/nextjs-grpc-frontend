@@ -1,37 +1,67 @@
-import { H1, Paragraph, YStack, Button } from "ui";
-import { useRouter } from "solito/router";
-import { useTranslation } from "i18n";
+import { useState, useEffect } from "react";
+import { Stack } from "ui";
+import { HeroLoadingLayout } from "../layouts/HeroLoading.layout";
+import { CompactLanguageChangerView } from "../views/CompactLanguageChanger.view";
+import { LoginOptionsView } from "../views/LoginOptions.view";
+import { WelcomeScreenMottoView } from "../views/WelcomeScreenMotto.view";
+import {
+  selectIsAppInitialized,
+  selectIsLoggedIn,
+  useSelector,
+  selectIsAuthChecksComplete,
+} from "store";
 
 const WelcomeScreen = () => {
-  const { push } = useRouter();
-  const { t } = useTranslation();
+  const [isComponentsEnabled, setIsComponentsEnabled] = useState(false);
+  const isAppInitialized = useSelector(selectIsAppInitialized);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isAuthChecksComplete = useSelector(selectIsAuthChecksComplete);
+
+  const isInitializedGuest =
+    isAppInitialized && isAuthChecksComplete && !isLoggedIn;
+
+  useEffect(() => {
+    if (isInitializedGuest) {
+      setTimeout(() => {
+        setIsComponentsEnabled(true);
+      }, 1000);
+    }
+  }, [isInitializedGuest]);
 
   return (
-    <YStack padding="$4" fullscreen>
-      <YStack flexGrow={1} alignItems="center" justifyContent="center">
-        <H1>NextJS gRPC</H1>
-        <Paragraph>
-          {t("main.header")}
-          This is a technical project with no predetermined use case
-        </Paragraph>
-      </YStack>
-
-      <YStack
-        space
-        position="absolute"
-        bottom={0}
-        left={0}
-        right={0}
-        padding="$4"
-      >
-        <Button onPress={() => push({ pathname: "/login" })}>
-          Login with Userpass
-        </Button>
-        <Button onPress={() => push({ pathname: "/evm" })}>
-          Login EVM identity
-        </Button>
-      </YStack>
-    </YStack>
+    <HeroLoadingLayout
+      {...(isComponentsEnabled && {
+        topComponent: (
+          <Stack
+            animation="slow"
+            enterStyle={{ opacity: 0 }}
+            opacity={1}
+            alignItems="flex-end"
+            position="absolute"
+            top="$4"
+            right="$4"
+            left="$4"
+          >
+            <CompactLanguageChangerView />
+          </Stack>
+        ),
+        mottoComponent: <WelcomeScreenMottoView />,
+        bottomComponent: (
+          <Stack
+            animation="slow"
+            position="absolute"
+            enterStyle={{ opacity: 0 }}
+            opacity={1}
+            bottom={0}
+            left={0}
+            right={0}
+            padding="$4"
+          >
+            <LoginOptionsView />
+          </Stack>
+        ),
+      })}
+    />
   );
 };
 

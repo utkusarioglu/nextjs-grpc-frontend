@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build-release": "cd android && ./gradlew assembleRelease",
+    "build:release": "cd android && ./gradlew assembleRelease",
     "adb-connect": "adb connect $ANDROID_TARGET_DEVICE",
     "rn-start": "TAMAGUI_TARGET=native react-native start",
     "rn-android": "TAMAGUI_TARGET=native react-native run-android --no-packager --active-arch-only",
@@ -24,6 +24,7 @@
     "@web3modal/react-native": "^1.0.0-alpha.8",
     "app": "*",
     "buffer": "^6.0.3",
+    "i18n": "*",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-dotenv": "^3.4.8",

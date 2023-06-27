@@ -1,11 +1,8 @@
 import EvmScreen from "app/src/screens/Evm.screen";
-import { routeProtector } from "src/utils/route.util";
-import { wrapper } from "src/store";
+import { standardGetServerSideProps } from "src/utils/next.utils";
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => {
-  return async (props) => {
-    return routeProtector({ store, props });
-  };
+export const getServerSideProps = standardGetServerSideProps({
+  i18n: { namespaces: ["global"] },
 });
 
 export default EvmScreen;

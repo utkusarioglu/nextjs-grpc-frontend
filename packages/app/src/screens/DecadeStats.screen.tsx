@@ -1,4 +1,4 @@
-import { YStack, Spacer, Input, Paragraph, ScrollView } from "ui";
+import { YStack, Spacer, Input, Paragraph, ScrollView, Stack } from "ui";
 import {
   setCountries,
   useSelector,
@@ -12,13 +12,15 @@ const DecadeStatsScreen = () => {
   const dispatch = useDispatch();
   return (
     <ScrollView>
-      <Paragraph>Api v1: {process.env.NEXT_PUBLIC_API_V1_URL}</Paragraph>
-      <Input
-        onChangeText={(e) => {
-          return dispatch(setCountries(e));
-        }}
-        value={countryList}
-      />
+      <Stack paddingLeft="$4" paddingRight="$4">
+        <Paragraph>Api v1: {process.env.NEXT_PUBLIC_API_V1_URL}</Paragraph>
+        <Input
+          onChangeText={(e) => {
+            return dispatch(setCountries(e));
+          }}
+          value={countryList}
+        />
+      </Stack>
       <Spacer />
       <DecadeStatsCardListLayout />
     </ScrollView>

@@ -12,6 +12,7 @@ import {
 } from "ui";
 import { useRouter } from "solito/router";
 import { useRouter as useNextRouter } from "next/router";
+import { useTranslation } from "i18n";
 
 interface HomeTabsLayoutProps {
   page: ReactElement;
@@ -48,6 +49,7 @@ const HomeTabsLayout: FC<HomeTabsLayoutProps> = ({ page }) => {
   const { push } = useRouter();
   const { pathname } = useNextRouter();
   const [indicators, setIndicators] = useState<Indicators>(INDICATORS_INITIAL);
+  const { t } = useTranslation();
 
   const handleOnInteraction: OnInteraction =
     (path, index) => (type, layout) => {
@@ -104,6 +106,7 @@ const HomeTabsLayout: FC<HomeTabsLayoutProps> = ({ page }) => {
           pathname={pathname}
           onInteraction={handleOnInteraction}
           indicators={indicators}
+          t={t}
         />
       </Stack>
     </Tabs>

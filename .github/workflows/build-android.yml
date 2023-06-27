@@ -44,14 +44,17 @@ jobs:
         run: |
           ls -al
           cat package.json
-          yarn
+          yarn --immutable
+          yarn plugin import workspace-tools
+          cd ${{ env.APP_RELPATH }}
+          yarn react-native-asset
 
       - name: Build android
         working-directory: ${{ env.REPO_RELPATH }}/${{ env.APP_RELPATH }}
         run: |
-          yarn build-release
+          yarn build:release
 
-      - name: Create variables
+      - name: Create apk variables
         id: variables
         working-directory: ${{ env.REPO_RELPATH }}
         shell: bash

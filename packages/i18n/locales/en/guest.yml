@@ -1,0 +1,5 @@
+WelcomeScreen:
+  Motto: This is a technical project with no predetermined use case
+  Login:
+    WithUserPass: Login with UserPass
+    WithEvmIdentity: Login with EVM identity

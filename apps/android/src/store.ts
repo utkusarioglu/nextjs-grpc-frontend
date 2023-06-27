@@ -16,7 +16,7 @@ import {
 } from "store";
 
 const storageAssignments = {
-  auth: EncryptedStorage,
+  app: EncryptedStorage,
   decadeStats: EncryptedStorage,
   web3: EncryptedStorage,
 };

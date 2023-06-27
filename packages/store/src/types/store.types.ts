@@ -12,7 +12,7 @@ interface StorageAssignment {
 }
 
 export type StorageAssignments = Record<
-  "auth" | "decadeStats" | "web3",
+  "app" | "decadeStats" | "web3",
   StorageAssignment
 >;
 
@@ -22,18 +22,13 @@ export type WithPersistor = {
 
 export type AfterRehydration = (store: PrivateStore) => void | Promise<void>;
 
-// export type PersistedReducerDefinition = {
-//   // key: keyof StorageAssignments;
-//   slice: Slice;
-// } & Omit<PersistConfig<Slice>, "storage" | "key">;
-
 export interface StorageFactoryProps {
   storageAssignments: StorageAssignments;
   afterRehydration: AfterRehydration;
 }
 
 const mockStorageAssignments = {
-  auth: localStorage,
+  app: localStorage,
   web3: localStorage,
   decadeStats: localStorage,
 };

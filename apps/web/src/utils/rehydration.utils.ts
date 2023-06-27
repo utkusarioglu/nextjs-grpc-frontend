@@ -1,5 +1,8 @@
 import type { Store } from "src/store";
-import { updateDriver } from "store";
+import {
+  setWebClientDefaults,
+  updateDriver,
+} from "store";
 import {
   web3Service,
   WALLET_CONNECT_PROJECT_ID,
@@ -12,6 +15,13 @@ import UniversalProvider from "@walletconnect/universal-provider";
 import { Web3Modal } from "@web3modal/standalone";
 
 export async function afterRehydration(store: Store) {
+  if (!!global.window) {
+    store.dispatch(setWebClientDefaults());
+  }
+  web3Rehydration(store);
+}
+
+const web3Rehydration = async (store: Store) => {
   if (!global.window) {
     return;
   }
@@ -37,4 +47,4 @@ export async function afterRehydration(store: Store) {
       }),
     ])
     .initializeAll();
-}
+};

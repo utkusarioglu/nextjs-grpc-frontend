@@ -6,7 +6,7 @@ import tamaguiConfig from "../tamagui.config";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootNavigator } from "./navigators/Root.navigator";
 import { StoreProvider } from "store";
-import { useColorScheme } from "react-native";
+import { useColorScheme, Text } from "react-native";
 import { useMemo } from "react";
 import { makeStore } from "./store";
 // @ts-expect-error: Lacking type definition by wallet-connect

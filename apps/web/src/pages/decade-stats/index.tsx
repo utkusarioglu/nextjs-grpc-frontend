@@ -1,13 +1,10 @@
 import { type NextPageWithLayout } from "../_app";
 import DecadeStatsScreen from "app/src/screens/DecadeStats.screen";
-import { routeProtector } from "src/utils/route.util";
-import { wrapper } from "src/store";
 import HomeTabsLayout from "src/components/layouts/HomeTabs.layout";
+import { standardGetServerSideProps } from "src/utils/next.utils";
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => {
-  return async (props) => {
-    return routeProtector({ store, props });
-  };
+export const getServerSideProps = standardGetServerSideProps({
+  i18n: { namespaces: ["global"] },
 });
 
 (DecadeStatsScreen as NextPageWithLayout).getLayout = (page) => (

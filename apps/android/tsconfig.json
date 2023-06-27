@@ -7,7 +7,8 @@
       "ui/*": ["../../packages/ui/*"],
       "app/*": ["../../packages/app/*"],
       "store/*": ["../../packages/store/*"],
-      "web3": ["../../packages/web3"]
+      "web3": ["../../packages/web3"],
+      "i18n": ["../../packages/i18n"]
     }
   },
   "references": [
@@ -22,6 +23,9 @@
     },
     {
       "path": "../../packages/web3"
+    },
+    {
+      "path": "../../packages/i18n"
     }
   ]
 }
