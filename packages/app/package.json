@@ -6,6 +6,7 @@
   "dependencies": {
     "formik": "^2.4.0",
     "i18n": "*",
+    "react-error-boundary": "^4.0.10",
     "solito": "^3.2.6",
     "store": "*",
     "ui": "*",
