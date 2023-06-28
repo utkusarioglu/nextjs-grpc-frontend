@@ -1,6 +1,8 @@
+const path = require("path");
 const { withTamagui } = require("@tamagui/next-plugin");
 const yaml = require("js-yaml");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const StatoscopeWebpackPlugin = require("@statoscope/webpack-plugin").default;
 
 module.exports = function (_name, { defaultConfig }) {
   const nextConfig = {
@@ -38,6 +40,21 @@ module.exports = function (_name, { defaultConfig }) {
           ],
         })
       );
+
+      if (config.mode === "production") {
+        const epoch = Date.now().toString().slice(0, -3);
+        config.plugins.push(
+          new StatoscopeWebpackPlugin({
+            saveReportTo: `./.statoscope/${epoch}/[name]-[hash].html`,
+            saveStatsTo: `./.statoscope/${epoch}/[name]-[hash].json`,
+            open: false,
+            statsOptions: {
+              all: true,
+            },
+            context: path.resolve(config.context, "../../"),
+          })
+        );
+      }
 
       return config;
     },
