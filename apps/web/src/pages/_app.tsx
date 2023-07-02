@@ -1,21 +1,11 @@
-import { type NextPage } from "next";
-import { AppProps } from "next/app";
-import { WebThemeProvider } from "../components/providers/WebTheme.provider";
-import { type ReactElement, type ReactNode } from "react";
-import { StoreProvider } from "store";
-import { wrapper } from "src/store";
-import ClientSideRouteGuardProvider from "../components/providers/ClientSideRouteGuard.provider";
-import { createWebConfig } from "i18n";
-import { appWithI18Next } from "ni18n";
-import LanguageDetector from "i18next-browser-languagedetector";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
+import { AppPropsWithLayout } from "../types/next-js.types";
+import { AppSkeleton } from "src/components/skeletons/App.skeleton";
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
-
-export type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
+const LazyNextProvider = dynamic(
+  () => import("../components/providers/NextProvider")
+);
 
 /**
  * @dev
@@ -23,21 +13,17 @@ export type AppPropsWithLayout = AppProps & {
  * work to resolve.
  */
 function App(appProps: AppPropsWithLayout) {
-  const { store, props } = wrapper.useWrappedStore(appProps);
-
   return (
-    /* @ts-expect-error #1 */
-    <StoreProvider store={store} loadingViewComponent={null}>
-      <ClientSideRouteGuardProvider>
-        <WebThemeProvider {...props} />
-      </ClientSideRouteGuardProvider>
-    </StoreProvider>
+    <Suspense
+      fallback={
+        <AppSkeleton>
+          <div style={{ color: "#F00" }}>Next Provider</div>
+        </AppSkeleton>
+      }
+    >
+      <LazyNextProvider {...appProps} />
+    </Suspense>
   );
 }
 
-export default appWithI18Next(
-  App,
-  createWebConfig({
-    use: [LanguageDetector],
-  })
-);
+export default App;

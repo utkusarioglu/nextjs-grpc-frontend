@@ -1,11 +1,27 @@
 import { type FC } from "react";
-import { YStack, Text, DecadeStatsCardView, Spacer } from "ui";
+import {
+  YStack,
+  Text,
+  DecadeStatsCardView,
+  Spacer,
+  DecadeStatsCardSkeleton,
+  Paragraph,
+} from "ui";
 import { useInflationDecadeStats, useSelector, selectCountryList } from "store";
 
 interface DecadeStatsCardListLayoutProps {}
-export const DecadeStatsCardListLayout: FC<
-  DecadeStatsCardListLayoutProps
-> = () => {
+
+export const DecadeStatsCardListLayoutSkeleton = () => (
+  <>
+    {Array(3)
+      .fill(null)
+      .map((_, i) => (
+        <DecadeStatsCardSkeleton key={i} />
+      ))}
+  </>
+);
+
+const DecadeStatsCardListLayout: FC<DecadeStatsCardListLayoutProps> = () => {
   const countryList = useSelector(selectCountryList);
   const countriesArray = countryList
     .split(",")
@@ -19,19 +35,32 @@ export const DecadeStatsCardListLayout: FC<
   }
 
   if (isLoading) {
-    return <Text textAlign="center">Loading...</Text>;
+    return (
+      <>
+        {Array(3)
+          .fill(null)
+          .map((_, i) => (
+            <DecadeStatsCardSkeleton key={i} />
+          ))}
+      </>
+    );
   }
 
   if (!data || !data.decadeStats.length) {
-    return <Text>Empty...</Text>;
+    return <Paragraph textAlign="center">Empty...</Paragraph>;
   }
 
   return (
     <YStack>
-      {data.decadeStats.map((item) => (
-        <DecadeStatsCardView key={item.countryCode} item={item} />
+      {data.decadeStats.map((item, index) => (
+        <DecadeStatsCardView
+          key={item.countryCode + item.decade}
+          item={item}
+          index={index}
+        />
       ))}
-      <Spacer size="$12" />
     </YStack>
   );
 };
+
+export default DecadeStatsCardListLayout;

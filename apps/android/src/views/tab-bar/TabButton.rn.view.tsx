@@ -1,7 +1,9 @@
 import { FC } from "react";
 import { TouchableOpacity } from "react-native";
-import { YStack, TabCircle, Spacer, Paragraph, RAW_STYLES } from "ui";
+import { YStack, Spacer, Paragraph } from "ui";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
+import { RAW_STYLES } from "ui/src/components/tab-bar/constants";
+import { TabCircle } from "ui/src/components/tab-bar/TabCircle.view";
 
 interface TabButtonRnViewProps {
   label: string;

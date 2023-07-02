@@ -6,7 +6,7 @@ import tamaguiConfig from "../tamagui.config";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootNavigator } from "./navigators/Root.navigator";
 import { StoreProvider } from "store";
-import { useColorScheme, Text } from "react-native";
+import { useColorScheme } from "react-native";
 import { useMemo } from "react";
 import { makeStore } from "./store";
 // @ts-expect-error: Lacking type definition by wallet-connect
@@ -51,10 +51,9 @@ const App = () => {
               <SolitoImageProvider
                 // @ts-ignore
                 nextJsURL={process.env.NEXT_PUBLIC_WEB_APP_URL!}
-                // loader={({ quality, width, src }) => {
-                //   return `https://cloudinary.com/${src}?w=${width}&q=${quality}`;
-                //             }}
-              >
+                loader={({ quality, width, src }) => {
+                  return [process.env.NEXT_PUBLIC_WEB_APP_URL, src].join("");
+                }}>
                 <RootNavigator />
               </SolitoImageProvider>
             </UiProvider>

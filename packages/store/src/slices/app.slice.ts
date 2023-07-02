@@ -19,6 +19,8 @@ import {
  * there is nothing in the way of normal operations
  * #7 Set to true when the cookie persistence middleware has rehydrated the
  * content
+ * #8 Set to true when at least one of th web3 drivers are in initialized
+ * state
  */
 export interface SliceState {
   auth: {
@@ -37,6 +39,7 @@ export interface SliceState {
     isAuthChecksComplete: boolean; // #4
     isUserPassAuthorized: boolean; // #1
     isWeb3Authorized: boolean; // #2
+    isWeb3Initialized: boolean; // #8
     isLoggedIn: boolean; // #3
   };
 }
@@ -58,6 +61,7 @@ export const initialState: SliceState = {
 
     isUserPassAuthorized: false,
     isWeb3Authorized: false,
+    isWeb3Initialized: false,
     isLoggedIn: false,
   },
 };

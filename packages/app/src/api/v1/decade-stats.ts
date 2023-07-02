@@ -11,7 +11,11 @@ export async function inflationApi(codes: string[]) {
   try {
     if (process.env.MOCK_ENDPOINTS === "true") {
       const mockData = await MockData.decadeStats(codes);
-      return { decadeStats: mockData };
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ decadeStats: mockData });
+        }, 3000);
+      });
     }
 
     const inflationService = new InflationService(tlsProps);

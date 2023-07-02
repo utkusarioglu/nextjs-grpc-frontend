@@ -152,7 +152,7 @@ const FormSubmit: FC<FormSubmitProps> = ({ formik, status }) => {
 
 const LoginScreen = () => {
   const { formik, status } = useLogin();
-  const { back } = useRouter();
+  const { back, push } = useRouter();
 
   return (
     <ErrorBoundary FallbackComponent={ScreenFallback}>
@@ -205,8 +205,10 @@ const LoginScreen = () => {
 
           <FormSubmit formik={formik} status={status} />
         </Form>
-        <YStack padding="$4">
-          <Button onPress={() => back()}>Try another method</Button>
+
+        <YStack padding="$4" space>
+          <Button onPress={() => back()}>Go Back</Button>
+          <Button onPress={() => push("/welcome")}>Go to Welcome</Button>
         </YStack>
       </YStack>
     </ErrorBoundary>

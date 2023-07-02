@@ -13,8 +13,11 @@ interface StandardGetServerSidePropsProps {
 export function standardGetServerSideProps({
   i18n: { namespaces },
 }: StandardGetServerSidePropsProps) {
+  console.log("gss called");
   return wrapper.getServerSideProps((store) => {
+    console.log("wrapper called");
     return async (props) => {
+      console.log("async called");
       const translations = await loadTranslations(
         createWebConfig({ use: [LanguageDetector] }),
         props.locale,

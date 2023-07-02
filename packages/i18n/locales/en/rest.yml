@@ -1,5 +1,19 @@
 FeedScreen:
   Greeting: Howdy!
+  ImageAlt: A cool image, imported locally.
+  HorizontalImage:
+    Placeholder: Image
+  Posts:
+    Placeholder: 
+      Content:
+        AltText: Ultrices ultrices urna 
+      Username: Username
+      Header: Donec tempor eget augue
+      Body: |
+        Fusce vel dapibus quam, eu dignissim magna. Nunc nec dictum purus.
+        Morbi ultrices ultrices urna pellentesque lacinia. Donec magna 
+        sapien, volutpat nec elementum ac, porta vitae justo. Nulla 
+        eleifend tellus sed elit posuere molestie. 
 
 SettingsScreen:
   LanguageOptions: 
