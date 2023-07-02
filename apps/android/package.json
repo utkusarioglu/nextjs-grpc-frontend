@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build:release": "cd android && ./gradlew assembleRelease",
+    "install:release": "adb install android/app/build/outputs/apk/release/app-release.apk",
     "adb-connect": "adb connect $ANDROID_TARGET_DEVICE",
     "rn-start": "TAMAGUI_TARGET=native react-native start",
     "rn-android": "TAMAGUI_TARGET=native react-native run-android --no-packager --active-arch-only",

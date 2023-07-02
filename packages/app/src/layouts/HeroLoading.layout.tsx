@@ -14,7 +14,7 @@ export const HeroLoadingLayout: FC<HeroLoadingLayoutProps> = ({
   mottoComponent = null,
 }) => {
   return (
-    <YStack padding="$4" fullscreen>
+    <YStack padding="$4" fullscreen backgroundColor="$background">
       <YStack flexGrow={1} alignItems="center" justifyContent="flex-end">
         <H1>{TITLE}</H1>
       </YStack>

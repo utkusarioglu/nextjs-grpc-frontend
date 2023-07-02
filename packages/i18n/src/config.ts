@@ -5,7 +5,7 @@ const commonConfig = {
   react: {
     useSuspense: true,
   },
-  ns: ["global"],
+  ns: ["global", "rest"],
   supportedLngs: ["en", "tr"],
   fallbackLng: "en",
 };

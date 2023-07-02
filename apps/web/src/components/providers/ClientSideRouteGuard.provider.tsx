@@ -1,8 +1,8 @@
-import { useEffect, type FC, type ReactNode } from "react";
+import { useLayoutEffect, type FC, type ReactNode } from "react";
 import { useSelector, selectIsLoggedIn, selectIsAppInitialized } from "store";
 import { useRouter } from "solito/router";
 import { GUEST_PATHS, GUEST_ENTRY_PATH } from "../../constants";
-import { HeroLoadingLayout } from "app/src/layouts/HeroLoading.layout";
+import { AppSkeleton } from "../skeletons/App.skeleton";
 
 interface ClientSideRouteGuardProviderProps {
   children: ReactNode;
@@ -15,7 +15,7 @@ const ClientSideRouteGuardProvider: FC<ClientSideRouteGuardProviderProps> = ({
   const isAppInitialized = useSelector(selectIsAppInitialized);
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!!global.window) {
       const pathname = window.location.pathname;
       const onGuestPath = GUEST_PATHS.includes(pathname);
@@ -37,7 +37,11 @@ const ClientSideRouteGuardProvider: FC<ClientSideRouteGuardProviderProps> = ({
   }, [router, isLoggedIn, isAppInitialized]);
 
   if (!isAppInitialized) {
-    return <div>loading</div>;
+    return (
+      <AppSkeleton>
+        <div style={{ color: "#0FF" }}>ClientSide Route guard</div>
+      </AppSkeleton>
+    );
   }
 
   return <>{children}</>;

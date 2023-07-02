@@ -1,3 +1,8 @@
 Prompts:
   Back: Back
   Ok: Ok
+
+Time:
+  Hour:
+    Short: h
+    Long: hour

@@ -6,6 +6,7 @@ import { useSelector, selectDrivers } from "store";
 import BalanceLayout from "../layouts/Balance.layout";
 import { ErrorBoundary } from "react-error-boundary";
 import { ScreenFallback } from "../fallbacks/Screen.fallback";
+import { useTranslation } from "i18n";
 
 interface EvmScreenProps {
   // EvmConnectionOptionsComponent: FC<Web3ConnectionOptionsProps>;
@@ -17,7 +18,8 @@ const NAMES = {
 };
 
 const EvmScreen: FC<EvmScreenProps> = () => {
-  const { back } = useRouter();
+  const { t } = useTranslation(["guest"]);
+  const { back, push } = useRouter();
   const driverStates = useSelector(selectDrivers);
 
   return (
@@ -35,9 +37,16 @@ const EvmScreen: FC<EvmScreenProps> = () => {
           <EvmConnectionOptions driverStates={driverStates} />
           <Spacer />
         </YStack>
+
+        <YStack paddingLeft="$4" paddingRight="$4">
+          <Button onPress={() => push({ pathname: "/login" })}>
+            {t`guest:WelcomeScreen.Login.WithUserPass`}
+          </Button>
+        </YStack>
+        <Spacer />
         <BalanceLayout />
         <YStack padding="$4">
-          <Button onPress={() => back()}>Try another method</Button>
+          <Button onPress={() => back()}>Go back</Button>
         </YStack>
       </YStack>
     </ErrorBoundary>

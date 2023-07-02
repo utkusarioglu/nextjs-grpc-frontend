@@ -1,8 +1,11 @@
 import { NextThemeProvider, useRootTheme } from "@tamagui/next-theme";
-import { useMemo, type FC } from "react";
+import { type ReactNode, type FC } from "react";
 import UiProvider from "ui/src/Provider";
 import tamaguiConfig from "../../tamagui.config";
-import type { AppPropsWithLayout } from "../../pages/_app";
+
+interface WebThemeProviderProps {
+  children: ReactNode;
+}
 
 /**
  * @dev
@@ -11,17 +14,8 @@ import type { AppPropsWithLayout } from "../../pages/_app";
  * #3 The component has some typing issues
  * #4 The component has some typing issues
  */
-export const WebThemeProvider: FC<AppPropsWithLayout> = ({
-  pageProps,
-  Component,
-}) => {
+export const WebThemeProvider: FC<WebThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useRootTheme();
-  const contents = useMemo(() => {
-    const getLayout = Component.getLayout ?? ((page) => page);
-    // #1
-    return getLayout(<Component {...pageProps} />);
-  }, [pageProps, Component]);
-
   return (
     /* @ts-ignore #3 */
     <NextThemeProvider onChangeTheme={setTheme}>
@@ -32,7 +26,7 @@ export const WebThemeProvider: FC<AppPropsWithLayout> = ({
         disableRootThemeClass
         defaultTheme={theme}
       >
-        {contents}
+        {children}
       </UiProvider>
     </NextThemeProvider>
   );

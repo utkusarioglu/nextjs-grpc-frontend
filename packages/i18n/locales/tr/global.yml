@@ -1,3 +1,8 @@
 Prompts:
   Back: Geri
   Ok: Tamam
+
+Time:
+  Hour:
+    Short: s
+    Long: saat

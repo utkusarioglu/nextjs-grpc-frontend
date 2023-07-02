@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
-import { Nav, Stack, RAW_STYLES } from "ui";
+import { Nav, Stack } from "ui";
+import { RAW_STYLES } from "ui/src/components/tab-bar/constants";
 import { BlurView } from "@react-native-community/blur";
 import {
   BottomTabNavigationOptions,

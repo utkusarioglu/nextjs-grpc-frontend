@@ -4,6 +4,7 @@ import { Children } from "react";
 import { AppRegistry } from "react-native";
 
 import tamaguiConfig from "../tamagui.config";
+import { AppSkeleton } from "../components/skeletons/App.skeleton";
 
 /**
  * @dev
@@ -52,6 +53,7 @@ export default class Document extends NextDocument {
           />
         </Head>
         <body>
+          {/* <AppSkeleton /> */}
           <Main />
           <NextScript />
         </body>

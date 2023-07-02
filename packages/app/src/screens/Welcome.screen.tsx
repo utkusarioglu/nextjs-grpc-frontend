@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
-import { Stack } from "ui";
+import { Stack, isWeb } from "ui";
 import { HeroLoadingLayout } from "../layouts/HeroLoading.layout";
 import { CompactLanguageChangerView } from "../views/CompactLanguageChanger.view";
 import { LoginOptionsView } from "../views/LoginOptions.view";
 import { WelcomeScreenMottoView } from "../views/WelcomeScreenMotto.view";
-import {
-  selectIsAppInitialized,
-  selectIsLoggedIn,
-  useSelector,
-  selectIsAuthChecksComplete,
-} from "store";
+import { selectIsAppInitialized, selectIsLoggedIn, useSelector } from "store";
 import { ErrorBoundary } from "react-error-boundary";
 import { ScreenFallback } from "../fallbacks/Screen.fallback";
 
@@ -17,16 +12,18 @@ const WelcomeScreen = () => {
   const [isComponentsEnabled, setIsComponentsEnabled] = useState(false);
   const isAppInitialized = useSelector(selectIsAppInitialized);
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const isAuthChecksComplete = useSelector(selectIsAuthChecksComplete);
 
-  const isInitializedGuest =
-    isAppInitialized && isAuthChecksComplete && !isLoggedIn;
+  const isInitializedGuest = isAppInitialized && !isLoggedIn;
 
   useEffect(() => {
     if (isInitializedGuest) {
-      setTimeout(() => {
+      if (isWeb) {
         setIsComponentsEnabled(true);
-      }, 1000);
+      } else {
+        setTimeout(() => {
+          setIsComponentsEnabled(true);
+        }, 1000);
+      }
     }
   }, [isInitializedGuest]);
 

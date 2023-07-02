@@ -1,137 +1,86 @@
-import CustomButton from "ui/src/CustomButton";
-import CustomHeader from "ui/src/CustomHeader";
-import CustomInput from "ui/src/CustomInput";
-import { useRouter } from "solito/router";
-import {
-  Spacer,
-  Stack,
-  YStack,
-  XStack,
-  Button,
-  Icons,
-  ScrollView,
-  Group,
-  SizableText,
-} from "ui";
-import { SolitoImage } from "solito/image";
-import { useTranslation } from "i18n";
-import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
+import { lazy, Suspense } from "react";
+import { Spacer, YStack, ScrollView, Stack } from "ui";
+import { ErrorBoundary } from "react-error-boundary";
 import { ScreenFallback } from "../fallbacks/Screen.fallback";
-import { LayoutFallback } from "../fallbacks/Layout.fallback";
+import { ImageListSkeleton } from "../skeletons/PostListCard.skeleton";
+import { FeedHeaderSkeleton } from "../skeletons/FeedHeader.skeleton";
+import { ErrorThrowingSkeleton } from "../skeletons/ErrorThrowing.skeleton";
+import { UserButtonsSkeleton } from "../skeletons/UserButtons.skeleton";
+import { HorizontalCardsSkeleton } from "../skeletons/HorizontalCards.skeleton";
+
+const LazyFeedHeaderLayout = lazy(() => import("../layouts/FeedHeader.layout"));
+const LazyPostListLayout = lazy(() => import("../layouts/PostList.layout"));
+const LazyHorizontalCardsLayout = lazy(
+  () => import("../layouts/HorizontalCards.layout")
+);
+const LazyErrorThrowingLayout = lazy(
+  () => import("../layouts/ErrorThrowing.layout")
+);
+const LazyUserButtonsLayout = lazy(
+  () => import("../layouts/UserButtons.layout")
+);
+
+const AS_SKELETONS = false;
+
+const perSectionPostCount = AS_SKELETONS ? 2 : 5;
+const sectionCount = AS_SKELETONS ? 1 : 3;
 
 const HomeScreen = () => {
-  const { push } = useRouter();
-  const { t } = useTranslation(["rest"]);
-
   return (
     <ErrorBoundary FallbackComponent={ScreenFallback}>
       <ScrollView>
         <YStack>
           <Spacer />
-          <XStack
-            justifyContent="space-between"
-            marginBottom="$6"
-            alignItems="center"
-            paddingLeft="$4"
-            paddingRight="$4"
-          >
-            <CustomHeader>{t`rest:FeedScreen.Greeting`}</CustomHeader>
-            <Group orientation="horizontal">
-              <Group.Item>
-                <Button
-                  onPress={() =>
-                    push({
-                      pathname: "/settings",
-                    })
-                  }
-                >
-                  <Icons.User />
-                </Button>
-              </Group.Item>
-              <Group.Item>
-                <Button
-                  onPress={() =>
-                    push({
-                      pathname: "/settings",
-                    })
-                  }
-                >
-                  <Icons.Settings />
-                </Button>
-              </Group.Item>
-            </Group>
-          </XStack>
-          <Stack paddingLeft="$4" paddingRight="$4">
-            <CustomInput />
-          </Stack>
-          <Spacer />
-          {/* @ts-ignore */}
-          <YStack>
-            {Array(6)
-              .fill(null)
-              .map((_, i) => (
-                <Stack key={i}>
-                  <Stack
-                    height={300}
-                    key={i}
-                    borderRadius="$4"
-                    overflow="hidden"
-                  >
-                    {/* @ts-expect-error */}
-                    <SolitoImage
-                      src={`/mock/image-${i}.jpg`}
-                      fill
-                      resizeMode="cover"
-                      alt="A cool image, imported locally."
+
+          <Suspense fallback={<FeedHeaderSkeleton />}>
+            <LazyFeedHeaderLayout />
+          </Suspense>
+
+          {Array(sectionCount)
+            .fill(null)
+            .map((_, i) => (
+              <Stack key={i}>
+                {AS_SKELETONS ? (
+                  <HorizontalCardsSkeleton />
+                ) : (
+                  <Suspense fallback={<HorizontalCardsSkeleton />}>
+                    <LazyHorizontalCardsLayout />
+                  </Suspense>
+                )}
+                <Spacer size="$6" />
+
+                {AS_SKELETONS ? (
+                  <ImageListSkeleton />
+                ) : (
+                  <Suspense fallback={<ImageListSkeleton />}>
+                    <LazyPostListLayout
+                      index={{ start: i, end: i + perSectionPostCount }}
                     />
-                  </Stack>
-                  <Spacer />
-                </Stack>
-              ))}
-          </YStack>
-          <XStack
-            paddingLeft="$4"
-            paddingRight="$4"
-            justifyContent="space-evenly"
-          >
-            <CustomButton userId={1} flex={1}>
-              One
-            </CustomButton>
-            <Spacer />
-            <CustomButton userId={2} flex={1}>
-              Two
-            </CustomButton>
-            <Spacer />
-            <CustomButton userId={3} flex={1}>
-              Three
-            </CustomButton>
-          </XStack>
-          <Spacer />
-          <ErrorBoundary FallbackComponent={LayoutFallback}>
-            <ErrorThrowingComponent />
-          </ErrorBoundary>
+                  </Suspense>
+                )}
+                <Spacer />
+
+                {AS_SKELETONS ? null : (
+                  <>
+                    <Suspense fallback={<UserButtonsSkeleton />}>
+                      <LazyUserButtonsLayout />
+                    </Suspense>
+                    <Spacer />
+
+                    <Suspense fallback={<ErrorThrowingSkeleton />}>
+                      <LazyErrorThrowingLayout />
+                    </Suspense>
+                  </>
+                )}
+
+                <Spacer size="$6" />
+              </Stack>
+            ))}
+
           <Spacer size="$14" />
         </YStack>
       </ScrollView>
     </ErrorBoundary>
-  );
-};
-
-const ErrorThrowingComponent = () => {
-  const { showBoundary } = useErrorBoundary();
-
-  return (
-    <Stack paddingLeft="$4" paddingRight="$4">
-      <Button
-        onPress={() => {
-          showBoundary(
-            new Error(`Custom error: ${Math.random().toString().slice(-4)}`)
-          );
-        }}
-      >
-        <SizableText>Trigger error</SizableText>
-      </Button>
-    </Stack>
   );
 };
 

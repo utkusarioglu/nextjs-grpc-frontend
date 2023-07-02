@@ -1,5 +1,15 @@
 FeedScreen:
   Greeting: Hoşgel!
+  ImageAlt: Lokal import edilmis superce resim
+  HorizontalImage:
+    Placeholder: Resim
+  Posts:
+    Placeholder: 
+      Content: 
+        AltText: Phasellus venenatis
+      Username: Kullanıcı
+      Header: Fusce eget finibus erat
+      Body: Aenean tincidunt felis at leo tincidunt, id scelerisque augue sollicitudin. Phasellus venenatis at erat a eleifend. Mauris placerat leo non ultricies tempor. Fusce imperdiet nibh a nulla convallis, vitae consectetur tellus mattis. Cras placerat maximus sapien a auctor. Nullam lacinia, dolor sed aliquam accumsan, nibh orci porttitor ante, ut venenatis nibh ipsum id urna. 
 
 SettingsScreen:
   LanguageOptions: 

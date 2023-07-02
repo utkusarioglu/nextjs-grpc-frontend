@@ -20,13 +20,14 @@ const HomeNavigator = () => {
   const { t } = useTranslation(["rest"]);
 
   return (
-    <Tab.Navigator tabBar={props => <TabBarRn {...props} />}>
+    <Tab.Navigator
+      tabBar={props => <TabBarRn {...props} />}
+      screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="feed"
         component={HomeScreen}
         options={{
           title: t`rest:TabBar.Feed`,
-          headerShown: false,
           tabBarLabel: t`rest:TabBar.Feed`,
           tabBarIcon: () => <Icons.Home />,
         }}

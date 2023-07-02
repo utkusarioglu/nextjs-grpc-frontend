@@ -12,7 +12,7 @@ import web3Slice from "./slices/web3.slice";
 import appSlice from "./slices/app.slice";
 import { authApi } from "./apis/auth.api";
 import { inflationApi } from "./apis/inflation.api";
-import { authenticationMiddleware } from "./middlewares/authentication.middleware";
+import { initializationMiddleware } from "./middlewares/initialization.middleware";
 import { StorageAssignments } from "./types/store.types";
 
 export const sliceReducers = {
@@ -43,7 +43,7 @@ export const DEFAULT_MIDDLEWARE_OPTIONS = {
 export const CONCAT_MIDDLEWARE = [
   authApi.middleware,
   inflationApi.middleware,
-  authenticationMiddleware,
+  initializationMiddleware,
 ];
 
 export function persistReducers(storageAssignments: StorageAssignments) {
