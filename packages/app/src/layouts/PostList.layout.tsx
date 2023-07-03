@@ -1,52 +1,69 @@
 import { type FC } from "react";
-import { YStack } from "ui";
+import { Paragraph, YStack } from "ui";
 import { useTranslation } from "i18n";
 import { PostListCardView } from "../views/PostListCard.view";
+import { usePosts } from "store/src/apis/feed/feed.api";
+import { PostListSkeleton } from "../skeletons/PostList.skeleton";
+
 interface PostListLayoutProps {
   index: {
     start: number;
     end: number;
   };
 }
+
 const PostListLayout: FC<PostListLayoutProps> = ({ index: { start, end } }) => {
   const { t } = useTranslation("rest");
+  const { data, error, isLoading, isFetching, isError } = usePosts({
+    offset: 0,
+    limit: 4,
+  });
 
-  const posts = Array(end - start)
-    .fill(null)
-    .map((_, j) => {
-      const cursor = j + start * (end - start);
+  if (isError) {
+    return (
+      <>
+        <Paragraph>There is an error</Paragraph>
+        <Paragraph>{error}</Paragraph>
+      </>
+    );
+  }
 
-      return {
-        creator: {
-          profileImageUrl: [
-            process.env.NEXT_PUBLIC_WEB_APP_URL,
-            `mock/avatars/${cursor % 7}.jpg`,
-          ].join("/"),
-          username: t`rest:FeedScreen.Posts.Placeholder.Username`,
-        },
-        interaction: {
-          isLiked: cursor % 3 == 0,
-        },
-        content: {
-          media: Array((cursor % 3) + 1)
-            .fill(null)
-            .map((_, m) => ({
-              type: "image" as "image",
-              contentUrl: `/mock/post-content/${(cursor * 2 + m) % 18}.jpg`,
-              altText: t`rest:FeedScreen.Posts.Placeholder.Content.AltText`,
-            })),
-          date: (cursor + 3).toString() + t`global:Time.Hour.Short`,
-          header: t`rest:FeedScreen.Posts.Placeholder.Header`,
-          body: t`rest:FeedScreen.Posts.Placeholder.Body`,
-        },
-      };
-    });
+  if (isLoading || isFetching) {
+    return <PostListSkeleton />;
+  }
+
+  if (!data || data.status !== "success") {
+    return <Paragraph>There is a server error</Paragraph>;
+  }
+
+  if (!data.payload.length) {
+    return <Paragraph>Empty list</Paragraph>;
+  }
 
   return (
     <YStack space="$4">
-      {posts.map((post, i) => (
-        <PostListCardView key={i} post={post} />
-      ))}
+      {data.payload.map((post, i) => {
+        const translatedPost = {
+          ...post,
+          creator: {
+            ...post.creator,
+            username: t(post.creator.username),
+          },
+          content: {
+            ...post.content,
+            media: post.content.media.map(({ type, content, altText }) => ({
+              type,
+              content,
+              altText: t(altText),
+            })),
+            date: t(post.content.date),
+            header: t(post.content.header),
+            body: t(post.content.body),
+          },
+        };
+
+        return <PostListCardView key={i} post={translatedPost} />;
+      })}
     </YStack>
   );
 };

@@ -38,7 +38,7 @@ export const TabButton: FC<TabButtonProps> = ({
         setIsHovered(!!layout);
         break;
       default:
-        console.log(type + " uncaught", layout);
+      // console.log(type + " uncaught", layout);
     }
   };
 

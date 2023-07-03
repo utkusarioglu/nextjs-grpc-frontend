@@ -14,34 +14,24 @@ import {
   ScrollView,
   useWindowDimensions,
 } from "ui";
+import { selectImageUrl } from "../utils/image.utils";
 
 interface PostListCardContentMediaImage {
   type: "image";
-  contentUrl: string;
+  // contentUrl: string;
+  content: any; // TODO
   altText: string;
 }
 
 interface PostListCardViewProps {
-  post: {
-    creator: {
-      profileImageUrl: string;
-      username: string;
-    };
-    interaction: {
-      isLiked: boolean;
-    };
-    content: {
-      media: PostListCardContentMediaImage[];
-      date: string;
-      header: string;
-      body: string;
-    };
-  };
+  post: any; // TODO
 }
+
+const POST_IMG_HEIGHT = 300;
 
 export const PostListCardView: FC<PostListCardViewProps> = ({
   post: {
-    creator: { profileImageUrl, username },
+    creator: { profileImage, username },
     interaction: { isLiked },
     content: { media, date, header, body },
   },
@@ -66,7 +56,9 @@ export const PostListCardView: FC<PostListCardViewProps> = ({
         zIndex={1}
       >
         <Avatar circular size="$2" shadowColor="black" shadowRadius={3}>
-          <Avatar.Image src={profileImageUrl} />
+          <Avatar.Image
+            src={selectImageUrl(profileImage.images, 30, 30, true)}
+          />
           <Avatar.Fallback
             // @ts-ignore #1
             bc="$color6"
@@ -81,7 +73,7 @@ export const PostListCardView: FC<PostListCardViewProps> = ({
           textShadowColor="black"
           textShadowRadius={5}
         >
-          {date}
+          5{date}
         </Paragraph>
       </XStack>
       <Stack
@@ -91,24 +83,12 @@ export const PostListCardView: FC<PostListCardViewProps> = ({
         shadowOpacity={0.5}
       >
         <ScrollView horizontal>
-          {media.map(({ type, contentUrl, altText }) => (
-            <Stack
-              height={300}
-              width={width}
-              overflow="hidden"
-              key={contentUrl}
-            >
-              {/* @ts-expect-error #1 */}
-              <SolitoImage
-                src={contentUrl}
-                fill
-                resizeMode="cover"
-                alt={altText}
-                placeholder="blur"
-                blurDataURL="|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj["
-              />
-            </Stack>
-          ))}
+          {
+            // @ts-ignore
+            media.map((medium, i) => (
+              <PostCardMedia key={i} screenWidth={width} medium={medium} />
+            ))
+          }
         </ScrollView>
 
         {media.length > 1 ? (
@@ -135,5 +115,30 @@ export const PostListCardView: FC<PostListCardViewProps> = ({
         <Paragraph>{body}</Paragraph>
       </YStack>
     </Card>
+  );
+};
+
+interface PostCardMediaProps {
+  screenWidth: number;
+  medium: PostListCardContentMediaImage;
+}
+
+const PostCardMedia: FC<PostCardMediaProps> = ({
+  medium: { type, content, altText },
+  screenWidth,
+}) => {
+  return (
+    <Stack height={POST_IMG_HEIGHT} width={screenWidth} overflow="hidden">
+      {/* @ts-ignore */}
+      <SolitoImage
+        src={selectImageUrl(content.images, screenWidth, POST_IMG_HEIGHT, true)}
+        // sizes={content.sizes}
+        fill
+        resizeMode="cover"
+        alt={altText}
+        placeholder="blur"
+        blurDataURL={content.placeholder}
+      />
+    </Stack>
   );
 };

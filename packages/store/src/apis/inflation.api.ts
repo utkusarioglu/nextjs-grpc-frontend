@@ -5,7 +5,7 @@ export const inflationApi = createApi({
   reducerPath: "inflationApi",
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_V1_URL }),
   endpoints: (builder) => ({
-    getDecadeStats: builder.query<DecadeStatsApiResponse, string[]>({
+    fetchDecadeStats: builder.query<DecadeStatsApiResponse, string[]>({
       query: (codes) => ({
         url: "decade-stats",
         params: { codes },
@@ -14,4 +14,4 @@ export const inflationApi = createApi({
   }),
 });
 
-export const useInflationDecadeStats = inflationApi.useGetDecadeStatsQuery;
+export const useDecadeStats = inflationApi.useFetchDecadeStatsQuery;

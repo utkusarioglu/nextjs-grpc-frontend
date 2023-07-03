@@ -4,8 +4,6 @@ import { MockData } from "../../utils/mock-data.utils";
 
 export const tlsProps = getTlsProps();
 
-console.log({ MOCK_ENDPOINTS: process.env.MOCK_ENDPOINTS });
-
 // TODO this route needs authorization
 export async function inflationApi(codes: string[]) {
   try {
@@ -13,15 +11,24 @@ export async function inflationApi(codes: string[]) {
       const mockData = await MockData.decadeStats(codes);
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve({ decadeStats: mockData });
-        }, 3000);
+          resolve({
+            status: "success",
+            payload: mockData,
+          });
+        }, +process.env.MOCK_LATENCY!);
       });
     }
 
     const inflationService = new InflationService(tlsProps);
-    const response = await inflationService.decadeStats(codes);
-    return { decadeStats: response };
+    const payload = await inflationService.decadeStats(codes);
+    return {
+      status: "success",
+      payload,
+    };
   } catch (e: any) {
-    return { decadeStats: [], error: e.toString() };
+    return {
+      status: "failure",
+      message: e.toString(),
+    };
   }
 }

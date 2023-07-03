@@ -14,6 +14,10 @@ FeedScreen:
         Morbi ultrices ultrices urna pellentesque lacinia. Donec magna 
         sapien, volutpat nec elementum ac, porta vitae justo. Nulla 
         eleifend tellus sed elit posuere molestie. 
+  Stories:
+    Placeholder:
+      Content:
+        AltText: Elit posuere molestie
 
 SettingsScreen:
   LanguageOptions: 
