@@ -1,13 +1,7 @@
 import { type FC } from "react";
-import {
-  YStack,
-  Text,
-  DecadeStatsCardView,
-  Spacer,
-  DecadeStatsCardSkeleton,
-  Paragraph,
-} from "ui";
-import { useInflationDecadeStats, useSelector, selectCountryList } from "store";
+import { YStack, DecadeStatsCardSkeleton, Paragraph } from "ui";
+import { useDecadeStats, useSelector, selectCountryList } from "store";
+import { DecadeStatsCardView } from "../views/DecadeStatsCard.view";
 
 interface DecadeStatsCardListLayoutProps {}
 
@@ -28,35 +22,43 @@ const DecadeStatsCardListLayout: FC<DecadeStatsCardListLayoutProps> = () => {
     // TODO remove any
     .map((i: any) => i.trim())
     .filter((i: any) => !!i);
-  const { data, error, isLoading } = useInflationDecadeStats(countriesArray);
+  const {
+    data,
+    error,
+    isLoading,
+    isFetching,
+    isError,
+    isSuccess,
+    isUninitialized,
+  } = useDecadeStats(countriesArray);
 
-  if (error) {
-    return <Text>{JSON.stringify(error)}</Text>;
-  }
-
-  if (isLoading) {
+  if (isError) {
     return (
       <>
-        {Array(3)
-          .fill(null)
-          .map((_, i) => (
-            <DecadeStatsCardSkeleton key={i} />
-          ))}
+        <Paragraph>There is an error</Paragraph>
+        <Paragraph>{error}</Paragraph>
       </>
     );
   }
 
-  if (!data || !data.decadeStats.length) {
+  if (isLoading || isFetching) {
+    return <DecadeStatsCardListLayoutSkeleton />;
+  }
+
+  if (!data || data.status !== "success") {
+    return <Paragraph>Something broken on the server side</Paragraph>;
+  }
+
+  if (!data.payload.length) {
     return <Paragraph textAlign="center">Empty...</Paragraph>;
   }
 
   return (
     <YStack>
-      {data.decadeStats.map((item, index) => (
+      {data.payload.map((item) => (
         <DecadeStatsCardView
-          key={item.countryCode + item.decade}
+          key={item.stats.countryCode + item.stats.decade}
           item={item}
-          index={index}
         />
       ))}
     </YStack>

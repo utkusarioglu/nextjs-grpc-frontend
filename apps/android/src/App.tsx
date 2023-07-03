@@ -51,9 +51,10 @@ const App = () => {
               <SolitoImageProvider
                 // @ts-ignore
                 nextJsURL={process.env.NEXT_PUBLIC_WEB_APP_URL!}
-                loader={({ quality, width, src }) => {
-                  return [process.env.NEXT_PUBLIC_WEB_APP_URL, src].join("");
-                }}>
+                // loader={({ quality, width, src }) => {
+                //   return [process.env.NEXT_PUBLIC_WEB_APP_URL, src].join("");
+                // }}
+              >
                 <RootNavigator />
               </SolitoImageProvider>
             </UiProvider>

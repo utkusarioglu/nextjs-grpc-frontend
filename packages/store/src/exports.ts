@@ -12,7 +12,7 @@ export {
   setIsI18nInitialized,
   selectIsAppInitialized,
 } from "./slices/app.slice";
-export { useInflationDecadeStats } from "./apis/inflation.api";
+export { useDecadeStats } from "./apis/inflation.api";
 export {
   useLoginWithUserPassMutation,
   useLogoutMutation,

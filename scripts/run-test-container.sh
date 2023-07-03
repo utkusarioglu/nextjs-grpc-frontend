@@ -30,7 +30,6 @@ source $env_file_abspath
 echo "Will run: $image_ref"
 docker run \
   -d \
-  --rm \
   -p 3000:3000 \
   --name $CONTAINER_NAME \
   -v $(pwd)/.certs.local:$CERTIFICATES_ABSPATH \
@@ -49,6 +48,8 @@ docker logs $CONTAINER_NAME
 
 echo "Stopping container…"
 docker stop $CONTAINER_NAME
+echo "Removing container…"
+docker rm $CONTAINER_NAME
 
 echo "Exiting with code $exit_code"
 exit $exit_code

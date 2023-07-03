@@ -1,8 +1,10 @@
 const path = require("path");
 const { withTamagui } = require("@tamagui/next-plugin");
+const withNextOptimizedImages = require("next-optimized-images");
 const yaml = require("js-yaml");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const StatoscopeWebpackPlugin = require("@statoscope/webpack-plugin").default;
+const sharp = require("responsive-loader/sharp");
 
 module.exports = function (_name, { defaultConfig }) {
   const nextConfig = {
@@ -11,11 +13,14 @@ module.exports = function (_name, { defaultConfig }) {
     reactStrictMode: true,
     transpilePackages: ["ui", "store", "app", "i18n"],
     swcMinify: true,
-    images: {},
+    images: {
+      disableStaticImages: true,
+      unoptimized: true,
+    },
     experimental: {
       instrumentationHook: true,
     },
-    webpack: (config, options) => {
+    webpack: (config, _options) => {
       const PUBLIC_PATH = `${process.env.PROJECT_ROOT_ABSPATH}/frontend/apps/web/public/locales`;
       const TRANSLATIONS_PATH = `${process.env.PROJECT_ROOT_ABSPATH}/frontend/packages/i18n/locales`;
       config.plugins.push(
@@ -72,8 +77,50 @@ module.exports = function (_name, { defaultConfig }) {
     disableExtraction: process.env.NODE_ENV === "development",
   });
 
-  return {
+  const combinedConfig = {
     ...nextConfig,
     ...tamaguiPlugin(nextConfig),
   };
+
+  const nextOptimizedImages = withNextOptimizedImages({
+    ...combinedConfig,
+    inlineImageLimit: 8192,
+    imagesFolder: "images",
+    imagesName: "[name]-[hash].[ext]",
+    handleImages: ["jpg", "png", "svg", "webp", "gif", "ico"],
+    removeOriginalExtension: true,
+    defaultImageLoader: "responsive-loader",
+    optimizeImages: true,
+    optimizeImagesInDev: true,
+    mozjpeg: {
+      quality: 70,
+    },
+    optipng: {
+      optimizationLevel: 3,
+    },
+    pngquant: false,
+    gifsicle: {
+      interlaced: true,
+      optimizationLevel: 3,
+    },
+    svgo: {},
+    responsive: {
+      adapter: sharp,
+      sizes: [30, 40, 100, 320, 600, 960, 1200, 1920],
+      placeholder: true,
+      format: "jpg",
+    },
+    webp: {
+      preset: "default",
+      quality: 15,
+    },
+    images: {
+      loader: "akamai",
+      path: "",
+      disableStaticImages: true,
+      unoptimized: true,
+    },
+  });
+
+  return nextOptimizedImages;
 };

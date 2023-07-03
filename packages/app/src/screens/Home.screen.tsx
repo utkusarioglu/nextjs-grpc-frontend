@@ -2,16 +2,16 @@ import { lazy, Suspense } from "react";
 import { Spacer, YStack, ScrollView, Stack } from "ui";
 import { ErrorBoundary } from "react-error-boundary";
 import { ScreenFallback } from "../fallbacks/Screen.fallback";
-import { ImageListSkeleton } from "../skeletons/PostListCard.skeleton";
+import { PostListSkeleton } from "../skeletons/PostList.skeleton";
 import { FeedHeaderSkeleton } from "../skeletons/FeedHeader.skeleton";
 import { ErrorThrowingSkeleton } from "../skeletons/ErrorThrowing.skeleton";
 import { UserButtonsSkeleton } from "../skeletons/UserButtons.skeleton";
-import { HorizontalCardsSkeleton } from "../skeletons/HorizontalCards.skeleton";
+import { StoriesListSkeleton } from "../skeletons/StoriesListskeleton";
 
 const LazyFeedHeaderLayout = lazy(() => import("../layouts/FeedHeader.layout"));
 const LazyPostListLayout = lazy(() => import("../layouts/PostList.layout"));
 const LazyHorizontalCardsLayout = lazy(
-  () => import("../layouts/HorizontalCards.layout")
+  () => import("../layouts/StoriesList.layout")
 );
 const LazyErrorThrowingLayout = lazy(
   () => import("../layouts/ErrorThrowing.layout")
@@ -41,18 +41,18 @@ const HomeScreen = () => {
             .map((_, i) => (
               <Stack key={i}>
                 {AS_SKELETONS ? (
-                  <HorizontalCardsSkeleton />
+                  <StoriesListSkeleton />
                 ) : (
-                  <Suspense fallback={<HorizontalCardsSkeleton />}>
+                  <Suspense fallback={<StoriesListSkeleton />}>
                     <LazyHorizontalCardsLayout />
                   </Suspense>
                 )}
                 <Spacer size="$6" />
 
                 {AS_SKELETONS ? (
-                  <ImageListSkeleton />
+                  <PostListSkeleton />
                 ) : (
-                  <Suspense fallback={<ImageListSkeleton />}>
+                  <Suspense fallback={<PostListSkeleton />}>
                     <LazyPostListLayout
                       index={{ start: i, end: i + perSectionPostCount }}
                     />

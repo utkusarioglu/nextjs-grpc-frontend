@@ -11,27 +11,20 @@ import {
   Paragraph,
 } from "tamagui";
 import { type FC } from "react";
+import { selectImageUrl } from "../utils/image.utils";
+import type { useDecadeStats } from "store";
+
+type Data = NonNullable<ReturnType<typeof useDecadeStats>["data"]>;
 
 interface DecadeStatsCardViewProps {
-  item: {
-    countryName: string;
-    countryCode: string;
-    decade: number;
-    count: number;
-    average: number;
-    max: number;
-    min: number;
-    median: number;
-    range: number;
-    stdDev: number;
-    variance: number;
-  };
-  index: number;
+  item: any; // TODO
 }
 
 export const DecadeStatsCardView: FC<DecadeStatsCardViewProps> = ({
-  item: { countryName, countryCode, decade, ...rest },
-  index,
+  item: {
+    stats: { countryName, countryCode, decade, ...rest },
+    creator: { profileImage },
+  },
 }) => {
   const { width } = useWindowDimensions();
   return (
@@ -49,10 +42,7 @@ export const DecadeStatsCardView: FC<DecadeStatsCardViewProps> = ({
           <YStack>
             <Avatar circular size="$5" shadowColor="black" shadowRadius={3}>
               <Avatar.Image
-                src={[
-                  process.env.NEXT_PUBLIC_WEB_APP_URL,
-                  `/mock/avatars/${index % 7}.jpg`,
-                ].join("/")}
+                src={selectImageUrl(profileImage.images, 60, 60, true)}
               />
               <Avatar.Fallback
                 // @ts-ignore #1
@@ -90,6 +80,7 @@ export const DecadeStatsCardView: FC<DecadeStatsCardViewProps> = ({
               height="$1"
               minWidth={100}
               maxWidth={width - 40}
+              // @ts-expect-error
               width={(stat / 10) * width}
               zIndex={-1}
               justifyContent="flex-end"
