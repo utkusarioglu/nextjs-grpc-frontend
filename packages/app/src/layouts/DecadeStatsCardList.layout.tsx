@@ -1,6 +1,10 @@
 import { type FC } from "react";
 import { YStack, DecadeStatsCardSkeleton, Paragraph } from "ui";
-import { useDecadeStats, useSelector, selectCountryList } from "store";
+import {
+  useFetchDecadeStatsQuery,
+  useSelector,
+  selectCountryList,
+} from "store";
 import { DecadeStatsCardView } from "../views/DecadeStatsCard.view";
 
 interface DecadeStatsCardListLayoutProps {}
@@ -17,7 +21,7 @@ export const DecadeStatsCardListLayoutSkeleton = () => (
 
 const DecadeStatsCardListLayout: FC<DecadeStatsCardListLayoutProps> = () => {
   const countryList = useSelector(selectCountryList);
-  const countriesArray = countryList
+  const codesArray = countryList
     .split(",")
     // TODO remove any
     .map((i: any) => i.trim())
@@ -30,7 +34,7 @@ const DecadeStatsCardListLayout: FC<DecadeStatsCardListLayoutProps> = () => {
     isError,
     isSuccess,
     isUninitialized,
-  } = useDecadeStats(countriesArray);
+  } = useFetchDecadeStatsQuery({ codes: codesArray.join(",") });
 
   if (isError) {
     return (

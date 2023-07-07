@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "openapi": "*",
     "react-redux": "^8.0.5",
     "redux-persist": "^6.0.0",
     "web3": "*"

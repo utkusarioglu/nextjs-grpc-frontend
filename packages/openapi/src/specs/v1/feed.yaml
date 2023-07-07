@@ -1,0 +1,266 @@
+paths:
+  feed:
+    posts:
+      get:
+        summary: Retrieve the latest posts for the current user
+        operationId: fetchPosts
+        parameters:
+          - name: offset
+            in: query
+            description: pagination offset, similar to sql
+            required: true
+            schema:
+              type: integer
+              format: int32
+          - name: limit
+            in: query
+            description: pagination limit, similar to sql
+            required: true
+            schema:
+              type: integer
+              format: int32
+        responses:
+          200:
+            description: Successful fetch of the latest posts
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/successfulPostsResponse"
+          500:
+            description: Failed fetch of the latest posts
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/failedFeedResponse"
+    stories:
+      get:
+        summary: Retrieve the latest stories for the current user
+        operationId: fetchStories
+        parameters:
+          - name: offset
+            in: query
+            description: pagination offset, similar to sql
+            required: true
+            schema:
+              type: integer
+              format: int32
+          - name: limit
+            in: query
+            description: pagination limit, similar to sql
+            required: true
+            schema:
+              type: integer
+              format: int32
+        responses:
+          200:
+            description: Successful fetch of the latest stories
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/latestStories"
+          500:
+            description: Failed fetch of the latest stories
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/failedFeedResponse"
+              
+
+components:
+  schemas:
+    # offsetAndLimit:
+    #   - name: offset
+    #     in: query
+    #     description: pagination offset, similar to sql
+    #     required: true
+    #     schema:
+    #       type: integer
+    #       format: int32
+    #   - name: limit
+    #     in: query
+    #     description: pagination limit, similar to sql
+    #     required: true
+    #     schema:
+    #       type: integer
+    #       format: int32
+          
+    responsiveLoaderImageImagesItem:
+      type: object
+      required: 
+        - path
+        - width
+        - height
+      properties:
+        path: 
+          type: string
+        width:
+          type: number
+          format: int32
+        height:
+          type: number
+          format: int32
+
+    responsiveLoaderImageImagesItems:
+      type: array
+      items:
+        $ref: "#/components/schemas/responsiveLoaderImageImagesItem"
+
+    responsiveLoaderImage:
+      type: object
+      required: 
+        - srcSet
+        - images
+        - src
+        - placeholder
+        - width
+        - height
+      properties:
+        srcSet:
+          type: string
+        images:
+          $ref: "#/components/schemas/responsiveLoaderImageImagesItems"
+        src:
+          type: string
+        placeholder:
+          type: string
+        width:
+          type: number
+          format: int32
+        height:
+          type: number
+          format: int32
+        
+    creator:
+      type: object
+      required: 
+        - profileImage
+        - username
+      properties:
+        profileImage: 
+          $ref: "#/components/schemas/responsiveLoaderImage"
+        username: 
+          type: string
+          example: utkusarioglu
+            
+    interaction:
+      type: object
+      required: 
+        - isLiked
+      properties:
+        isLiked:
+          type: boolean
+    
+    postMedia:
+      type: object
+      required: 
+        - type
+        - content
+        - altText
+      properties:
+        type: 
+          type: string
+          enum:
+            - image
+        content:
+          $ref: "#/components/schemas/responsiveLoaderImage"
+        altText: 
+          type: string
+        
+    postMediaArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/postMedia"
+            
+    postContent:
+      type: object
+      required: 
+        - media
+        - date
+        - header
+        - body
+      properties:
+        media:
+          $ref: "#/components/schemas/postMediaArray"
+        date: 
+          type: string
+        header: 
+          type: string
+        body:
+          type: string
+
+    post:
+      type: object
+      required: 
+        - creator
+        - interaction
+        - content
+      properties:
+        creator: 
+          $ref: "#/components/schemas/creator"
+        interaction:
+          $ref: "#/components/schemas/interaction"
+        content:
+          $ref: "#/components/schemas/postContent"
+        
+    successfulPostsResponse:
+      type: object
+      required: 
+        - status
+        - payload
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/post"
+
+    failedFeedResponse:
+      type: object
+      required: 
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          enum:
+            - failure
+        message:
+          type: string
+      
+
+    storyContent:
+      type: object
+      required: 
+        - media
+      properties:
+        media:
+          $ref: "#/components/schemas/postMedia"
+
+    story:
+      type: object
+      required:
+        - content
+        - creator
+      properties:
+        content: 
+          $ref: "#/components/schemas/storyContent"
+        creator:
+          $ref: "#/components/schemas/creator"
+        
+    latestStories:
+      type: object
+      required:
+        - status
+        - payload
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/story"

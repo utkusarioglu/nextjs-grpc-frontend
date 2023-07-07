@@ -20,6 +20,7 @@ RUN chown -R $CONTAINER_USERNAME:$CONTAINER_GROUP $PROJECT_ROOT_ABSPATH
 WORKDIR $REPO_ABSPATH
 RUN yarn --immutable
 RUN yarn plugin import workspace-tools
+RUN cd packages/openapi && yarn generate:all && cd ../..
 RUN yarn build --filter=web
 
 FROM node:19-slim AS runner
@@ -76,6 +77,10 @@ RUN ls -al
 
 WORKDIR $PACKAGES_ABSPATH/web3
 COPY --from=builder "$PACKAGES_ABSPATH/web3/package.json" package.json
+RUN ls -al 
+
+WORKDIR $PACKAGES_ABSPATH/openapi
+COPY --from=builder "$PACKAGES_ABSPATH/openapi/package.json" package.json
 RUN ls -al 
 
 WORKDIR $PROJECT_ROOT_ABSPATH/proto

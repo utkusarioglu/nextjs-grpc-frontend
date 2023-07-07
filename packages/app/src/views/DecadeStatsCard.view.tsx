@@ -12,9 +12,6 @@ import {
 } from "tamagui";
 import { type FC } from "react";
 import { selectImageUrl } from "../utils/image.utils";
-import type { useDecadeStats } from "store";
-
-type Data = NonNullable<ReturnType<typeof useDecadeStats>["data"]>;
 
 interface DecadeStatsCardViewProps {
   item: any; // TODO

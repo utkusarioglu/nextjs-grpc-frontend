@@ -96,7 +96,7 @@ export class MockData {
           },
           content: {
             media: {
-              type: "image",
+              type: "image" as "image",
               content: require(`_assets/mock/post-content/${i}.jpg`),
               altText: "rest:FeedScreen.Stories.Placeholder.Content.AltText",
             },

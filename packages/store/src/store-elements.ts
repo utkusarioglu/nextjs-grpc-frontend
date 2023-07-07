@@ -10,11 +10,12 @@ import {
 import decadeStatsSlice from "./slices/decade-stats.slice";
 import web3Slice from "./slices/web3.slice";
 import appSlice from "./slices/app.slice";
-import { authApi } from "./apis/auth.api";
-import { feedApi } from "./apis/feed/feed.api";
-import { inflationApi } from "./apis/inflation.api";
+// import { authApi } from "./apis/auth.api";
+// import { feedApi } from "./apis/feed/feed.api";
+// import { inflationApi } from "./apis/inflation.api";
 import { initializationMiddleware } from "./middlewares/initialization.middleware";
 import { StorageAssignments } from "./types/store.types";
+import { authApi, feedApi, inflationApi } from "openapi";
 
 export const sliceReducers = {
   [appSlice.name]: appSlice.reducer,

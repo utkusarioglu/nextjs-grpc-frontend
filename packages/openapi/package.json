@@ -1,0 +1,29 @@
+{
+  "name": "openapi",
+  "version": "0.0.0",
+  "main": "./src/exports.ts",
+  "types": "./src/exports.ts",
+  "license": "MIT",
+  "packageManager": "yarn@3.5.1",
+  "scripts": {
+    "generate:all": "yarn rm:codegen-path && yarn generate:bundle && yarn generate:types && yarn generate:rtk",
+    "generate:rtk": "yarn create:rtk-path && yarn rtk:generate",
+    "generate:types": "yarn create:codegen-path && yarn openapi-typescript:generate",
+    "generate:bundle": "yarn create:codegen-path && yarn redocly:bundle",
+    "create:rtk-path": "mkdir -p src/codegen/rtk",
+    "rm:rtk-path": "rm -rf src/codegen/rtk",
+    "create:codegen-path": "mkdir -p src/codegen",
+    "rm:codegen-path": "rm -rf src/codegen",
+    "redocly:bundle": "yarn redocly bundle -o src/codegen/bundle.json --format json src/specs/v1/schema.yaml",
+    "openapi-typescript:generate": "yarn openapi-typescript src/codegen/bundle.json -o src/codegen/types.ts",
+    "rtk:generate": "npx @rtk-query/codegen-openapi src/generate.ts",
+    "lint": "yarn redocly lint src/specs/v1/schema.yaml"
+  },
+  "devDependencies": {
+    "@redocly/cli": "^1.0.0-beta.129",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@rtk-query/codegen-openapi": "^1.0.0",
+    "openapi-typescript": "^6.2.8",
+    "ts-node": "^10.9.1"
+  }
+}

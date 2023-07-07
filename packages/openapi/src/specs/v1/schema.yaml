@@ -1,0 +1,27 @@
+openapi: "3.1.0"
+info:
+  title: NextJS gRPC Web Server public api endpoint 
+  version: "1.0.0"
+  description: Public api endpoint definitions for the NextJS gRPC project
+
+servers:
+  - url: /api/v1
+    
+paths:
+  /auth/login/auth-id:
+    $ref: auth.yaml#/paths/login/auth-id
+
+  /auth/login/user-pass:
+    $ref: auth.yaml#/paths/login/user-pass
+
+  /auth/logout:
+    $ref: auth.yaml#/paths/logout
+
+  /feed/posts:
+    $ref: feed.yaml#/paths/feed/posts
+
+  /feed/stories:
+    $ref: feed.yaml#/paths/feed/stories
+
+  /data/inflation/decade-stats:
+    $ref: inflation.yaml#/paths/inflation/decade-stats

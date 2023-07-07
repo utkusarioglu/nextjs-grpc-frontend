@@ -34,3 +34,10 @@ export function standardGetServerSideProps({
     };
   });
 }
+
+export function getSearchParam<P>(url: string, paramName: keyof P): string {
+  const searchParamsStr = url.split("?")[1] || "";
+  const searchParams = new URLSearchParams(searchParamsStr);
+  const offset = searchParams.get(paramName.toString());
+  return offset;
+}

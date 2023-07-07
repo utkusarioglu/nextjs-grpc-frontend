@@ -10,7 +10,7 @@ import { StoriesListSkeleton } from "../skeletons/StoriesListskeleton";
 
 const LazyFeedHeaderLayout = lazy(() => import("../layouts/FeedHeader.layout"));
 const LazyPostListLayout = lazy(() => import("../layouts/PostList.layout"));
-const LazyHorizontalCardsLayout = lazy(
+const LazyStoriesListLayout = lazy(
   () => import("../layouts/StoriesList.layout")
 );
 const LazyErrorThrowingLayout = lazy(
@@ -44,7 +44,7 @@ const HomeScreen = () => {
                   <StoriesListSkeleton />
                 ) : (
                   <Suspense fallback={<StoriesListSkeleton />}>
-                    <LazyHorizontalCardsLayout />
+                    <LazyStoriesListLayout />
                   </Suspense>
                 )}
                 <Spacer size="$6" />
