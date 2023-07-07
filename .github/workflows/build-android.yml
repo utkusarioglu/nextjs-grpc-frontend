@@ -46,6 +46,11 @@ jobs:
           cat package.json
           yarn --immutable
           yarn plugin import workspace-tools
+
+          cd packages/openapi
+          yarn generate:all
+          cd ../..
+
           cd ${{ env.APP_RELPATH }}
           yarn react-native-asset
 

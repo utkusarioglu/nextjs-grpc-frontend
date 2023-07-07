@@ -1,6 +1,6 @@
 import { XStack, ScrollView, Paragraph } from "ui";
 import { useTranslation } from "i18n";
-import { useStories } from "store/src/apis/feed/feed.api";
+import { useFetchStoriesQuery } from "store";
 import { StoriesListSkeleton } from "../skeletons/StoriesListskeleton";
 import { StoryCardView } from "../views/StoryCard.view";
 
@@ -21,7 +21,7 @@ const HorizontalCardsLayout = () => {
     isUninitialized,
     isLoading,
     error,
-  } = useStories({ offset: 0, limit: 10 });
+  } = useFetchStoriesQuery({ offset: 0, limit: 10 });
 
   if (isError) {
     return (

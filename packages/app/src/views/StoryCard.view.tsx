@@ -2,10 +2,7 @@ import { type FC } from "react";
 import { SolitoImage } from "solito/image";
 import { Card, H6, Avatar } from "ui";
 import { selectImageUrl } from "../utils/image.utils";
-import type { useStories } from "store/src/apis/feed/feed.api";
 import { CARD_WIDTH, CARD_HEIGHT } from "../layouts/StoriesList.layout";
-
-// type Story = NonNullable<ReturnType<typeof useStories>["data"]>[0];
 
 interface StoryCardProps {
   story: any; // TODO

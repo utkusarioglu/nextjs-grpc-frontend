@@ -12,11 +12,6 @@ export {
   setIsI18nInitialized,
   selectIsAppInitialized,
 } from "./slices/app.slice";
-export { useDecadeStats } from "./apis/inflation.api";
-export {
-  useLoginWithUserPassMutation,
-  useLogoutMutation,
-} from "./apis/auth.api";
 export {
   updateDriver,
   selectDriver,
@@ -35,3 +30,17 @@ export type { StorageFactoryProps, WithPersistor } from "./types/store.types";
 export { configureStore } from "@reduxjs/toolkit";
 export { setupListeners } from "@reduxjs/toolkit/query/react";
 export { persistStore } from "redux-persist";
+
+export {
+  useLoginWithUserPassMutation,
+  useLogoutMutation,
+  useLoginWithAuthIdMutation,
+  useFetchPostsQuery,
+  useLazyFetchPostsQuery,
+  useFetchStoriesQuery,
+  useLazyFetchStoriesQuery,
+  useFetchDecadeStatsQuery,
+  useLazyFetchDecadeStatsQuery,
+  type FetchPostsApiArg,
+  type FetchPostsApiResponse
+} from "openapi";

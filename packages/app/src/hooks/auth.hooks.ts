@@ -35,7 +35,12 @@ export function useLogin() {
     validationSchema: loginSchema,
     onSubmit: async ({ username, password }, { setSubmitting }) => {
       setSubmitting(true);
-      await loginWithUserPass({ username, password }).unwrap();
+      await loginWithUserPass({
+        body: {
+          username,
+          password,
+        },
+      }).unwrap();
       if (!isLoading) {
         setSubmitting(false);
       }
@@ -44,13 +49,16 @@ export function useLogin() {
 
   useEffect(() => {
     if (!isLoading) {
-      if (data && data.authId) {
-        dispatch(setAuth(data));
+      if (data && data.status === "success") {
+        dispatch(setAuth(data.payload));
+      } else {
+        dispatch(setAuth({ username: "", authId: "" }));
       }
     }
-  }, [isLoading, data?.authId]);
+  }, [isLoading, data]);
 
-  const isLoginFailed = data?.authId === "" && data?.username === "";
+  const isLoginFailed =
+    data?.payload?.authId === "" && data?.payload?.username === "";
 
   let status: LoginStatus = "idle";
   if (isSuccess && !isLoginFailed) {
@@ -59,7 +67,8 @@ export function useLogin() {
   if (isSuccess && isLoginFailed) {
     status = "warning";
   }
-  if (isError) {
+  // @ts-ignore
+  if (isError || data?.status === "failure") {
     status = "error";
   }
 
@@ -71,14 +80,14 @@ export function useLogout() {
   const [logout, { data, isLoading }] = useLogoutMutation();
 
   useEffect(() => {
-    logout(null).unwrap();
+    logout().unwrap();
   }, []);
 
   useEffect(() => {
-    if (!!data && !data.authId) {
+    if (!!data && !data.payload.authId) {
       dispatch(setAuth(authInitialState["auth"]));
     }
-  }, [data?.authId]);
+  }, [data?.payload.authId]);
 
   return { isLoading };
 }

@@ -1,0 +1,127 @@
+paths:
+  login:
+    auth-id:
+      post:
+        operationId: loginWithAuthId
+        requestBody:
+          $ref: "#/components/requestBodies/loginWithAuthId"
+        responses:
+          200:
+            $ref: "#/components/responses/successfulSession"
+          500:
+            $ref: "#/components/responses/failedSession"
+
+    user-pass:
+      post:
+        operationId: loginWithUserPass
+        requestBody:
+          $ref: "#/components/requestBodies/loginWithUserPass"
+        responses:
+          200:
+            $ref: "#/components/responses/successfulSession"
+          500:
+            $ref: "#/components/responses/failedSession"
+
+  logout:
+    post:
+      operationId: logout
+      responses:
+        200:
+          $ref: "#/components/responses/successfulSession"
+        500:
+          $ref: "#/components/responses/failedSession"
+
+components:
+  requestBodies:
+    loginWithAuthId:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/loginWithAuthId"
+            
+    loginWithUserPass:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/loginWithUserPass"
+
+  responses:
+    failedSession:
+      description: Response for successful login by auth id.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/failedSession"
+
+    successfulSession:
+      description: Response for successful login by auth id.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/successfulSession"
+
+  schemas:
+    loginWithAuthId:
+      type: object
+      required:
+        - authId
+      properties:
+        authId: 
+          description: authentication id assigned to the client by the server.
+          type: string
+          example: 24eda73d-4449-4915-bfca-4691d7d87da0
+
+    loginWithUserPass:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username: 
+          type: string
+          example: utkusarioglu
+        password:
+          type: string
+          example: password1
+
+    session:
+      type: object
+      required:
+        - authId
+        - username
+      properties:
+        authId: 
+          description: authentication id assigned to the client by the server.
+          type: string
+          example: 24eda73d-4449-4915-bfca-4691d7d87da0
+        username:
+          type: string
+          example: utkusarioglu
+
+    successfulSession:
+      type: object
+      required:
+        - status
+        - payload
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+        payload:
+          $ref: "#/components/schemas/session"
+
+    failedSession:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          enum:
+            - failure
+        message:
+          type: string
+        # payload:
+        #   $ref: "#/components/schemas/session"

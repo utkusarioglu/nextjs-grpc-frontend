@@ -9,7 +9,7 @@ process.env = {
   WEB_SERVER_SERVER_CERT_RELPATH: "web-server-server-cert",
 };
 
-describe("decade-stats", () => {
+describe("inflation", () => {
   it("readCertPath", () => {
     const response = readCertPath("ca.crt");
     expect(Buffer.isBuffer(response)).toBe(true);

@@ -1,6 +1,17 @@
 import { MockData } from "../../../utils/mock-data.utils";
+import { Paths } from "openapi";
 
-export async function postsApi(offset: number, limit: number) {
+type Get = Paths["/feed/posts"]["get"];
+
+type QueryParams = Get["parameters"]["query"];
+type Responses = Get["responses"];
+type Response200 = Responses["200"]["content"]["application/json"];
+type Response503 = Responses["500"]["content"]["application/json"];
+type ResponsesUnion = Response200 | Response503;
+
+type ApiHandler = (params: QueryParams) => Promise<ResponsesUnion>;
+
+export const postsApi: ApiHandler = async ({ offset, limit }) => {
   try {
     if (process.env.MOCK_ENDPOINTS === "true") {
       const payload = await MockData.posts(offset, limit);
@@ -32,4 +43,4 @@ export async function postsApi(offset: number, limit: number) {
         };
     }
   }
-}
+};

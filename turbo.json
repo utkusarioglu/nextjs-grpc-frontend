@@ -24,7 +24,7 @@
       "persistent": true
     },
     "dev:no-telemetry": {
-      "cache":false,
+      "cache": false,
       "persistent": true
     }
   }

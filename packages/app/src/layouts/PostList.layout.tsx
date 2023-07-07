@@ -2,7 +2,7 @@ import { type FC } from "react";
 import { Paragraph, YStack } from "ui";
 import { useTranslation } from "i18n";
 import { PostListCardView } from "../views/PostListCard.view";
-import { usePosts } from "store/src/apis/feed/feed.api";
+import { useFetchPostsQuery } from "store";
 import { PostListSkeleton } from "../skeletons/PostList.skeleton";
 
 interface PostListLayoutProps {
@@ -14,7 +14,7 @@ interface PostListLayoutProps {
 
 const PostListLayout: FC<PostListLayoutProps> = ({ index: { start, end } }) => {
   const { t } = useTranslation("rest");
-  const { data, error, isLoading, isFetching, isError } = usePosts({
+  const { data, error, isLoading, isFetching, isError } = useFetchPostsQuery({
     offset: 0,
     limit: 4,
   });
