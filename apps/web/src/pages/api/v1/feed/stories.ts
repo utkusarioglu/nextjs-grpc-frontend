@@ -1,21 +1,19 @@
-import { storiesApi } from "app/src/api/v1/feed/stories";
+import {
+  storiesApiV1,
+  type StoriesApiV1QueryParams,
+  type StoriesApiV1Responses,
+} from "api";
 import { type NextApiHandler } from "next";
-import { type Paths } from "openapi";
 import { getSearchParam } from "../../../../utils/next.utils";
 
-type Get = Paths["/feed/stories"]["get"];
-
-type QueryParams = Get["parameters"]["query"];
-type Responses = Get["responses"];
-type Response200 = Responses["200"]["content"]["application/json"];
-type Response500 = Responses["500"]["content"]["application/json"];
-type ResponsesUnion = Response200 | Response500;
-
-const handler: NextApiHandler<ResponsesUnion> = async (req, res) => {
+const handler: NextApiHandler<StoriesApiV1Responses> = async (req, res) => {
   try {
     switch (req.method) {
       case "GET":
-        const offset = getSearchParam<QueryParams>(req.url, "offset");
+        const offset = getSearchParam<StoriesApiV1QueryParams>(
+          req.url,
+          "offset"
+        );
         if (!offset) {
           res.status(500).json({
             status: "failure",
@@ -23,7 +21,7 @@ const handler: NextApiHandler<ResponsesUnion> = async (req, res) => {
           });
           throw new Error("NO_OFFSET_GIVEN");
         }
-        const limit = getSearchParam<QueryParams>(req.url, "limit");
+        const limit = getSearchParam<StoriesApiV1QueryParams>(req.url, "limit");
         if (!limit) {
           res.status(500).json({
             status: "failure",
@@ -31,7 +29,7 @@ const handler: NextApiHandler<ResponsesUnion> = async (req, res) => {
           });
           throw new Error("NO_LIMIT_GIVEN");
         }
-        const response = await storiesApi({
+        const response = await storiesApiV1({
           offset: +offset,
           limit: +limit,
         });

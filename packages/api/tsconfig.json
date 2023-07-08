@@ -1,0 +1,20 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+
+    "isolatedModules": true,
+    "paths": {
+      "openapi": ["../../packages/openapi"],
+    }
+  },
+  "include": ["src"],
+  "exclude": ["dist", "build", "node_modules"],
+  "references": [
+    {
+      "path": "../../packages/openapi"
+    },
+  ]
+}

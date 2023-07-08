@@ -4,6 +4,7 @@
   "main": "./src/index.tsx",
   "types": "./src/index.tsx",
   "dependencies": {
+    "api": "*",
     "formik": "^2.4.0",
     "i18n": "*",
     "openapi": "*",
