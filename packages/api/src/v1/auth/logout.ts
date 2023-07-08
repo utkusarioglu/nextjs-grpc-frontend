@@ -1,17 +1,17 @@
 import { Paths } from "openapi";
-import authService from "../../../services/auth/auth.service";
+import authService from "../../services/auth/auth.service";
 
 type Method = Paths["/auth/logout"]["post"];
 
 type Responses = Method["responses"];
 type Response200 = Responses["200"]["content"]["application/json"];
 type Response500 = Responses["500"]["content"]["application/json"];
-type ResponsesUnion = Response200 | Response500;
+export type ResponsesUnion = Response200 | Response500;
 
 type ApiHandler = () => Promise<ResponsesUnion>;
 
 // TODO this route needs authorization
-export const logoutApi: ApiHandler = async () => {
+export const logoutApiV1: ApiHandler = async () => {
   try {
     // res.status(200).end();
     // if (!req.cookies[AUTH_SLICE_COOKIE_NAME]) {

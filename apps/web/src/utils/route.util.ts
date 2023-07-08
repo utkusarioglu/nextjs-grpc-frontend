@@ -1,5 +1,5 @@
 import { GUEST_PATHS, GUEST_ENTRY_PATH, LOGOUT_PATH } from "../constants";
-import authService from "app/src/services/auth/auth.service";
+import authService from "api/src/services/auth/auth.service";
 import type { Store } from "src/store";
 import type { ParsedUrlQuery } from "querystring";
 import type { GetServerSidePropsContext, PreviewData } from "next";

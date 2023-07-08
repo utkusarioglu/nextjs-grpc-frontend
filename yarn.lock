@@ -8430,6 +8430,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"api@*, api@workspace:packages/api":
+  version: 0.0.0-use.local
+  resolution: "api@workspace:packages/api"
+  dependencies:
+    openapi: "*"
+    typescript: ^5.0.4
+  languageName: unknown
+  linkType: soft
+
 "app-client@npm:x":
   version: 0.1.0
   resolution: "app-client@npm:0.1.0"
@@ -8463,6 +8472,7 @@ __metadata:
   dependencies:
     "@babel/preset-typescript": ^7.21.5
     "@jest/globals": ^29.5.0
+    api: "*"
     formik: ^2.4.0
     i18n: "*"
     jest: ^29.5.0
@@ -22198,7 +22208,6 @@ __metadata:
     next-redux-cookie-wrapper: ^2.2.1
     next-redux-wrapper: ^8.1.0
     ni18n: ^1.1.0
-    openapi: "*"
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native: 0.71.8

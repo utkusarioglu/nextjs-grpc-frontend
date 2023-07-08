@@ -1,0 +1,14 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "main": "./src/exports.ts",
+  "types": "./src/exports.ts",
+  "license": "MIT",
+  "packageManager": "yarn@3.5.1",
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "openapi": "*"
+  }
+}
