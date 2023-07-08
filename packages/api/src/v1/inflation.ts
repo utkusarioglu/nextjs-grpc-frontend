@@ -1,22 +1,22 @@
-import { InflationService } from "../../services/inflation/inflation.service";
-import { getTlsProps } from "../../utils/readCertPath";
-import { MockData } from "../../utils/mock-data.utils";
+import { InflationService } from "../services/inflation/inflation.service";
+import { getTlsProps } from "../utils/cert.utils";
+import { MockData } from "../utils/mock-data.utils";
 import { Paths } from "openapi";
 
 type Get = Paths["/data/inflation/decade-stats"]["get"];
 
-type QueryParams = Get["parameters"]["query"];
+export type QueryParams = Get["parameters"]["query"];
 type Responses = Get["responses"];
 type Response200 = Responses["200"]["content"]["application/json"];
 type Response500 = Responses["500"]["content"]["application/json"];
-type ResponsesUnion = Response200 | Response500;
+export type ResponsesUnion = Response200 | Response500;
 
 type ApiHandler = (params: QueryParams) => Promise<ResponsesUnion>;
 
 export const tlsProps = getTlsProps();
 
 // TODO this route needs authorization
-export const inflationApi: ApiHandler = async ({ codes }) => {
+export const inflationApiV1: ApiHandler = async ({ codes }) => {
   try {
     const codesSanitized = codes
       .split(",")

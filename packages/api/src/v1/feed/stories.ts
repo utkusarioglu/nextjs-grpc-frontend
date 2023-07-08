@@ -1,17 +1,17 @@
-import { MockData } from "../../../utils/mock-data.utils";
+import { MockData } from "../../utils/mock-data.utils";
 import { Paths } from "openapi";
 
 type Get = Paths["/feed/stories"]["get"];
 
-type QueryParams = Get["parameters"]["query"];
+export type QueryParams = Get["parameters"]["query"];
 type Responses = Get["responses"];
 type Response200 = Responses["200"]["content"]["application/json"];
 type Response500 = Responses["500"]["content"]["application/json"];
-type ResponsesUnion = Response200 | Response500;
+export type ResponsesUnion = Response200 | Response500;
 
 type ApiHandler = (params: QueryParams) => Promise<ResponsesUnion>;
 
-export const storiesApi: ApiHandler = async ({ offset, limit }) => {
+export const storiesApiV1: ApiHandler = async ({ offset, limit }) => {
   try {
     if (process.env.MOCK_ENDPOINTS === "true") {
       const payload = await MockData.stories(offset, limit);
