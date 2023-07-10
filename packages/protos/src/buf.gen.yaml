@@ -1,0 +1,6 @@
+version: v1beta1
+
+plugins:
+  - name: js
+    out: build/nodejs
+    opt: import_style=commonjs,binary
