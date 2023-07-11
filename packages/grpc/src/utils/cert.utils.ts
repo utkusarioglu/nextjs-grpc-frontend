@@ -14,5 +14,6 @@ export const readCertPath = (filename: string): Buffer => {
 export const getTlsProps = () => ({
   caCrt: readCertPath("ca.crt"),
   tlsCrt: readCertPath("tls.crt"),
+  // tlsCrt: readCertPath("chain.crt"),
   tlsKey: readCertPath("tls.key"),
 });
