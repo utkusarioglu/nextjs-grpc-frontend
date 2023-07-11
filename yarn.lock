@@ -2601,6 +2601,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@grpc/grpc-js@npm:^1.8.17":
+  version: 1.8.17
+  resolution: "@grpc/grpc-js@npm:1.8.17"
+  dependencies:
+    "@grpc/proto-loader": ^0.7.0
+    "@types/node": ">=12.12.47"
+  checksum: 0ac8cd7342a33d7e507ec0ebb470721ae84eb964fd164e4b7b829cb35774c09df158124cbce859d9398c9a015f0e29d2308a3a17be35d54e030a7dc091e7e9a4
+  languageName: node
+  linkType: hard
+
 "@grpc/proto-loader@npm:^0.7.0, @grpc/proto-loader@npm:^0.7.3":
   version: 0.7.7
   resolution: "@grpc/proto-loader@npm:0.7.7"
@@ -4438,6 +4448,69 @@ __metadata:
     picocolors: ^1.0.0
     tslib: ^2.5.0
   checksum: 654682860272541a40485b01e0763b155ec31faeba85b2c51e38b59c4ff1f8918c37b87b5ecbda3ff482d8486eba086e92b991fe4a8ed62efbbbdf83c0f64409
+  languageName: node
+  linkType: hard
+
+"@protobuf-ts/grpc-transport@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "@protobuf-ts/grpc-transport@npm:2.9.0"
+  dependencies:
+    "@protobuf-ts/runtime": ^2.9.0
+    "@protobuf-ts/runtime-rpc": ^2.9.0
+  peerDependencies:
+    "@grpc/grpc-js": ^1.6.0
+  checksum: 61684bddaec5adb697ada63f255f17b82114e6bd15a47d008dd23e8245b52d9c401d12049280b9331a997cc11d6d2c5c7a575acd9648dba38c050d54eabc4468
+  languageName: node
+  linkType: hard
+
+"@protobuf-ts/plugin-framework@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "@protobuf-ts/plugin-framework@npm:2.9.0"
+  dependencies:
+    "@protobuf-ts/runtime": ^2.9.0
+    typescript: ^3.9
+  checksum: 1483bb1a49b6568d0fb5bfa2bac79cf1b18965b5b62e3169ca093a934b59668a00d664839ee3d156425fad363ffa0965f07d3a3933d9c84a9a5f73856853d8e0
+  languageName: node
+  linkType: hard
+
+"@protobuf-ts/plugin@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "@protobuf-ts/plugin@npm:2.9.0"
+  dependencies:
+    "@protobuf-ts/plugin-framework": ^2.9.0
+    "@protobuf-ts/protoc": ^2.9.0
+    "@protobuf-ts/runtime": ^2.9.0
+    "@protobuf-ts/runtime-rpc": ^2.9.0
+    typescript: ^3.9
+  bin:
+    protoc-gen-dump: bin/protoc-gen-dump
+    protoc-gen-ts: bin/protoc-gen-ts
+  checksum: 8871ea4a30f1ffc10702d41de729492a987e9b2ba6e0d78abfc1857271e6ffcdff1a2dc38c177715a3d1cf7d528d7a0799a8bcb79a0ea22f1391e357638245d7
+  languageName: node
+  linkType: hard
+
+"@protobuf-ts/protoc@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "@protobuf-ts/protoc@npm:2.9.0"
+  bin:
+    protoc: protoc.js
+  checksum: 66a67d3b6b1910c6651e5b5fa596477bb7f17a845d48f7e57b397ff3e6000c3e5cdb36b0ffb27a07c3764c091374234dc62d6cec19820031210f2f47f75b1da4
+  languageName: node
+  linkType: hard
+
+"@protobuf-ts/runtime-rpc@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "@protobuf-ts/runtime-rpc@npm:2.9.0"
+  dependencies:
+    "@protobuf-ts/runtime": ^2.9.0
+  checksum: dfcd538a8b7b6d97714214dae169b5a878b744285aeeceb90429727bf6b263e6233b928f1f64957d69a8878da5d04fb50e1461767052342d62dbc158a940e407
+  languageName: node
+  linkType: hard
+
+"@protobuf-ts/runtime@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "@protobuf-ts/runtime@npm:2.9.0"
+  checksum: 62b2eafd0c8941734336f552f89898d224745550ad5eb8166e4bf28db75a1acc2b2e6f9c0b4d0db66bd6efab22fa987fa49c9435d0502cf8aa49f1dce5b35bd9
   languageName: node
   linkType: hard
 
@@ -13172,6 +13245,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"grpc@workspace:packages/grpc":
+  version: 0.0.0-use.local
+  resolution: "grpc@workspace:packages/grpc"
+  dependencies:
+    "@bufbuild/buf": ^1.23.1
+    "@grpc/grpc-js": ^1.8.17
+    "@protobuf-ts/grpc-transport": ^2.9.0
+    "@protobuf-ts/plugin": ^2.9.0
+    "@protobuf-ts/runtime": ^2.9.0
+    typescript: ^5.0.4
+  languageName: unknown
+  linkType: soft
+
 "gzip-size@npm:^6.0.0":
   version: 6.0.0
   resolution: "gzip-size@npm:6.0.0"
@@ -21717,6 +21803,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^3.9":
+  version: 3.9.10
+  resolution: "typescript@npm:3.9.10"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 46c842e2cd4797b88b66ef06c9c41dd21da48b95787072ccf39d5f2aa3124361bc4c966aa1c7f709fae0509614d76751455b5231b12dbb72eb97a31369e1ff92
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^4.1.2, typescript@npm:^4.5.2, typescript@npm:^4.5.3":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
@@ -21754,6 +21850,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 858c61fa63f7274ca4aaaffeced854d550bf416cff6e558c4884041b3311fb662f476f167cf5c9f8680c607239797e26a2ee0bcc6467fbc05bfcb218e1c6c671
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^3.9#~builtin<compat/typescript>":
+  version: 3.9.10
+  resolution: "typescript@patch:typescript@npm%3A3.9.10#~builtin<compat/typescript>::version=3.9.10&hash=3bd3d3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: dc7141ab555b23a8650a6787f98845fc11692063d02b75ff49433091b3af2fe3d773650dea18389d7c21f47d620fb3b110ea363dab4ab039417a6ccbbaf96fc2
   languageName: node
   linkType: hard
 

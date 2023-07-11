@@ -8,13 +8,14 @@
     "isolatedModules": true,
     "paths": {
       "openapi": ["../../packages/openapi"],
+      "grpc": ["../../packages/grpc"],
     }
   },
   "include": ["src"],
   "exclude": ["dist", "build", "node_modules"],
   "references": [
     {
-      "path": "../../packages/openapi"
+      "path": "../../packages/grpc"
     },
   ]
 }

@@ -1,0 +1,22 @@
+{
+  "name": "grpc",
+  "version": "0.0.0",
+  "main": "./src/exports.ts",
+  "types": "./src/exports.ts",
+  "license": "MIT",
+  "packageManager": "yarn@3.5.1",
+  "devDependencies": {
+    "@bufbuild/buf": "^1.23.1",
+    "@protobuf-ts/grpc-transport": "^2.9.0",
+    "@protobuf-ts/plugin": "^2.9.0",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "clean": "rm -rf src/codegen",
+    "generate:all": "yarn clean && yarn buf generate"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.8.17",
+    "@protobuf-ts/runtime": "^2.9.0"
+  }
+}
