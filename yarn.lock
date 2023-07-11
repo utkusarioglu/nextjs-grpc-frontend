@@ -8580,6 +8580,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api@workspace:packages/api"
   dependencies:
+    grpc: "*"
     openapi: "*"
     typescript: ^5.0.4
   languageName: unknown
@@ -13245,7 +13246,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"grpc@workspace:packages/grpc":
+"grpc@*, grpc@workspace:packages/grpc":
   version: 0.0.0-use.local
   resolution: "grpc@workspace:packages/grpc"
   dependencies:
