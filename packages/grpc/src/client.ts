@@ -1,5 +1,5 @@
 import { GrpcTransport } from "@protobuf-ts/grpc-transport";
-import { InflationClient } from "./codegen/src/proto/inflation/decade-stats.client";
+import { InflationClient } from "./gen/src/inflation/decade-stats.client";
 import * as grpc from "@grpc/grpc-js";
 import { getTlsProps } from "./utils/cert.utils";
 
