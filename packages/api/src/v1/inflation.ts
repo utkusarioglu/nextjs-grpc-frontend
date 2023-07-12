@@ -33,6 +33,7 @@ async function getResponse(params: InflationDecadeStatsRequest) {
 }
 
 // TODO this route needs authorization
+// @ts-ignore
 export const inflationApiV1: ApiHandler = async ({ codes }) => {
   try {
     const codesSanitized = codes
