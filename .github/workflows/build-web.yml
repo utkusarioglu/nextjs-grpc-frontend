@@ -34,6 +34,7 @@ jobs:
           - enabled: false
             imageTagPrefix: ""
             repoRelPath: frontend
+            protoRepoRelPath: proto
             appRelPath: apps/web
             dockerfile: .docker/Dockerfile.dev
             additionalFilesToWatch: ""
@@ -48,6 +49,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
+          ref: experiment/chore/implement-buf
           path: ${{ matrix.images.repoRelPath }} 
 
       - name: Checkout proto
@@ -55,7 +57,8 @@ jobs:
         with:
           repository: utkusarioglu/nextjs-grpc-proto
           fetch-depth: 2
-          path: proto 
+          ref: experiment/chore/implement-buf
+          path: ${{ matrix.images.protoRepoRelPath }} 
 
       - name: Get changed files
         id: changed_files
@@ -142,6 +145,7 @@ jobs:
             GROUP=${{ env.CONTAINER_GROUP }}
             PROJECT_ROOT_ABSPATH=${{ env.CONTAINER_PROJECT_ROOT }}
             REPO_RELPATH=${{ matrix.images.repoRelPath }}
+            PROTO_REPO_RELPATH=${{ matrix.images.protoRepoRelPath }}
             APP_RELPATH=${{ matrix.images.appRelPath }}
             NEXT_PUBLIC_WEB_APP_URL=${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
             NEXT_PUBLIC_API_V1_URL=${{ secrets.NEXT_PUBLIC_API_V1_URL }}

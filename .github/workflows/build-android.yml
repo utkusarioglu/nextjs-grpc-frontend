@@ -2,13 +2,13 @@ name: Build Android App
 
 on:
   push:
-    tags:
-      - "**.**.**"
-      - "experiment/**/**/**"
-    paths:
-      - apps/**
-      - packages/**
-      - .github/workflows/build-web.yml
+    # tags:
+    #   - "**.**.**"
+    #   - "experiment/**/**/**"
+    # paths:
+    #   - apps/**
+    #   - packages/**
+    #   - .github/workflows/build-web.yml
   workflow_dispatch:
 
 concurrency:
