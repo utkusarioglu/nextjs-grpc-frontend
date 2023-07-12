@@ -86,7 +86,7 @@ env:
   OTEL_TRACE_HOST: otel-trace-collector.observability
   OTEL_TRACE_PORT: 4317
 
-  GRPC_VERBOSITY: INFO
+  GRPC_VERBOSITY: DEBUG
   GRPC_TRACE: all
   GRPC_CLIENT_TLS_ENABLED: true
 
