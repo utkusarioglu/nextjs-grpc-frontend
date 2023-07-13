@@ -20,14 +20,18 @@ async function getResponse(params: InflationDecadeStatsRequest) {
   return new Promise<InflationDecadeStatsResponse[]>(
     async (resolve, reject) => {
       const payload: InflationDecadeStatsResponse[] = [];
-      const response = inflationClient.decadeStats(params);
-      response.responses.onComplete(() => resolve(payload));
-      response.responses.onNext((message) => {
+      const { responses } = inflationClient.decadeStats(params);
+      responses.onComplete(() => {
+        console.log("Grpc message completed: ", { payload });
+        resolve(payload);
+      });
+      responses.onNext((message) => {
         if (message) {
+          console.log("Received grpc message:", message);
           payload.push(message);
         }
       });
-      response.responses.onError((e) => reject(e));
+      responses.onError((e) => reject(e));
     }
   );
 }
