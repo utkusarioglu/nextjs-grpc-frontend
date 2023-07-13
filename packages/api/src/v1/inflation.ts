@@ -16,13 +16,16 @@ export type ResponsesUnion = Response200 | Response500;
 
 type ApiHandler = (params: QueryParams) => Promise<ResponsesUnion>;
 
-async function getResponse(params: InflationDecadeStatsRequest) {
+async function getInflationApiV1Response(params: InflationDecadeStatsRequest) {
   return new Promise<InflationDecadeStatsResponse[]>(
     async (resolve, reject) => {
       const payload: InflationDecadeStatsResponse[] = [];
       const { responses } = inflationClient.decadeStats(params);
       responses.onComplete(() => {
-        console.log("Grpc message completed: ", { payload });
+        console.log("Grpc message completed: ", {
+          codes: params.codes,
+          payload,
+        });
         resolve(payload);
       });
       responses.onNext((message) => {
@@ -55,7 +58,7 @@ export const inflationApiV1: ApiHandler = async ({ codes }) => {
       });
     }
 
-    const payload = await getResponse({ codes: codesSanitized });
+    const payload = await getInflationApiV1Response({ codes: codesSanitized });
 
     return {
       status: "success",
