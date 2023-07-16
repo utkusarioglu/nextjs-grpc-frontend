@@ -18,6 +18,10 @@ const handler: NextApiHandler<InflationApiV1Responses> = async (req, res) => {
         throw new Error("NO_CODES_GIVEN");
       }
       const response = await inflationApiV1({ codes });
+      console.log("Received api response from inflationApiV1:", {
+        codes,
+        response,
+      });
       res.status(200).json(response);
       break;
 

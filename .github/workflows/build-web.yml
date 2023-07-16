@@ -9,6 +9,11 @@ on:
       - apps/**
       - packages/**
       - .github/workflows/build-web.yml
+  pull_request:
+    types:
+      - opened
+    branches:
+      - main
   workflow_dispatch:
 
 concurrency:
@@ -34,6 +39,7 @@ jobs:
           - enabled: false
             imageTagPrefix: ""
             repoRelPath: frontend
+            protoRepoRelPath: proto
             appRelPath: apps/web
             dockerfile: .docker/Dockerfile.dev
             additionalFilesToWatch: ""
@@ -55,7 +61,7 @@ jobs:
         with:
           repository: utkusarioglu/nextjs-grpc-proto
           fetch-depth: 2
-          path: proto 
+          path: ${{ matrix.images.protoRepoRelPath }} 
 
       - name: Get changed files
         id: changed_files
@@ -142,6 +148,7 @@ jobs:
             GROUP=${{ env.CONTAINER_GROUP }}
             PROJECT_ROOT_ABSPATH=${{ env.CONTAINER_PROJECT_ROOT }}
             REPO_RELPATH=${{ matrix.images.repoRelPath }}
+            PROTO_REPO_RELPATH=${{ matrix.images.protoRepoRelPath }}
             APP_RELPATH=${{ matrix.images.appRelPath }}
             NEXT_PUBLIC_WEB_APP_URL=${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
             NEXT_PUBLIC_API_V1_URL=${{ secrets.NEXT_PUBLIC_API_V1_URL }}

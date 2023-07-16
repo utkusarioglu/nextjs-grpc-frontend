@@ -8,8 +8,10 @@ ARG REPO_RELPATH
 ARG APP_RELPATH
 ARG NEXT_PUBLIC_WEB_APP_URL
 ARG NEXT_PUBLIC_API_V1_URL
+ARG PROTO_REPO_RELPATH
 
 ARG REPO_ABSPATH="$PROJECT_ROOT_ABSPATH/$REPO_RELPATH"
+ARG PROTO_REPO_ABSPATH="$PROJECT_ROOT_ABSPATH/$PROTO_REPO_RELPATH"
 ARG APP_ABSPATH="$REPO_ABSPATH/$APP_RELPATH"
 
 WORKDIR $PROJECT_ROOT_ABSPATH
@@ -21,6 +23,12 @@ WORKDIR $REPO_ABSPATH
 RUN yarn --immutable
 RUN yarn plugin import workspace-tools
 RUN cd packages/openapi && yarn generate:all && cd ../..
+
+WORKDIR $PROTO_REPO_ABSPATH
+RUN yarn --immutable
+RUN yarn generate:frontend
+
+WORKDIR $REPO_ABSPATH
 RUN yarn build --filter=web
 
 FROM node:19-slim AS runner
@@ -87,9 +95,9 @@ WORKDIR $PACKAGES_ABSPATH/api
 COPY --from=builder "$PACKAGES_ABSPATH/api/package.json" package.json
 RUN ls -al 
 
-WORKDIR $PROJECT_ROOT_ABSPATH/proto
-COPY --from=builder $PROJECT_ROOT_ABSPATH/proto/src src
-RUN rm -rf src/defunct
+WORKDIR $PACKAGES_ABSPATH/grpc
+COPY --from=builder "$PACKAGES_ABSPATH/grpc/package.json" package.json
+RUN ls -al 
 
 WORKDIR $APP_ABSPATH
 RUN yarn workspaces focus --production -A
