@@ -75,7 +75,9 @@ console.log(`Trace url: ${traceUrl}`);
 
 const traceExporter = new OTLPTraceExporter({
   url: traceUrl,
+  // @ts-ignore
   credentials: credentials.createInsecure(),
+  // @ts-ignore
   metadata,
 });
 

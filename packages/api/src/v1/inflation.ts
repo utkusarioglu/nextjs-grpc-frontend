@@ -1,5 +1,8 @@
-import { InflationService } from "../services/inflation/inflation.service";
-import { getTlsProps } from "../utils/cert.utils";
+import {
+  inflationClient,
+  type InflationDecadeStatsRequest,
+  type InflationDecadeStatsResponse,
+} from "grpc";
 import { MockData } from "../utils/mock-data.utils";
 import { Paths } from "openapi";
 
@@ -13,9 +16,31 @@ export type ResponsesUnion = Response200 | Response500;
 
 type ApiHandler = (params: QueryParams) => Promise<ResponsesUnion>;
 
-export const tlsProps = getTlsProps();
+async function getInflationApiV1Response(params: InflationDecadeStatsRequest) {
+  return new Promise<InflationDecadeStatsResponse[]>(
+    async (resolve, reject) => {
+      const payload: InflationDecadeStatsResponse[] = [];
+      const { responses } = inflationClient.decadeStats(params);
+      responses.onComplete(() => {
+        console.log("Grpc message completed: ", {
+          codes: params.codes,
+          payload,
+        });
+        resolve(payload);
+      });
+      responses.onNext((message) => {
+        if (message) {
+          console.log("Received grpc message:", message);
+          payload.push(message);
+        }
+      });
+      responses.onError((e) => reject(e));
+    }
+  );
+}
 
 // TODO this route needs authorization
+// @ts-ignore
 export const inflationApiV1: ApiHandler = async ({ codes }) => {
   try {
     const codesSanitized = codes
@@ -33,8 +58,8 @@ export const inflationApiV1: ApiHandler = async ({ codes }) => {
       });
     }
 
-    const inflationService = new InflationService(tlsProps);
-    const payload = await inflationService.decadeStats(codesSanitized);
+    const payload = await getInflationApiV1Response({ codes: codesSanitized });
+
     return {
       status: "success",
       payload,
