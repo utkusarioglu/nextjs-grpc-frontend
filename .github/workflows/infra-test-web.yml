@@ -1,19 +1,19 @@
 name: Integration Test K3d Local
   
 on:
-  push:
-    tags:
-      - "**.**.**"
-      - "experiment/**/**/**"
-    paths:
-      - apps/**
-      - packages/**
-      - .github/workflows/integration-test-k3d.yml
-  pull_request:
-    types:
-      - opened
-    branches:
-      - main
+  # push:
+  #   tags:
+  #     - "**.**.**"
+  #     - "experiment/**/**/**"
+  #   paths:
+  #     - apps/**
+  #     - packages/**
+  #     - .github/workflows/integration-test-k3d.yml
+  # pull_request:
+  #   types:
+  #     - opened
+  #   branches:
+  #     - main
   workflow_dispatch:
 
 jobs:

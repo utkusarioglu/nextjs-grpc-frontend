@@ -1,19 +1,19 @@
 name: Build Android App
 
 on:
-  push:
-    tags:
-      - "**.**.**"
-      - "experiment/**/**/**"
-    paths:
-      - apps/**
-      - packages/**
-      - .github/workflows/build-web.yml
-  pull_request:
-    types:
-      - opened
-    branches:
-      - main
+  # push:
+  #   tags:
+  #     - "**.**.**"
+  #     - "experiment/**/**/**"
+  #   paths:
+  #     - apps/**
+  #     - packages/**
+  #     - .github/workflows/build-web.yml
+  # pull_request:
+  #   types:
+  #     - opened
+  #   branches:
+  #     - main
   workflow_dispatch:
 
 concurrency:
