@@ -2,7 +2,10 @@ name: Build Web Server
 
 on:
   workflow_call:
-    # inputs:
+    inputs:
+      ref:
+        required: true
+        type: string
 
 jobs:
   build-and-push:
@@ -19,7 +22,7 @@ jobs:
             dockerfile: .docker/Dockerfile.dev
             additionalFilesToWatch: ""
             readmeFile: .docker/DOCKER_README.md
-            ref: ${{ github.head_ref }}
+            # ref: ${{ github.head_ref }}
         common:
           - containerName: web-server-nextjsgprc-projects-utkusarioglu-com
             containerUsername: 10021
@@ -85,7 +88,7 @@ jobs:
         shell: bash
         run: |
           image_name="${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.common.containerName }}"
-          repo_tag="${{ matrix.images.ref }}"
+          repo_tag="${{ inputs.ref }}"
           image_tag="${repo_tag//\//-}"
           dev_image_tag="${image_tag}"
           image_ref="${image_name}:${image_tag}"

@@ -37,7 +37,8 @@ jobs:
     name: build-and-push
     uses: ./.github/workflows/build-web-call.yml
     secrets: inherit
-    # with:
+    with:
+      ref: ${{ github.ref }}
 
 
 # jobs:
