@@ -11,20 +11,25 @@
 set +e
 
 image_ref=$1
+app_relpath=$2
 
-if [ -z "$image_ref" ]; then
-  echo "Error: first param needs to be the image reference"
-  exit 1
-fi
+for var in $image_ref $app_relpath; do
+  if [ -z "${!var}" ]; then
+    echo "Error: first var $var needs to be set."
+    exit 1
+  fi
+done
 
 CONTAINER_NAME=web-server
-env_file_abspath="$(pwd)/apps/web/.env.ci"
+env_file_abspath="$(pwd)/${app_relpath}/.env.ci"
 
 if [ ! -z "" ]; then
   echo "Error: Cannot find $env_file_abspath"
   echo "This env file is required for docker run"
   exit 2
 fi
+
+touch $env_file_abspath
 source $env_file_abspath
 
 echo "Will run: $image_ref"
@@ -39,7 +44,7 @@ docker run \
 echo "Sleeping for 10 seconds…"
 sleep 10
 
-echo "Making a curl request to /…"
+echo "Making a curl request to '/'…"
 curl localhost:3000 > /dev/null
 exit_code=$?
 
