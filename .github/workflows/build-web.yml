@@ -38,7 +38,16 @@ jobs:
     uses: ./.github/workflows/build-web-call.yml
     secrets: inherit
     with:
-      ref: ${{ github.ref }}
+      ref: ${{ github.ref_name }}
+
+  test-web-server-endpoints:
+    name: test-web-server-endpoints
+    uses: ./.github/workflows/test-web-server-endpoints-call.yml
+    secrets: inherit
+    needs:
+      - build-and-push
+    with:
+      ref: ${{ github.ref_name }}
 
 
 # jobs:

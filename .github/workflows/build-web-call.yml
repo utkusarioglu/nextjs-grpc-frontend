@@ -22,7 +22,6 @@ jobs:
             dockerfile: .docker/Dockerfile.dev
             additionalFilesToWatch: ""
             readmeFile: .docker/DOCKER_README.md
-            # ref: ${{ github.head_ref }}
         common:
           - containerName: web-server-nextjsgprc-projects-utkusarioglu-com
             containerUsername: 10021
