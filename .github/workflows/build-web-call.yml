@@ -2,6 +2,7 @@ name: Build Web Server
 
 on:
   workflow_call:
+    inputs:
 
 jobs:
   build-and-push:

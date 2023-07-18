@@ -35,7 +35,7 @@ concurrency:
 jobs:
   build-and-push:
     name: build-and-push
-    uses: ./.github/workflows/build-web.yml
+    uses: ./.github/workflows/build-web-call.yml
     secrets: inherit
     # with:
 
