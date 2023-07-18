@@ -36,7 +36,7 @@ jobs:
     strategy:
       matrix:
         images:
-          - enabled: false
+          - enabled: true
             imageTagPrefix: ""
             repoRelPath: frontend
             protoRepoRelPath: proto
@@ -44,6 +44,7 @@ jobs:
             dockerfile: .docker/Dockerfile.dev
             additionalFilesToWatch: ""
             readmeFile: .docker/DOCKER_README.md
+            ref: ${{ github.head_ref }}
     env:
       NODE_ENV: production
       NEXT_PUBLIC_WEB_APP_URL: ${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
@@ -53,6 +54,7 @@ jobs:
       - name: Checkout ${{ matrix.images.repoRelPath }}
         uses: actions/checkout@v3
         with:
+          repository: utkusarioglu/nextjs-grpc-frontend
           fetch-depth: 2
           path: ${{ matrix.images.repoRelPath }} 
 
@@ -100,7 +102,7 @@ jobs:
         shell: bash
         run: |
           image_name="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.CONTAINER_NAME }}"
-          repo_tag="${{ github.ref_name }}"
+          repo_tag="${{ matrix.images.ref }}"
           image_tag="${repo_tag//\//-}"
           dev_image_tag="${image_tag}"
           image_ref="${image_name}:${image_tag}"
@@ -194,7 +196,7 @@ jobs:
         shell: bash
         run: |
           image_name="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.CONTAINER_NAME }}"
-          repo_tag="${{ github.ref_name }}"
+          repo_tag="${{ matrix.images.ref }}"
           image_tag="${repo_tag//\//-}"
           dev_image_tag="${image_tag}"
           image_ref="${image_name}:${image_tag}"
