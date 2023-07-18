@@ -186,6 +186,7 @@ jobs:
           - enabled: true
             repoRelPath: frontend
             appRelPath: apps/web
+            ref: ${{ github.head_ref }}
 
     steps:
       - name: Checkout ${{ matrix.images.repoRelPath }}
