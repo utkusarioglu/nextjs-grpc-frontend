@@ -7,8 +7,8 @@ on:
         required: true
         type: string
 
-  test-web-build:
-    name: test-web-build
+  test-web-server-endpoints:
+    name: test-web-server-endpoints
     runs-on: ubuntu-latest
     strategy:
       matrix:
