@@ -1,4 +1,4 @@
-name: Push
+name: Push and PR
 
 on:
   push:
@@ -25,5 +25,5 @@ concurrency:
 
 jobs:
   build-and-test:
-    uses: ./.github/workflows/build-and-test.yml
+    uses: ./.github/workflows/build-test-push.wfc.yml
     secrets: inherit

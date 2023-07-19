@@ -1,28 +1,7 @@
-name: Build and test
+name: Build & test and Push
 
 on:
   workflow_call:
-  # push:
-  #   tags:
-  #     - "**.**.**"
-  #     - "experiment/**/**/**"
-  #   paths:
-  #     - apps/**
-  #     - packages/**
-  #     - .github/workflows/build-web.yml
-  # pull_request:
-  #   types:
-  #     - opened
-  #     - reopened
-  #     - edited
-  #     - synchronize
-  #   branches:
-  #     - main
-  # workflow_dispatch:
-
-# concurrency:
-#   group: ${{ github.workflow }}-${{ github.ref }}
-#   cancel-in-progress: true
 
 jobs:
   build-android:
