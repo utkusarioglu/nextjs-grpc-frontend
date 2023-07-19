@@ -39,3 +39,14 @@ jobs:
       - build-and-push
     with:
       ref: ${{ github.ref_name }}
+
+  test-web-integration:
+    name: infra-test-web
+    uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/test-k3d-dev-local-call.yml@main
+    secrets: inherit
+    needs:
+      - test-web-server-endpoints
+    with:
+      frontend: ${{ github.ref_name }}
+      infra: experiment/test/workflow-calls
+      webServerImageTag: set-from-frontend-repo
