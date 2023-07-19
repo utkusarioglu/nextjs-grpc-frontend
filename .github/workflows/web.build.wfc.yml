@@ -11,6 +11,10 @@ jobs:
   build-and-push:
     name: build-and-push
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      NEXT_PUBLIC_WEB_APP_URL: ${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
+      NEXT_PUBLIC_API_V1_URL: ${{ secrets.NEXT_PUBLIC_API_V1_URL }}
     strategy:
       matrix:
         images:
@@ -30,10 +34,6 @@ jobs:
             cacheFromSrc: /tmp/.buildx-cache
             tagFallbackString: tag-unavailable
             containerProjectRoot: /utkusarioglu-com/projects/nextjs-grpc
-    env:
-      NODE_ENV: production
-      NEXT_PUBLIC_WEB_APP_URL: ${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
-      NEXT_PUBLIC_API_V1_URL: ${{ secrets.NEXT_PUBLIC_API_V1_URL }}
 
     steps:
       - name: Checkout ${{ matrix.images.repoRelPath }}

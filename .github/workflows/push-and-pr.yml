@@ -24,6 +24,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-test:
+  build-test-push:
     uses: ./.github/workflows/build-test-push.wfc.yml
     secrets: inherit
