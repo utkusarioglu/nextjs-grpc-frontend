@@ -26,19 +26,16 @@ concurrency:
 
 jobs:
   build-android:
-    name: build-android
     secrets: inherit
     uses: ./.github/workflows/android.build.wfc.yml
 
   build-web:
-    name: build-and-push
     uses: ./.github/workflows/web.build.wfc.yml
     secrets: inherit
     with:
       ref: ${{ github.ref_name }}
 
   test-web-server-endpoints:
-    name: test-web-server-endpoints
     uses: ./.github/workflows/web-server-endpoints.test.wfc.yml
     secrets: inherit
     needs:
@@ -47,7 +44,6 @@ jobs:
       ref: ${{ github.ref_name }}
 
   create-variables:
-    name: create-variables
     runs-on: ubuntu-latest
     outputs:
       image_tag: ${{ steps.create-variables.outputs.image_tag }}
@@ -60,7 +56,6 @@ jobs:
           echo "image_tag=$image_tag" >> "$GITHUB_OUTPUT"
 
   test-k8s-integration:
-    name: infra-test-web
     uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/k3d-dev-local.test.wfc.yml@experiment/test/workflow-calls
     secrets: inherit
     needs:
