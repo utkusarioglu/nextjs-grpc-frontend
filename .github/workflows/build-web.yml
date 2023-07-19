@@ -40,13 +40,26 @@ jobs:
   #   with:
   #     ref: ${{ github.ref_name }}
 
+  create-variables:
+    name: create-variables:
+    outputs:
+      image_tag: ${{ steps.create-variables.outputs.image_tag }}
+    steps:
+      - name: create-variables
+        run: |
+          repo_tag="${{ github.ref_name }}"
+          image_tag="${repo_tag//\//-}"
+          echo "image tag is: $image_tag"
+          echo "image_tag=${image_tag}" >> $GITHUB_OUTPUT
+
   test-web-integration:
     name: infra-test-web
     uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/test-k3d-dev-local-call.yml@experiment/test/workflow-calls
     secrets: inherit
-    # needs:
-    #   - test-web-server-endpoints
+    needs:
+      # - test-web-server-endpoints
+      - create-variables
     with:
       frontend: ${{ github.ref_name }}
       infra: experiment/test/workflow-calls
-      webServerImageTag: set-from-frontend-repo
+      webServerImageTag: ${{ jobs.create-variables.outputs.image_tag }}
