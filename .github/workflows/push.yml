@@ -1,4 +1,4 @@
-name: Build Android App
+name: Push
 
 on:
   push:
@@ -8,11 +8,13 @@ on:
     paths:
       - apps/**
       - packages/**
-      - .github/workflows/build-android.yml
-      - .github/workflows/build-android.wfc.yml
+      - .github/workflows/build-web.yml
   pull_request:
     types:
       - opened
+      - reopened
+      - edited
+      - synchronize
     branches:
       - main
   workflow_dispatch:
@@ -22,7 +24,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-android:
-    name: build-android
+  build-and-test:
     secrets: inherit
-    uses: ./.github/workflows/build-android.wfc.yml
+    uses: ./.github/workflows/build-and-test.yml

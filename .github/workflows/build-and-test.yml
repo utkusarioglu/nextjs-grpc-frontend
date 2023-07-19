@@ -1,32 +1,38 @@
-name: Build Web Server
+name: Build and test
 
 on:
-  push:
-    tags:
-      - "**.**.**"
-      - "experiment/**/**/**"
-    paths:
-      - apps/**
-      - packages/**
-      - .github/workflows/build-web.yml
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - edited
-      - synchronize
-    branches:
-      - main
-  workflow_dispatch:
+  workflow_call:
+  # push:
+  #   tags:
+  #     - "**.**.**"
+  #     - "experiment/**/**/**"
+  #   paths:
+  #     - apps/**
+  #     - packages/**
+  #     - .github/workflows/build-web.yml
+  # pull_request:
+  #   types:
+  #     - opened
+  #     - reopened
+  #     - edited
+  #     - synchronize
+  #   branches:
+  #     - main
+  # workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build-and-push:
+  build-android:
+    name: build-android
+    secrets: inherit
+    uses: ./.github/workflows/android.build.wfc.yml
+
+  build-web:
     name: build-and-push
-    uses: ./.github/workflows/build-web.wfc.yml
+    uses: ./.github/workflows/web.build.wfc.yml
     secrets: inherit
     with:
       ref: ${{ github.ref_name }}
@@ -36,7 +42,7 @@ jobs:
     uses: ./.github/workflows/web-server-endpoints.test.wfc.yml
     secrets: inherit
     needs:
-      - build-and-push
+      - build-web
     with:
       ref: ${{ github.ref_name }}
 
@@ -53,7 +59,7 @@ jobs:
           echo "image tag is: $image_tag"
           echo "image_tag=$image_tag" >> "$GITHUB_OUTPUT"
 
-  test-web-integration:
+  test-k8s-integration:
     name: infra-test-web
     uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/k3d-dev-local.test.wfc.yml@experiment/test/workflow-calls
     secrets: inherit
