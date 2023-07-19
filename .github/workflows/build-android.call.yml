@@ -86,7 +86,7 @@ jobs:
           apk_release_dir_rel_path="${{ matrix.releases.apkReleaseDirRelpath }}"
           apk_release_filename="${{ matrix.releases.apkReleaseFilename }}"
 
-          apk_build_path="${{ repo_rel_path }}/${{ app_rel_path }}/${{ apk_release_dir_rel_path }}/${{ apk_release_filename }}"
+          apk_build_path="$repo_rel_path/$app_rel_path/$apk_release_dir_rel_path/$apk_release_filename"
 
           for i in \
             date_string \
