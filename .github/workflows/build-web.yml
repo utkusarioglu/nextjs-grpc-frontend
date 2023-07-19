@@ -41,7 +41,7 @@ jobs:
   #     ref: ${{ github.ref_name }}
 
   create-variables:
-    name: create-variables:
+    name: create-variables
     outputs:
       image_tag: ${{ steps.create-variables.outputs.image_tag }}
     steps:
