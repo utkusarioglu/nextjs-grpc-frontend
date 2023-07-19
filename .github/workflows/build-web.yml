@@ -26,14 +26,14 @@ concurrency:
 jobs:
   build-and-push:
     name: build-and-push
-    uses: ./.github/workflows/wfcs/build-web.wfc.yml
+    uses: ./.github/workflows/build-web.wfc.yml
     secrets: inherit
     with:
       ref: ${{ github.ref_name }}
 
   test-web-server-endpoints:
     name: test-web-server-endpoints
-    uses: ./.github/workflows/wfcs/test-web-server-endpoints.wfc.yml
+    uses: ./.github/workflows/test-web-server-endpoints.wfc.yml
     secrets: inherit
     needs:
       - build-and-push
@@ -55,7 +55,7 @@ jobs:
 
   test-web-integration:
     name: infra-test-web
-    uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/wfcs/test-k3d-dev-local.wfc.yml@experiment/test/workflow-calls
+    uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/test-k3d-dev-local.wfc.yml@experiment/test/workflow-calls
     secrets: inherit
     needs:
       - test-web-server-endpoints

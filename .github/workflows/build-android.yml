@@ -9,7 +9,7 @@ on:
       - apps/**
       - packages/**
       - .github/workflows/build-android.yml
-      - .github/workflows/build-android.call.yml
+      - .github/workflows/build-android.wfc.yml
   pull_request:
     types:
       - opened
@@ -25,4 +25,4 @@ jobs:
   build-android:
     name: build-android
     secrets: inherit
-    uses: ./.github/workflows/wfcs/build-android.wfc.yml
+    uses: ./.github/workflows/build-android.wfc.yml
