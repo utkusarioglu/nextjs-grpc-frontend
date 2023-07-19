@@ -24,21 +24,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # build-and-push:
-  #   name: build-and-push
-  #   uses: ./.github/workflows/build-web-call.yml
-  #   secrets: inherit
-  #   with:
-  #     ref: ${{ github.ref_name }}
+  build-and-push:
+    name: build-and-push
+    uses: ./.github/workflows/build-web-call.yml
+    secrets: inherit
+    with:
+      ref: ${{ github.ref_name }}
 
-  # test-web-server-endpoints:
-  #   name: test-web-server-endpoints
-  #   uses: ./.github/workflows/test-web-server-endpoints-call.yml
-  #   secrets: inherit
-  #   needs:
-  #     - build-and-push
-  #   with:
-  #     ref: ${{ github.ref_name }}
+  test-web-server-endpoints:
+    name: test-web-server-endpoints
+    uses: ./.github/workflows/test-web-server-endpoints-call.yml
+    secrets: inherit
+    needs:
+      - build-and-push
+    with:
+      ref: ${{ github.ref_name }}
 
   create-variables:
     name: create-variables
@@ -58,7 +58,7 @@ jobs:
     uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/test-k3d-dev-local-call.yml@experiment/test/workflow-calls
     secrets: inherit
     needs:
-      # - test-web-server-endpoints
+      - test-web-server-endpoints
       - create-variables
     with:
       frontend: ${{ github.ref_name }}
