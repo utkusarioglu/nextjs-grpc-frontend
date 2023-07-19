@@ -36,12 +36,13 @@ jobs:
     container:
       image: utkusarioglu/react-native-android-devcontainer:1.0.18
       options: --user=0:0
-    matrix:
-      releases:
-        - repoRelPath: frontend
-          appRelPath: apps/android
-          apkReleaseDirRelpath: android/app/build/outputs/apk/release
-          apkReleaseFilename: app-release.apk
+    strategy:
+      matrix:
+        releases:
+          - repoRelPath: frontend
+            appRelPath: apps/android
+            apkReleaseDirRelpath: android/app/build/outputs/apk/release
+            apkReleaseFilename: app-release.apk
 
     steps:
       - name: Checkout repo
