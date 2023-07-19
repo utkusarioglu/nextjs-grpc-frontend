@@ -25,5 +25,5 @@ concurrency:
 
 jobs:
   build-and-test:
-    secrets: inherit
     uses: ./.github/workflows/build-and-test.yml
+    secrets: inherit
