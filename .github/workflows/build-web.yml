@@ -42,6 +42,7 @@ jobs:
 
   create-variables:
     name: create-variables
+    runs-on: ubuntu-latest
     outputs:
       image_tag: ${{ steps.create-variables.outputs.image_tag }}
     steps:
