@@ -42,7 +42,7 @@ jobs:
 
   test-web-integration:
     name: infra-test-web
-    uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/test-k3d-dev-local-call.yml@main
+    uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/test-k3d-dev-local-call.yml@experiment/test/workflow-calls
     secrets: inherit
     needs:
       - test-web-server-endpoints
