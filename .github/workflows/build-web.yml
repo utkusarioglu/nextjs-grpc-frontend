@@ -63,4 +63,4 @@ jobs:
     with:
       frontend: ${{ github.ref_name }}
       infra: experiment/test/workflow-calls
-      webServerImageTag: ${{ needs.create-variables.outputs.image_tag }}
+      # webServerImageTag: ${{ needs.create-variables.outputs.image_tag }}
