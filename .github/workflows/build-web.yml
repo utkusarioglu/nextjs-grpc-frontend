@@ -51,7 +51,7 @@ jobs:
           repo_tag="${{ github.ref_name }}"
           image_tag="${repo_tag//\//-}"
           echo "image tag is: $image_tag"
-          echo "image_tag=${image_tag}" >> $GITHUB_OUTPUT
+          echo "image_tag=$image_tag" >> "$GITHUB_OUTPUT"
 
   test-web-integration:
     name: infra-test-web
