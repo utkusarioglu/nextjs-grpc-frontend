@@ -46,7 +46,7 @@ jobs:
     outputs:
       image_tag: ${{ steps.create-variables.outputs.image_tag }}
     steps:
-      - name: create-variables
+      - id: create-variables
         run: |
           repo_tag="${{ github.ref_name }}"
           image_tag="${repo_tag//\//-}"
