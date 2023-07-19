@@ -1,104 +1,115 @@
 name: Build Android App
 
 on:
-  # push:
-  #   tags:
-  #     - "**.**.**"
-  #     - "experiment/**/**/**"
-  #   paths:
-  #     - apps/**
-  #     - packages/**
-  #     - .github/workflows/build-web.yml
-  # pull_request:
-  #   types:
-  #     - opened
-  #   branches:
-  #     - main
+  push:
+    tags:
+      - "**.**.**"
+      - "experiment/**/**/**"
+    paths:
+      - apps/**
+      - packages/**
+      - .github/workflows/build-web.yml
+  pull_request:
+    types:
+      - opened
+    branches:
+      - main
   workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  REPO_RELPATH: frontend
-  APP_RELPATH: apps/android
-  APK_RELEASE_DIR_RELPATH: android/app/build/outputs/apk/release
-  APK_RELEASE_FILENAME: app-release.apk
-    
 jobs:
   build-android:
-    runs-on: ubuntu-latest
-    env:
-      NODE_ENV: production
-      NEXT_PUBLIC_WEB_APP_URL: ${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
-      NEXT_PUBLIC_API_V1_URL: ${{ secrets.NEXT_PUBLIC_API_V1_URL }}
-    container:
-      image: utkusarioglu/react-native-android-devcontainer:1.0.18
-      options: --user=0:0
+    name: build-android
+    secrets: inherit
+    uses: ./.github/workflows/build-android.call.yml
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-          path: ${{ env.REPO_RELPATH }}
+  # build-android:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     NODE_ENV: production
+  #     NEXT_PUBLIC_WEB_APP_URL: ${{ secrets.NEXT_PUBLIC_WEB_APP_URL }}
+  #     NEXT_PUBLIC_API_V1_URL: ${{ secrets.NEXT_PUBLIC_API_V1_URL }}
+  #   container:
+  #     image: utkusarioglu/react-native-android-devcontainer:1.0.18
+  #     options: --user=0:0
+  #   matrix:
+  #     releases:
+  #       - repoRelPath: frontend
+  #         appRelPath: apps/android
+  #         apkReleaseDirRelpath: android/app/build/outputs/apk/release
+  #         apkReleaseFilename: app-release.apk
 
-      - name: Install monorepo dependencies
-        working-directory: ${{ env.REPO_RELPATH }}
-        run: |
-          ls -al
-          cat package.json
-          yarn --immutable
-          yarn plugin import workspace-tools
+  #   steps:
+  #     - name: Checkout repo
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 2
+  #         path: ${{ matrix.releases.repoRelPath }}
 
-          cd packages/openapi
-          yarn generate:all
-          cd ../..
+  #     - name: Install monorepo dependencies
+  #       working-directory: ${{ matrix.releases.repoRelPath }}
+  #       run: |
+  #         ls -al
+  #         cat package.json
+  #         yarn --immutable
+  #         yarn plugin import workspace-tools
 
-          cd ${{ env.APP_RELPATH }}
-          yarn react-native-asset
+  #         cd packages/openapi
+  #         yarn generate:all
+  #         cd ../..
 
-      - name: Build android
-        working-directory: ${{ env.REPO_RELPATH }}/${{ env.APP_RELPATH }}
-        run: |
-          yarn build:release
+  #         cd ${{ matrix.releases.appRelPath }}
+  #         yarn react-native-asset
 
-      - name: Create apk variables
-        id: variables
-        working-directory: ${{ env.REPO_RELPATH }}
-        shell: bash
-        run: |
-          date_string="$(date +'%Y-%m-%dT-%H-%M-%S')"
-          commit_hash="$(git rev-parse --short HEAD)"
-          hashed_apk_filename="nextjs-grpc-$commit_hash.apk"
-          latest_apk_filename="nextjs-grpc-latest.apk"
-          apk_build_path="${{ env.REPO_RELPATH }}/${{ env.APP_RELPATH }}/${{ env.APK_RELEASE_DIR_RELPATH }}/${{ env.APK_RELEASE_FILENAME }}"
+  #     - name: Build android
+  #       working-directory: ${{ matrix.releases.repoRelPath }}/${{ matrix.releases.appRelPath }}
+  #       run: |
+  #         yarn build:release
 
-          for i in \
-            date_string \
-            commit_hash \
-            hashed_apk_filename \
-            latest_apk_filename \
-            apk_build_path;
-          do 
-            echo "$i=${!i}" >> $GITHUB_OUTPUT; 
-          done
+  #     - name: Create apk variables
+  #       id: variables
+  #       working-directory: ${{ matrix.releases.repoRelPath }}
+  #       shell: bash
+  #       run: |
+  #         date_string="$(date +'%Y-%m-%dT-%H-%M-%S')"
+  #         commit_hash="$(git rev-parse --short HEAD)"
+  #         hashed_apk_filename="nextjs-grpc-$commit_hash.apk"
+  #         latest_apk_filename="nextjs-grpc-latest.apk"
 
-      - name: Upload "${{ steps.variables.outputs.commit_hash }}" to Google Drive
-        uses: adityak74/google-drive-upload-git-action@main
-        with:
-          credentials: "${{ secrets.GOOGLE_DRIVE_TOKEN }}"
-          folderId: "${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}"
-          name: ${{ steps.variables.outputs.hashed_apk_filename }}
-          filename: ${{ steps.variables.outputs.apk_build_path }}
-          overwrite: "false"
+  #         repo_rel_path="${{ matrix.releases.repoRelPath }}"
+  #         app_rel_path="${{ matrix.releases.appRelPath }}"
+  #         apk_release_dir_rel_path="${{ matrix.releases.apkReleaseDirRelpath }}"
+  #         apk_release_filename="${{ matrix.releases.apkReleaseFilename }}"
 
-      - name: Upload "latest" to Google Drive
-        uses: adityak74/google-drive-upload-git-action@main
-        with:
-          credentials: "${{ secrets.GOOGLE_DRIVE_TOKEN }}"
-          folderId: "${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}"
-          name: ${{ steps.variables.outputs.latest_apk_filename }}
-          filename: ${{ steps.variables.outputs.apk_build_path }}
-          overwrite: "true"
+  #         apk_build_path="${{ repo_rel_path }}/${{ app_rel_path }}/${{ apk_release_dir_rel_path }}/${{ apk_release_filename }}"
+
+  #         for i in \
+  #           date_string \
+  #           commit_hash \
+  #           hashed_apk_filename \
+  #           latest_apk_filename \
+  #           apk_build_path;
+  #         do 
+  #           echo "$i=${!i}" >> $GITHUB_OUTPUT; 
+  #         done
+
+  #     - name: Upload "${{ steps.variables.outputs.commit_hash }}" to Google Drive
+  #       uses: adityak74/google-drive-upload-git-action@main
+  #       with:
+  #         credentials: "${{ secrets.GOOGLE_DRIVE_TOKEN }}"
+  #         folderId: "${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}"
+  #         name: ${{ steps.variables.outputs.hashed_apk_filename }}
+  #         filename: ${{ steps.variables.outputs.apk_build_path }}
+  #         overwrite: "false"
+
+  #     - name: Upload "latest" to Google Drive
+  #       uses: adityak74/google-drive-upload-git-action@main
+  #       with:
+  #         credentials: "${{ secrets.GOOGLE_DRIVE_TOKEN }}"
+  #         folderId: "${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}"
+  #         name: ${{ steps.variables.outputs.latest_apk_filename }}
+  #         filename: ${{ steps.variables.outputs.apk_build_path }}
+  #         overwrite: "true"

@@ -26,14 +26,14 @@ concurrency:
 jobs:
   # build-and-push:
   #   name: build-and-push
-  #   uses: ./.github/workflows/build-web-call.yml
+  #   uses: ./.github/workflows/build-web.call.yml
   #   secrets: inherit
   #   with:
   #     ref: ${{ github.ref_name }}
 
   # test-web-server-endpoints:
   #   name: test-web-server-endpoints
-  #   uses: ./.github/workflows/test-web-server-endpoints-call.yml
+  #   uses: ./.github/workflows/test-web-server-endpoints.call.yml
   #   secrets: inherit
   #   needs:
   #     - build-and-push
@@ -55,14 +55,14 @@ jobs:
 
   test-web-integration:
     name: infra-test-web
-    uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/test-k3d-dev-local-call.yml@experiment/test/workflow-calls
+    uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/test-k3d-dev-local.call.yml@experiment/test/workflow-calls
     secrets: inherit
     needs:
       # - test-web-server-endpoints
       - create-variables
     with:
-      frontend: ${{ github.ref_name }}
-      infra: experiment/test/workflow-calls
-      # webServerImageTag: ${{ needs.create-variables.outputs.image_tag }}
-      webServerImageTag: "aaa"
-      msImageTag: "bbb"
+      frontendRef: ${{ github.ref_name }}
+      infraRef: experiment/test/workflow-calls
+
+      webServerImageTag: ${{ needs.create-variables.outputs.image_tag }}
+      # msImageTag: "bbb"

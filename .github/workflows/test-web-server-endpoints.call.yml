@@ -70,7 +70,8 @@ jobs:
       - name: Run Container
         working-directory: ${{ matrix.images.repoRelPath }}
         shell: bash
+        env:
+          CERTIFICATES_ABSPATH: /.certificates
         run: |
-          CERTIFICATES_ABSPATH=/.certificates \
           scripts/run-test-container.sh \
             ${{ steps.variables.outputs.image_ref }}
