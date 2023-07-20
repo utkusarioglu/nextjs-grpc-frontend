@@ -8,11 +8,15 @@ on:
     paths:
       - apps/**
       - packages/**
-      - .github/workflows/build-web.yml
+      - .github/workflows/push.yml
+      - .github/workflows/build-test-push.wfc.yml
+      - .github/workflows/web.build.wfc.yml
+      - .github/workflows/android.build.wfc.yml
+      - .github/workflows/web-server-endpoints.test.wfc.yml
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -21,5 +25,5 @@ jobs:
     secrets: inherit
     with:
       frontendRef: ${{ github.ref_name }}
-      infraRef: experiment/test/workflow-calls
+      # infraRef: experiment/test/workflow-calls
       # msImageTag: 

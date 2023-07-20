@@ -2,6 +2,7 @@ name: Build & test and Push
 
 on:
   workflow_call:
+    inputs:
       certificatesRef:
         type: string
       e2eRef:
@@ -74,7 +75,7 @@ jobs:
       - create-variables
     with:
       certificatesRef: ${{ inputs.certificatesRef }}
-      e2eRef: ${{ inputs.certificatesRef }}
+      e2eRef: ${{ inputs.e2eRef }}
       frontendRef: ${{ inputs.frontendRef }}
       grafanaRef: ${{ inputs.grafanaRef }}
       infraRef: ${{ inputs.infraRef }}
