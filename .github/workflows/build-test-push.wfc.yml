@@ -1,0 +1,93 @@
+name: Build & test and Push
+
+on:
+  workflow_call:
+    inputs:
+      certificatesRef:
+        type: string
+      e2eRef:
+        type: string
+      frontendRef:
+        type: string
+      grafanaRef:
+        type: string
+      infraRef:
+        type: string
+      jaegerRef:
+        type: string
+      lokiRef:
+        type: string
+      msRef:
+        type: string
+      notebooksRef:
+        type: string
+      otelCollectorsRef:
+        type: string
+      prometheusRef:
+        type: string
+      protoRef:
+        type: string
+      rbacRef:
+        type: string
+
+      # webServerImageTag: 
+      #   required: false
+      #   type: string
+      msImageTag: 
+        type: string
+
+jobs:
+  build-android:
+    secrets: inherit
+    uses: ./.github/workflows/android.build.wfc.yml
+
+  build-web:
+    uses: ./.github/workflows/web.build.wfc.yml
+    secrets: inherit
+    with:
+      ref: ${{ github.ref_name }}
+
+  test-web-server-endpoints:
+    uses: ./.github/workflows/web-server-endpoints.test.wfc.yml
+    secrets: inherit
+    needs:
+      - build-web
+    with:
+      ref: ${{ github.ref_name }}
+
+  create-variables:
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.create-variables.outputs.image_tag }}
+    steps:
+      - id: create-variables
+        run: |
+          repo_tag="${{ github.ref_name }}"
+          image_tag="${repo_tag//\//-}"
+          echo "image tag is: $image_tag"
+          echo "image_tag=$image_tag" >> "$GITHUB_OUTPUT"
+
+  test-k8s-integration:
+    uses: utkusarioglu/nextjs-grpc-infra/.github/workflows/k3d-dev-local.test.wfc.yml@experiment/test/workflow-calls
+    secrets: inherit
+    needs:
+      - test-web-server-endpoints
+      - create-variables
+    with:
+      certificatesRef: ${{ inputs.certificatesRef }}
+      e2eRef: ${{ inputs.e2eRef }}
+      frontendRef: ${{ inputs.frontendRef }}
+      grafanaRef: ${{ inputs.grafanaRef }}
+      infraRef: ${{ inputs.infraRef }}
+      jaegerRef: ${{ inputs.jaegerRef }}
+      lokiRef: ${{ inputs.lokiRef }}
+      msRef: ${{ inputs.msRef }}
+      notebooksRef: ${{ inputs.notebooksRef }}
+      otelCollectorsRef: ${{ inputs.otelCollectorsRef }}
+      prometheusRef: ${{ inputs.prometheusRef }}
+      protoRef: ${{ inputs.protoRef }}
+      rbacRef: ${{ inputs.rbacRef }}
+
+      msImageTag: ${{ inputs.msImageTag }}
+
+      webServerImageTag: ${{ needs.create-variables.outputs.image_tag }}
