@@ -3,5 +3,4 @@ name: web-server
 description: Web server container for the nextjs-grpc workshop
 type: application
 version: 0.0.1-10
-# appVersion: 00.00.08
-appVersion: 00.00.17
+appVersion: 0.0.18
