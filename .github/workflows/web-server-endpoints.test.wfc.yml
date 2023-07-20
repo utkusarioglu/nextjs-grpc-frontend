@@ -1,0 +1,77 @@
+name: Build Web Server Endpoints
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+
+jobs:
+  test-web-server-endpoints:
+    name: test-web-server-endpoints
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        images:
+          - enabled: true
+            repoRelPath: frontend
+            appRelPath: apps/web
+        common:
+          - containerName: web-server-nextjsgprc-projects-utkusarioglu-com
+
+    steps:
+      - name: Checkout ${{ matrix.images.repoRelPath }}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          repository: utkusarioglu/nextjs-grpc-frontend
+          path: ${{ matrix.images.repoRelPath }} 
+        
+      - name: Create variables
+        id: variables
+        shell: bash
+        run: |
+          image_name="${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.common.containerName }}"
+          repo_tag="${{ inputs.ref }}"
+          image_tag="${repo_tag//\//-}"
+          dev_image_tag="${image_tag}"
+          image_ref="${image_name}:${image_tag}"
+          dev_image_ref="${image_name}:${dev_image_tag}"
+          short_image_ref="${{ matrix.common.containerName }}:${image_tag}"
+          short_dev_image_ref="${{ matrix.common.containerName }}:${dev_image_tag}"
+
+          for i in \
+            image_name \
+            image_tag \
+            dev_image_tag \
+            image_ref \
+            dev_image_ref \
+            short_image_ref \
+            short_dev_image_ref; 
+          do 
+            echo "$i=${!i}" >> $GITHUB_OUTPUT; 
+          done
+
+      - name: Migrate vars and secrets files 
+        working-directory: ${{ matrix.images.repoRelPath }}
+        shell: bash
+        run: |
+          TEMP_B64_SECRETS_ABSPATH=/tmp/secrets.b64
+          TEMP_ZIP_SECRETS_ABSPATH=/tmp/secrets.zip
+          echo '${{ secrets.SECRET_FILES }}' > $TEMP_B64_SECRETS_ABSPATH
+          cat $TEMP_B64_SECRETS_ABSPATH | base64 --decode \
+            > $TEMP_ZIP_SECRETS_ABSPATH
+          unzip -o $TEMP_ZIP_SECRETS_ABSPATH
+          echo "secrets:"
+          cat $TEMP_ZIP_SECRETS_ABSPATH
+          rm $TEMP_B64_SECRETS_ABSPATH $TEMP_ZIP_SECRETS_ABSPATH
+        
+      - name: Run Container
+        working-directory: ${{ matrix.images.repoRelPath }}
+        shell: bash
+        env:
+          CERTIFICATES_ABSPATH: /.certificates
+        run: |
+          scripts/run-test-container.sh \
+            ${{ steps.variables.outputs.image_ref }}
