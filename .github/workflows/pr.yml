@@ -1,14 +1,6 @@
-name: Push and PR
+name: PR
 
 on:
-  push:
-    tags:
-      - "**.**.**"
-      - "experiment/**/**/**"
-    paths:
-      - apps/**
-      - packages/**
-      - .github/workflows/build-web.yml
   pull_request:
     types:
       - opened
@@ -27,3 +19,7 @@ jobs:
   build-test-push:
     uses: ./.github/workflows/build-test-push.wfc.yml
     secrets: inherit
+    with:
+      frontendRef: ${{ github.head_ref }}
+      infraRef: experiment/test/workflow-calls
+      # msImageTag: 
