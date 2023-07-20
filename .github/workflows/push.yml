@@ -25,5 +25,5 @@ jobs:
     secrets: inherit
     with:
       frontendRef: ${{ github.ref_name }}
-      # infraRef: experiment/test/workflow-calls
+      # infraRef: 
       # msImageTag: 
