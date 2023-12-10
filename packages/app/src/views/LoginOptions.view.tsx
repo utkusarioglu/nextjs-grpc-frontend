@@ -8,7 +8,9 @@ export const LoginOptionsView = () => {
 
   return (
     <YStack space="$2">
-      <Button onPress={() => push({ pathname: "/sign-up" })}>Sign Up</Button>
+      <Button onPress={() => push({ pathname: "/sign-up" })}>
+        {t`guest:WelcomeScreen.SignUp`}
+      </Button>
       <Button onPress={() => push({ pathname: "/evm" })}>
         {t`guest:WelcomeScreen.Login.WithEvmIdentity`}
       </Button>

@@ -1,5 +1,6 @@
 WelcomeScreen:
   Motto: Bu önceden belirlenmiş bir amacı olmayan teknik bir projedir
+  SignUp: Giriş yap
   Login:
     WithUserPass: Kullanıcı adı ve şifre ile giriş
     WithEvmIdentity: EVM kimliği ile giriş
