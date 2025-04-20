@@ -13,7 +13,6 @@ interface StandardGetServerSidePropsProps {
 export function standardGetServerSideProps({
   i18n: { namespaces },
 }: StandardGetServerSidePropsProps) {
-  console.log("gss called");
   return wrapper.getServerSideProps((store) => {
     console.log("wrapper called");
     return async (props) => {

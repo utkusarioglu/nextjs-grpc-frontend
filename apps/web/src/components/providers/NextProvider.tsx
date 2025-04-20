@@ -34,7 +34,7 @@ function NextProvider(statelessAppProps: NextProviderProps) {
       <Suspense
         fallback={
           <AppSkeleton>
-            <div style={{ color: "#FF0" }}>Screen</div>
+            {/* <div style={{ color: "#FF0" }}>Screen</div> */}
           </AppSkeleton>
         }
       >
@@ -59,35 +59,42 @@ function NextProvider(statelessAppProps: NextProviderProps) {
     ? Component.getLayout.name
     : props.router.pathname;
 
+  const Animated =
+    process.env.NEXT_PUBLIC_ANIMATION_SCREEN_TRANSITION_ENABLED === "true" ? (
+      <AnimatePresence
+        initial={false}
+        exitBeforeEnter
+        enterVariant="downFade"
+        exitVariant="downFade"
+      >
+        <AnimatedPage
+          animation="fast"
+          opacity={1}
+          y={0}
+          fullscreen
+          key={animationKey}
+        >
+          {contents}
+        </AnimatedPage>
+      </AnimatePresence>
+    ) : (
+      contents
+    );
+
   return (
     <StoreProvider
       // @ts-expect-error #1
       store={store}
       loadingViewComponent={
         <AppSkeleton>
-          <div style={{ color: "#0F0" }}>Store</div>
+          {/* <div style={{ color: "#0F0" }}>Store</div> */}
         </AppSkeleton>
       }
     >
       <ClientSideRouteGuardProvider>
         <WebThemeProvider>
           <YStack overflow="hidden" fullscreen>
-            <AnimatePresence
-              initial={false}
-              exitBeforeEnter
-              enterVariant="downFade"
-              exitVariant="downFade"
-            >
-              <AnimatedPage
-                animation="fast"
-                opacity={1}
-                y={0}
-                fullscreen
-                key={animationKey}
-              >
-                {contents}
-              </AnimatedPage>
-            </AnimatePresence>
+            {Animated}
           </YStack>
         </WebThemeProvider>
       </ClientSideRouteGuardProvider>

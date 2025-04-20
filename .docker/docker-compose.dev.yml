@@ -5,7 +5,7 @@ services:
     image: utkusarioglu/react-native-android-devcontainer:1.0.18
     environment:
       PROJECT_ROOT_ABSPATH: /utkusarioglu-com/projects/nextjs-grpc
-      ANDROID_TARGET_DEVICE: android-host:58526
+      ANDROID_TARGET_DEVICE: 192.168.1.151:58526
     extra_hosts:
       android-host: host-gateway
       ms.ms: host-gateway

@@ -102,14 +102,8 @@ const HomeTabsLayout: FC<HomeTabsLayoutProps> = ({ children }) => {
     return () => events.off("routeChangeStart", onRouteChange);
   }, []);
 
-  return (
-    <Tabs
-      fullscreen
-      flexDirection="column"
-      // @ts-expect-error: #2
-      overflowX="hidden"
-      id="tab-mount"
-    >
+  const animatedPage =
+    process.env.NEXT_PUBLIC_ANIMATION_TAB_TRANSITION_ENABLED === "true" ? (
       <AnimatePresence
         initial={false}
         enterVariant={indicators.enterVariant}
@@ -130,6 +124,21 @@ const HomeTabsLayout: FC<HomeTabsLayoutProps> = ({ children }) => {
           </AnimatedYStack>
         ) : null}
       </AnimatePresence>
+    ) : (
+      <Tabs.Content value={asPath} forceMount fullscreen>
+        {children}
+      </Tabs.Content>
+    );
+
+  return (
+    <Tabs
+      fullscreen
+      flexDirection="column"
+      // @ts-expect-error: #2
+      overflowX="hidden"
+      id="tab-mount"
+    >
+      {animatedPage}
 
       <Stack
         position="absolute"

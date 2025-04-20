@@ -12,7 +12,8 @@
         "msjsdiag.vscode-react-native",
         "vscjava.vscode-java-pack",
         "esbenp.vscode-prettier",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker"
       ],
       "settings": {
         "workbench.colorCustomizations": {

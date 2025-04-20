@@ -1,7 +1,7 @@
-import type { ReactElement, FC } from "react";
+import type { ReactNode, FC } from "react";
 
 interface AppSkeletonProps {
-  children: ReactElement;
+  children?: ReactNode;
 }
 
 export const AppSkeleton: FC<AppSkeletonProps> = ({ children = null }) => (

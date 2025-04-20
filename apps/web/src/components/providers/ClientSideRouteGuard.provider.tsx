@@ -39,7 +39,7 @@ const ClientSideRouteGuardProvider: FC<ClientSideRouteGuardProviderProps> = ({
   if (!isAppInitialized) {
     return (
       <AppSkeleton>
-        <div style={{ color: "#0FF" }}>ClientSide Route guard</div>
+        {/* <div style={{ color: "#0FF" }}>ClientSide Route guard</div> */}
       </AppSkeleton>
     );
   }

@@ -25,7 +25,7 @@ function App(appProps: AppPropsWithLayout) {
       <Suspense
         fallback={
           <AppSkeleton>
-            <div style={{ color: "#F00" }}>Next Provider</div>
+            {/* <div style={{ color: "#F00" }}>Next Provider</div> */}
           </AppSkeleton>
         }
       >
